@@ -144,10 +144,6 @@ return array(
 		'test'      => array(
 			'*'        => AccountLevel::ANYONE
 		),
-		'reload'    => array(
-			'index'   => AccountLevel::ADMIN,
-			'mobskill' => AccountLevel::ADMIN
-		),
 		'woe'       => array(
 			'index'   => AccountLevel::ANYONE
 		),

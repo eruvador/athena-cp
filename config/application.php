@@ -203,7 +203,6 @@ return array(
 			'Accounts'      => array('module' => 'account'),
 			'Characters'    => array('module' => 'character'),
 			'Guilds'        => array('module' => 'guild'),
-			'Reload'        => array('module' => 'reload'),
 			'Send Mail'     => array('module' => 'mail'),
 			'Re-Install'    => array('module' => 'install', 'action' => 'reinstall'),
 			//'Auction'       => array('module' => 'auction'),
@@ -263,9 +262,6 @@ return array(
 			'changemail' => 'E-mail Changes',
 			'ban'        => 'Account Bans',
 			'ipban'      => 'IP Bans'
-		),
-		'reload' => array(
-			'mobskill' => 'Mob Skills'
 		),
 		'purchase' => array(
 			'index'    => 'Shop',
