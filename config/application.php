@@ -378,13 +378,6 @@ return array(
 		'ChangeEmailTable'    => 'cp_emailchange',
 		'LoginLogTable'       => 'cp_loginlog',
 		'ChangePasswordTable' => 'cp_pwchange'
-	),
-
-	// Do not change these unless you also rename the files in FLUX_ROOT/lib/eA/
-	'MobSkillDb1' => FLUX_ROOT.'/lib/eA/mob_skill_db.txt',
-	'MobSkillDb2' => FLUX_ROOT.'/lib/eA/mob_skill_db2.txt',
-
-	// This is the combined file of the Mob Skill DBs minus the comments and clutter.
-	'MobSkillDb'  => FLUX_ROOT.'/lib/eA/mob_skills.txt'
+	)
 );
 ?>
