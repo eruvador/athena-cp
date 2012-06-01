@@ -17,11 +17,11 @@
 				<td><input type="text" name="email" id="email" value="<?php echo htmlspecialchars($account->email) ?>" /></td>
 				<?php if ($auth->allowedToEditAccountLevel && !$isMine): ?>
 					<th><label for="level"><?php echo htmlspecialchars(Flux::message('AccountLevelLabel')) ?></label></th>
-					<td><input type="text" name="level" id="level" value="<?php echo (int)$account->group_id ?>" /></td>
+					<td><input type="text" name="group_id" id="level" value="<?php echo (int)$account->group_id ?>" /></td>
 				<?php else: ?>
 					<th><?php echo htmlspecialchars(Flux::message('AccountLevelLabel')) ?></th>
 					<td>
-						<input type="hidden" name="level" value="<?php echo (int)$account->group_id ?>" />
+						<input type="hidden" name="group_id" value="<?php echo (int)$account->group_id ?>" />
 						<?php echo number_format((int)$account->group_id) ?>
 					</td>
 				<?php endif ?>
