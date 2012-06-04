@@ -1,10 +1,10 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('HistoryEmailTitle');
-$emailChangeTable = Flux::config('FluxTables.ChangeEmailTable');
+$title = Athena::message('HistoryEmailTitle');
+$emailChangeTable = Athena::config('AthenaTables.ChangeEmailTable');
 
 $sql = "SELECT COUNT(id) AS total FROM {$server->loginDatabase}.$emailChangeTable WHERE account_id = ?";
 $sth = $server->connection->getStatement($sql);

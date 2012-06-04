@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title = 'List Account Ban History';
 
-$banTable    = Flux::config('FluxTables.AccountBanTable');
+$banTable    = Athena::config('AthenaTables.AccountBanTable');
 $sqlpartial  = "LEFT JOIN {$server->loginDatabase}.login AS l1 ON l1.account_id = a.account_id ";
 $sqlpartial .= "LEFT JOIN {$server->loginDatabase}.login AS l2 ON l2.account_id = a.banned_by ";
 $sqlpartial .= "WHERE 1=1 ";

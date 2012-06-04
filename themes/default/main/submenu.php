@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <?php $subMenuItems = $this->getSubMenuItems(); $menus = array() ?>
 <?php if (!empty($subMenuItems)): ?>
 	<div id="submenu">Menu:

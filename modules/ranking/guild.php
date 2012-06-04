@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title = 'Guild Ranking';
 
-$castleNames = Flux::config('CastleNames')->toArray();
+$castleNames = Athena::config('CastleNames')->toArray();
 $ids = implode(',', array_fill(0, count($castleNames), '?'));
 
 $col  = "g.guild_id, g.name, g.guild_lv, g.average_lv, g.emblem_len, ";
@@ -17,9 +17,9 @@ $sql .= "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = ch.accou
 $sql .= "WHERE login.group_id < ? ";
 $sql .= "ORDER BY g.guild_lv DESC, castles DESC, exp DESC, (g.average_lv + members) DESC, ";
 $sql .= "g.average_lv DESC, members DESC, g.max_member DESC, g.next_exp ASC ";
-$sql .= "LIMIT ".(int)Flux::config('GuildRankingLimit');
+$sql .= "LIMIT ".(int)Athena::config('GuildRankingLimit');
 $sth  = $server->connection->getStatement($sql);
 
-$sth->execute(array_merge(array_keys($castleNames), array((int)Flux::config('RankingHideLevel'))));
+$sth->execute(array_merge(array_keys($castleNames), array((int)Athena::config('RankingHideLevel'))));
 $guilds = $sth->fetchAll();
 ?>

@@ -1,7 +1,7 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-$title = Flux::message('ServerInfoTitle');
+$title = Athena::message('ServerInfoTitle');
 $info  = array(
 		'accounts'   => 0,
 		'characters' => 0,
@@ -13,11 +13,11 @@ $info  = array(
 
 // Accounts.
 $sql = "SELECT COUNT(account_id) AS total FROM {$server->loginDatabase}.login ";
-if (Flux::config('HideTempBannedStats')) {
+if (Athena::config('HideTempBannedStats')) {
 	$sql .= "WHERE unban_time <= UNIX_TIMESTAMP()";
 }
-if (Flux::config('HidePermBannedStats')) {
-	if (Flux::config('HideTempBannedStats')) {
+if (Athena::config('HidePermBannedStats')) {
+	if (Athena::config('HideTempBannedStats')) {
 		$sql .= " AND state != 5";
 	} else {
 		$sql .= "WHERE state != 5";
@@ -29,12 +29,12 @@ $info['accounts'] += $sth->fetch()->total;
 
 // Characters.
 $sql = "SELECT COUNT(`char`.char_id) AS total FROM {$server->charMapDatabase}.`char` ";
-if (Flux::config('HideTempBannedStats')) {
+if (Athena::config('HideTempBannedStats')) {
 	$sql .= "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = `char`.account_id ";
 	$sql .= "WHERE login.unban_time <= UNIX_TIMESTAMP()";
 }
-if (Flux::config('HidePermBannedStats')) {
-	if (Flux::config('HideTempBannedStats')) {
+if (Athena::config('HidePermBannedStats')) {
+	if (Athena::config('HideTempBannedStats')) {
 		$sql .= " AND login.state != 5";
 	} else {
 		$sql .= "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = `char`.account_id ";
@@ -59,12 +59,12 @@ $info['parties'] += $sth->fetch()->total;
 
 // Zeny.
 $sql = "SELECT SUM(`char`.zeny) AS total FROM {$server->charMapDatabase}.`char` ";
-if ($hideLevel=Flux::config('InfoHideZenyLevel')) {
+if ($hideLevel=Athena::config('InfoHideZenyLevel')) {
 	$sql .= "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = `char`.account_id ";
 	$sql .= "WHERE login.group_id < ?";
 	$bind = array($hideLevel);
 }
-if (Flux::config('HideTempBannedStats')) {
+if (Athena::config('HideTempBannedStats')) {
 	if ($hideLevel) {
 		$sql .= " AND unban_time <= UNIX_TIMESTAMP()";
 	} else {
@@ -72,8 +72,8 @@ if (Flux::config('HideTempBannedStats')) {
 		$sql .= "WHERE unban_time <= UNIX_TIMESTAMP()";
 	}
 }
-if (Flux::config('HidePermBannedStats')) {
-	if ($hideLevel || Flux::config('HideTempBannedStats')) {
+if (Athena::config('HidePermBannedStats')) {
+	if ($hideLevel || Athena::config('HideTempBannedStats')) {
 		$sql .= " AND state != 5";
 	} else {
 		$sql .= "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = `char`.account_id ";
@@ -87,12 +87,12 @@ $info['zeny'] += $sth->fetch()->total;
 
 // Job classes.
 $sql = "SELECT `char`.class, COUNT(`char`.class) AS total FROM {$server->charMapDatabase}.`char` ";
-if (Flux::config('HideTempBannedStats')) {
+if (Athena::config('HideTempBannedStats')) {
 	$sql .= "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = `char`.account_id ";
 	$sql .= "WHERE login.unban_time <= UNIX_TIMESTAMP() ";
 }
-if (Flux::config('HidePermBannedStats')) {
-	if (Flux::config('HideTempBannedStats')) {
+if (Athena::config('HidePermBannedStats')) {
+	if (Athena::config('HideTempBannedStats')) {
 		$sql .= " AND login.state != 5 ";
 	} else {
 		$sql .= "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = `char`.account_id ";
@@ -107,11 +107,11 @@ $classes = $sth->fetchAll();
 if ($classes) {
 	foreach ($classes as $class) {
 		$classnum = (int)$class->class;
-		$info['classes'][Flux::config("JobClasses.$classnum")] = $class->total;
+		$info['classes'][Athena::config("JobClasses.$classnum")] = $class->total;
 	}
 }
 
-if (Flux::config('SortJobsByAmount')) {
+if (Athena::config('SortJobsByAmount')) {
 	arsort($info['classes']);
 }
 ?>

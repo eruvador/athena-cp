@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>View Cart</h2>
 <p class="cart-info-text">You have <span class="cart-item-count"><?php echo number_format(count($items)) ?></span> item(s) in your cart.</p>
 <p class="cart-total-text">Your current subtotal is <span class="cart-sub-total"><?php echo number_format($total=$server->cart->getTotal()) ?></span> credit(s).</p>

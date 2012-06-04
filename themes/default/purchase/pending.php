@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Pending Redemption</h2>
 <?php if ($items): ?>
 <p>You have <?php echo number_format($total) ?> item(s) pending redemption.</p>

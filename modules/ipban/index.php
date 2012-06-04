@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('IpbanListTitle');
+$title = Athena::message('IpbanListTitle');
 
 $sqlpartial = "WHERE rtime > NOW() ";
 

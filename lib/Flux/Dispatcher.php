@@ -1,20 +1,20 @@
 <?php
-require_once 'Flux/Config.php';
-require_once 'Flux/Template.php';
+require_once 'Athena/Config.php';
+require_once 'Athena/Template.php';
 
 /**
  * The dispatcher is used to handle the current request to the application and
  * forward it to the correct module/action, after which point the view should
  * be rendered.
  *
- * Currently all the "important" behavior is done from Flux_Template.
+ * Currently all the "important" behavior is done from Athena_Template.
  */
-class Flux_Dispatcher {
+class Athena_Dispatcher {
 	/**
 	 * Dispatcher instance.
 	 *
 	 * @access private
-	 * @var Flux_Dispatcher
+	 * @var Athena_Dispatcher
 	 */
 	private static $dispatcher;
 	
@@ -35,7 +35,7 @@ class Flux_Dispatcher {
 	public $defaultAction = 'index';
 	
 	/**
-	 * See Flux_Dispatcher::getInstance().
+	 * See Athena_Dispatcher::getInstance().
 	 *
 	 * @access private
 	 */
@@ -48,13 +48,13 @@ class Flux_Dispatcher {
 	 * Construct new dispatcher instance of one doesn't exist. But there can
 	 * only be a single instance of the dispatcher.
 	 *
-	 * @return Flux_Dispatcher
+	 * @return Athena_Dispatcher
 	 * @access public
 	 */
 	public static function getInstance()
 	{
 		if (!self::$dispatcher) {
-			self::$dispatcher = new Flux_Dispatcher();
+			self::$dispatcher = new Athena_Dispatcher();
 		}
 		return self::$dispatcher;
 	}
@@ -67,7 +67,7 @@ class Flux_Dispatcher {
 	 */
 	public function dispatch($options = array())
 	{
-		$config                    = new Flux_Config($options);
+		$config                    = new Athena_Config($options);
 		$basePath                  = $config->get('basePath');
 		$paramsArr                 = $config->get('params');
 		$modulePath                = $config->get('modulePath');
@@ -86,10 +86,10 @@ class Flux_Dispatcher {
 		}
 		
 		if (!$defaultModule) {
-			throw new Flux_Error('Please set the default module with $dispatcher->setDefaultModule()');
+			throw new Athena_Error('Please set the default module with $dispatcher->setDefaultModule()');
 		}
 		elseif (!$defaultAction) {
-			throw new Flux_Error('Please set the default action with $dispatcher->setDefaultAction()');
+			throw new Athena_Error('Please set the default action with $dispatcher->setDefaultAction()');
 		}
 		
 		if (!$paramsArr) {
@@ -97,8 +97,8 @@ class Flux_Dispatcher {
 		}
 		
 		// Provide easier access to parameters.
-		$params  = new Flux_Config($paramsArr);
-		$baseURI = Flux::config('BaseURI');
+		$params  = new Athena_Config($paramsArr);
+		$baseURI = Athena::config('BaseURI');
 		
 		if ($params->get('module')) {
 			$safetyArr  = array('..', '/', '\\');
@@ -110,7 +110,7 @@ class Flux_Dispatcher {
 				$actionName = $defaultAction;
 			}
 		}
-		elseif (Flux::config('UseCleanUrls')) {
+		elseif (Athena::config('UseCleanUrls')) {
 			$baseURI    = preg_replace('&/+&', '/', rtrim($baseURI, '/')).'/';
 			$requestURI = preg_replace('&/+&', '/', rtrim($_SERVER['REQUEST_URI'], '/')).'/';
 			$requestURI = preg_replace('&\?.*?$&', '', $requestURI);
@@ -124,10 +124,10 @@ class Flux_Dispatcher {
 		}
 		
 		// Authorization handling.
-		$auth = Flux_Authorization::getInstance();
+		$auth = Athena_Authorization::getInstance();
 		if ($auth->actionAllowed($moduleName, $actionName) === false) {
-			if (!Flux::$sessionData->isLoggedIn()) {
-				Flux::$sessionData->setMessageData('Please log-in to continue.');
+			if (!Athena::$sessionData->isLoggedIn()) {
+				Athena::$sessionData->setMessageData('Please log-in to continue.');
 				$this->loginRequired($baseURI);
 			}
 			else {
@@ -153,13 +153,13 @@ class Flux_Dispatcher {
 			'missingViewModuleAction'   => $missingViewModuleAction,
 			'useCleanUrls'              => $useCleanUrls
 		);
-		$templateConfig = new Flux_Config($templateArray);
-		$template       = new Flux_Template($templateConfig);
+		$templateConfig = new Athena_Config($templateArray);
+		$template       = new Athena_Template($templateConfig);
 		
 		// Default data available to all actions and views.
 		$data = array(
-			'auth'    => Flux_Authorization::getInstance(),
-			'session' => Flux::$sessionData,
+			'auth'    => Athena_Authorization::getInstance(),
+			'session' => Athena::$sessionData,
 			'params'  => $params
 		);
 		$template->setDefaultData($data);
@@ -206,13 +206,13 @@ class Flux_Dispatcher {
 	 */
 	public function loginRequired($baseURI, $message = null, $loginModule = 'account', $loginAction = 'login')
 	{
-		$session = Flux::$sessionData;
+		$session = Athena::$sessionData;
 		if (!$message) {
 			$message = 'Please login to continue.';
 		}
 		
 		if (!$session->isLoggedIn()) {
-			if (Flux::config('UseCleanUrls')) {
+			if (Athena::config('UseCleanUrls')) {
 				$loginURL = sprintf('%s/%s/%s/?return_url=%s',
 					$baseURI, $loginModule, $loginAction, rawurlencode($_SERVER['REQUEST_URI']));
 			}

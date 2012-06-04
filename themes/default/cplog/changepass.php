@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Password Changes</h2>
 <p class="toggler"><a href="javascript:toggleSearchForm()">Search...</a></p>
 <form action="<?php echo $this->url ?>" method="get" class="search-form">
@@ -45,7 +45,7 @@
 	<tr>
 		<th><?php echo $paginator->sortableColumn('log.account_id', 'Account ID') ?></th>
 		<th><?php echo $paginator->sortableColumn('userid', 'Username') ?></th>
-		<?php if (Flux::config('CpChangeLogShowPassword') && $auth->allowedToSeeCpChangePass): ?>
+		<?php if (Athena::config('CpChangeLogShowPassword') && $auth->allowedToSeeCpChangePass): ?>
 		<th><?php echo $paginator->sortableColumn('old_password', 'Old Password') ?></th>
 		<th><?php echo $paginator->sortableColumn('new_password', 'New Password') ?></th>
 		<?php endif ?>
@@ -68,7 +68,7 @@
 				<span class="not-applicable">Unknown</span>
 			<?php endif ?>
 		</td>
-		<?php if (Flux::config('CpChangeLogShowPassword') && $auth->allowedToSeeCpChangePass): ?>
+		<?php if (Athena::config('CpChangeLogShowPassword') && $auth->allowedToSeeCpChangePass): ?>
 		<td><?php echo htmlspecialchars($change->old_password) ?></td>
 		<td><?php echo htmlspecialchars($change->new_password) ?></td>
 		<?php endif ?>

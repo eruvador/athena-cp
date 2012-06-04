@@ -2,16 +2,16 @@
 // This is the application configuration file. All values have been set to
 // the default, and should be changed as needed.
 return array(
-	'ServerAddress'        => 'localhost',              // This value is the hostname:port under which Flux runs. (e.g., example.com or example.com:80)
+	'ServerAddress'        => 'localhost',              // This value is the hostname:port under which Athena runs. (e.g., example.com or example.com:80)
 	'BaseURI'              => '',                       // The base URI is the base web root on which your application lies.
 	'InstallerPassword'    => 'secretpassword',         // Installer/updater password.
-	'RequireOwnership'     => true,                     // Require the executing user to be owner of the FLUX_ROOT/data/ directory tree? (Better for security)
+	'RequireOwnership'     => true,                     // Require the executing user to be owner of the ATHENA_ROOT/data/ directory tree? (Better for security)
 	                                                    // WARNING: This will be mostly IGNORED on non-POSIX-compliant OSes (e.g. Windows).
 	'DefaultLoginGroup'    => null,
 	'DefaultCharMapServer' => null,
-	'DefaultLanguage'      => 'en_us',                  // Specify the default control panel language (see FLUX_ROOT/lang/ directory for available languages.)
-	'SiteTitle'            => 'Flux Control Panel',     // This value is only used if the theme decides to use it.
-	'ThemeName'            => 'default',                // The theme name of the theme you would like to use.  Themes are in FLUX_ROOT/themes.
+	'DefaultLanguage'      => 'en_us',                  // Specify the default control panel language (see ATHENA_ROOT/lang/ directory for available languages.)
+	'SiteTitle'            => 'Athena Control Panel',     // This value is only used if the theme decides to use it.
+	'ThemeName'            => 'default',                // The theme name of the theme you would like to use.  Themes are in ATHENA_ROOT/themes.
 	'ScriptTimeLimit'      => 0,                        // Script execution time limit. Specifies (in seconds) how long a page should run before timing out. (0 means forever)
 	'MissingEmblemBMP'     => 'empty.bmp',              //
 	'ItemIconNameFormat'   => '%d.gif',                 // The filename format for item icons (defaults to {itemid}.gif).
@@ -54,7 +54,7 @@ return array(
 	'MailerSMTPPassword'   => null,                     // When MailerUseSMTP is true: Authorized password for SMTP server (for above user).
 	'ServerStatusCache'    => 2,                        // Store a cached server status and refresh every X minutes.  Default: 2 minutes (value is measured in minutes).
 	'ServerStatusTimeout'  => 2,                        // For each server, spend X amount of seconds to determine whether it's up or not.
-	'SessionKey'           => 'fluxSessionData',        // Shouldn't be changed, just specifies the session key to be used for session data.
+	'SessionKey'           => 'athenaSessionData',      // Shouldn't be changed, just specifies the session key to be used for session data.
 	'DefaultModule'        => 'main',                   // This is the module to execute when none has been specified.
 	'DefaultAction'        => 'index',                  // This is the default action for any module, probably should leave this alone. (Deprecated)
 	'GzipCompressOutput'   => false,                    // Whether or not to compress output using zlib.
@@ -63,10 +63,10 @@ return array(
 	'ShowCopyright'        => true,                     // Whether or not to show the copyright footer.
 	'ShowRenderDetails'    => true,                     // Shows the "page rendered in X seconds" and "number of queries executed: X" in the default theme.
 	'UseCleanUrls'         => false,                    // Set to true if you're running Apache and it supports mod_rewrite and .htaccess files.
-	'DebugMode'            => false,                    // Set to false to minimize technical details from being output by Flux. WARNING: DO NOT USE THIS OPTION ON A PUBLICALLY-ACCESSIBLE CP.
+	'DebugMode'            => false,                    // Set to false to minimize technical details from being output by Athena. WARNING: DO NOT USE THIS OPTION ON A PUBLICALLY-ACCESSIBLE CP.
 	'UseCaptcha'           => true,                     // Use CAPTCHA image for account registration to prevent automated account creations. (Requires GD2/FreeType2)
 	'UseLoginCaptcha'      => false,                    // Use CAPTCHA image for account logins. (Requires GD2/FreeType2)
-	'EnableReCaptcha'      => false,                    // Enables the use of reCAPTCHA instead of Flux's native GD2 library (http://www.google.com/recaptcha)
+	'EnableReCaptcha'      => false,                    // Enables the use of reCAPTCHA instead of Athena's native GD2 library (http://www.google.com/recaptcha)
 	'ReCaptchaPublicKey'   => '...',                    // This is your reCAPTCHA public key [REQUIRED FOR RECAPTCHA] (sign up at http://www.google.com/recaptcha)
 	'ReCaptchaPrivateKey'  => '...',                    // This is your reCAPTCHA private key [REQUIRED FOR RECAPTCHA] (sign up at http://www.google.com/recaptcha)
 	'ReCaptchaTheme'       => 'white',                  // ReCaptcha theme to use (see: http://code.google.com/apis/recaptcha/docs/customization.html#Standard_Themes)
@@ -170,7 +170,7 @@ return array(
 	'MenuItems' => array(
 		'Main Menu'   => array(
 			'Home'          => array('module' => 'main'),
-			//'Forums'        => array('exturl' => 'http://www.fluxro.com/community'),
+			//'Forums'        => array('exturl' => 'http://missxantara.github.com/athena-cp'),
 		),
 		'Account'     => array(
 			'Register'      => array('module' => 'account', 'action' => 'create'),
@@ -361,7 +361,7 @@ return array(
 	'CastleNames' => include('castlenames.php'),
 	
 	// DON'T TOUCH. THIS IS FOR DEVELOPERS.
-	'FluxTables' => array(
+	'AthenaTables' => array(
 		'CreditsTable'        => 'cp_credits',
 		'CreditTransferTable' => 'cp_xferlog',
 		'ItemShopTable'       => 'cp_itemshop',

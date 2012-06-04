@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
@@ -17,16 +17,16 @@ if (!$char || ($char->account_id != $session->account->account_id && !$auth->all
 
 $reset = $server->resetPosition($charID);
 if ($reset === -1) {
-	$message = sprintf(Flux::message('CantResetPosWhenOnline'), $char->name);
+	$message = sprintf(Athena::message('CantResetPosWhenOnline'), $char->name);
 }
 elseif ($reset === -2) {
-	$message = sprintf(Flux::message('CantResetFromCurrentMap'), $char->name);
+	$message = sprintf(Athena::message('CantResetFromCurrentMap'), $char->name);
 }
 elseif ($reset === true) {
-	$message = sprintf(Flux::message('ResetPositionSuccessful'), $char->name);
+	$message = sprintf(Athena::message('ResetPositionSuccessful'), $char->name);
 }
 else {
-	$message = sprintf(Flux::message('ResetPositionFailed'), $char->name);
+	$message = sprintf(Athena::message('ResetPositionFailed'), $char->name);
 }
 
 $session->setMessageData($message);

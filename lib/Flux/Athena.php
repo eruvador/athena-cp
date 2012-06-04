@@ -1,5 +1,5 @@
 <?php
-require_once 'Flux/Config.php';
+require_once 'Athena/Config.php';
 
 /**
  * The Athena class is used for all database interactions with each eA server,
@@ -8,12 +8,12 @@ require_once 'Flux/Config.php';
  * All methods related to creating/modifying any data in the Ragnarok databases
  * and tables shall always go into this class.
  */
-class Flux_Athena {	
+class Athena_Athena {	
 	/**
 	 * Connection object for saving and retrieving data to the eA databases.
 	 *
 	 * @access public
-	 * @var Flux_Connection
+	 * @var Athena_Connection
 	 */
 	public $connection;
 	
@@ -103,7 +103,7 @@ class Flux_Athena {
 	 * Login server object tied to this collective eA server.
 	 *
 	 * @access public
-	 * @var Flux_LoginServer
+	 * @var Athena_LoginServer
 	 */
 	public $loginServer;
 	
@@ -111,7 +111,7 @@ class Flux_Athena {
 	 * Character server object tied to this collective eA server.
 	 *
 	 * @access public
-	 * @var Flux_CharServer
+	 * @var Athena_CharServer
 	 */
 	public $charServer;
 	
@@ -119,7 +119,7 @@ class Flux_Athena {
 	 * Map server object tied to this collective eA server.
 	 *
 	 * @access public
-	 * @var Flux_MapServer
+	 * @var Athena_MapServer
 	 */
 	public $mapServer;
 	
@@ -127,13 +127,13 @@ class Flux_Athena {
 	 * Item shop cart.
 	 *
 	 * @access public
-	 * @var Flux_ItemShop_Cart
+	 * @var Athena_ItemShop_Cart
 	 */
 	public $cart;
 	
 	/**
 	 * @access public
-	 * @var Flux_LoginAthenaGroup
+	 * @var Athena_LoginAthenaGroup
 	 */
 	public $loginAthenaGroup;
 	
@@ -181,21 +181,21 @@ class Flux_Athena {
 	 * Config of disallowed module/actions during WoE hours.
 	 *
 	 * @access public
-	 * @var Flux_Config
+	 * @var Athena_Config
 	 */
 	public $woeDisallow;
 	
 	/**
-	 * Initialize char/map pair Flux_Athena pair.
+	 * Initialize char/map pair Athena_Athena pair.
 	 *
-	 * @param Flux_Connection $connection
-	 * @param Flux_Config $charMapConfig
-	 * @param Flux_LoginServer $loginServer
-	 * @param Flux_CharServer $charServer
-	 * @param Flux_MapServer $mapServer
+	 * @param Athena_Connection $connection
+	 * @param Athena_Config $charMapConfig
+	 * @param Athena_LoginServer $loginServer
+	 * @param Athena_CharServer $charServer
+	 * @param Athena_MapServer $mapServer
 	 * @access public
 	 */
-	public function __construct(Flux_Config $charMapConfig, Flux_LoginServer $loginServer, Flux_CharServer $charServer, Flux_MapServer $mapServer)
+	public function __construct(Athena_Config $charMapConfig, Athena_LoginServer $loginServer, Athena_CharServer $charServer, Athena_MapServer $mapServer)
 	{
 		$this->loginServer     = $loginServer;
 		$this->charServer      = $charServer;
@@ -226,7 +226,7 @@ class Flux_Athena {
 		
 		// Get WoE times specific in servers config.
 		$woeDayTimes = $charMapConfig->getWoeDayTimes();
-		if ($woeDayTimes instanceOf Flux_Config) {
+		if ($woeDayTimes instanceOf Athena_Config) {
 			$woeDayTimes = $woeDayTimes->toArray();
 			foreach ($woeDayTimes as $dayTime) {
 				if (!is_array($dayTime) || count($dayTime) < 4) {
@@ -254,9 +254,9 @@ class Flux_Athena {
 		// Config used for disallowing access to certain modules during WoE.
 		$woeDisallow       = $charMapConfig->getWoeDisallow();
 		$_tempArray        = array();
-		$this->woeDisallow = new Flux_Config($_tempArray);
+		$this->woeDisallow = new Athena_Config($_tempArray);
 		
-		if ($woeDisallow instanceOf Flux_Config) {
+		if ($woeDisallow instanceOf Athena_Config) {
 			$woeDisallow  = $woeDisallow->toArray();
 			
 			foreach ($woeDisallow as $disallow) {
@@ -277,10 +277,10 @@ class Flux_Athena {
 	/**
 	 * Set connection object.
 	 *
-	 * @param Flux_Connection $connection
-	 * @return Flux_Connection
+	 * @param Athena_Connection $connection
+	 * @return Athena_Connection
 	 */
-	public function setConnection(Flux_Connection $connection)
+	public function setConnection(Athena_Connection $connection)
 	{
 		$this->connection   = $connection;
 		$this->logsDatabase = $connection->logsDbConfig->getDatabase();
@@ -291,10 +291,10 @@ class Flux_Athena {
 	/**
 	 * Set cart object.
 	 *
-	 * @param Flux_ItemShop_Cart $cart
-	 * @return Flux_ItemShop_Cart
+	 * @param Athena_ItemShop_Cart $cart
+	 * @return Athena_ItemShop_Cart
 	 */
-	public function setCart(Flux_ItemShop_Cart $cart)
+	public function setCart(Athena_ItemShop_Cart $cart)
 	{
 		$this->cart = $cart;
 		return $cart;
@@ -355,8 +355,8 @@ class Flux_Athena {
 			return -2;
 		}
 		
-		$creditsTable = Flux::config('FluxTables.CreditsTable');
-		$xferTable    = Flux::config('FluxTables.CreditTransferTable');
+		$creditsTable = Athena::config('AthenaTables.CreditsTable');
+		$xferTable    = Athena::config('AthenaTables.CreditTransferTable');
 		
 		// Get balance of sender.
 		$sql = "SELECT balance FROM {$this->loginDatabase}.$creditsTable WHERE account_id = ? LIMIT 1";
@@ -400,10 +400,10 @@ class Flux_Athena {
 	/**
 	 * Set loginAthenaGroup object.
 	 *
-	 * @param Flux_LoginAthenaGroup $loginAthenaGroup
-	 * @return Flux_LoginAthenaGroup
+	 * @param Athena_LoginAthenaGroup $loginAthenaGroup
+	 * @return Athena_LoginAthenaGroup
 	 */
-	public function setLoginAthenaGroup(Flux_LoginAthenaGroup $loginAthenaGroup)
+	public function setLoginAthenaGroup(Athena_LoginAthenaGroup $loginAthenaGroup)
 	{
 		$this->loginAthenaGroup = $loginAthenaGroup;
 		return $loginAthenaGroup;
@@ -494,7 +494,7 @@ class Flux_Athena {
 	 * Get character data of charID.
 	 *
 	 * @param int $charID
-	 * @return mixed Returns Flux_DataObject or false.
+	 * @return mixed Returns Athena_DataObject or false.
 	 */
 	public function getCharacter($charID)
 	{
@@ -515,7 +515,7 @@ class Flux_Athena {
 	 *
 	 * @param int $charID Character ID
 	 * @param array $prefs Only these prefs?
-	 * @return mixed Flux_Config or false.
+	 * @return mixed Athena_Config or false.
 	 */
 	public function getPrefs($charID, array $prefs = array())
 	{
@@ -523,7 +523,7 @@ class Flux_Athena {
 		$sth = $this->connection->getStatement($sql);
 		
 		if ($sth->execute(array($charID)) && ($char=$sth->fetch())) {
-			$charPrefsTable = Flux::config('FluxTables.CharacterPrefsTable');
+			$charPrefsTable = Athena::config('AthenaTables.CharacterPrefsTable');
 			
 			$pref = array();
 			$bind = array($char->account_id, $charID);
@@ -546,7 +546,7 @@ class Flux_Athena {
 					$prefsArray[$p->name] = $p->value;
 				}
 				
-				return new Flux_Config($prefsArray);
+				return new Athena_Config($prefsArray);
 			}
 			else {
 				return false;
@@ -570,7 +570,7 @@ class Flux_Athena {
 		$sth = $this->connection->getStatement($sql);
 		
 		if ($sth->execute(array($charID)) && ($char=$sth->fetch())) {
-			$charPrefsTable = Flux::config('FluxTables.CharacterPrefsTable');
+			$charPrefsTable = Athena::config('AthenaTables.CharacterPrefsTable');
 			
 			$pref = array();
 			$bind = array($char->account_id, $charID);
@@ -635,7 +635,7 @@ class Flux_Athena {
 	public function getPref($charID, $pref)
 	{
 		$prefs = $this->getPrefs($charID, array($pref));
-		if ($prefs instanceOf Flux_Config) {
+		if ($prefs instanceOf Athena_Config) {
 			return $prefs->get($pref);
 		}
 		else {

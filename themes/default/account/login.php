@@ -1,11 +1,11 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2><?php echo htmlspecialchars(Flux::message('LoginHeading')) ?></h2>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
+<h2><?php echo htmlspecialchars(Athena::message('LoginHeading')) ?></h2>
 <?php if (isset($errorMessage)): ?>
 <p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
 <?php else: ?>
 
 <?php if ($auth->actionAllowed('account', 'create')): ?>
-<p><?php printf(Flux::message('LoginPageMakeAccount'), $this->url('account', 'create')); ?></p>
+<p><?php printf(Athena::message('LoginPageMakeAccount'), $this->url('account', 'create')); ?></p>
 <?php endif ?>
 
 <?php endif ?>
@@ -15,16 +15,16 @@
 	<?php endif ?>
 	<table class="generic-form-table">
 		<tr>
-			<th><label for="login_username"><?php echo htmlspecialchars(Flux::message('AccountUsernameLabel')) ?></label></th>
+			<th><label for="login_username"><?php echo htmlspecialchars(Athena::message('AccountUsernameLabel')) ?></label></th>
 			<td><input type="text" name="username" id="login_username" value="<?php echo htmlspecialchars($params->get('username')) ?>" /></td>
 		</tr>
 		<tr>
-			<th><label for="login_password"><?php echo htmlspecialchars(Flux::message('AccountPasswordLabel')) ?></label></th>
+			<th><label for="login_password"><?php echo htmlspecialchars(Athena::message('AccountPasswordLabel')) ?></label></th>
 			<td><input type="password" name="password" id="login_password" /></td>
 		</tr>
 		<?php if (count($serverNames) > 1): ?>
 		<tr>
-			<th><label for="login_server"><?php echo htmlspecialchars(Flux::message('AccountServerLabel')) ?></label></th>
+			<th><label for="login_server"><?php echo htmlspecialchars(Athena::message('AccountServerLabel')) ?></label></th>
 			<td>
 				<select name="server" id="login_server"<?php if (count($serverNames) === 1) echo ' disabled="disabled"' ?>>
 					<?php foreach ($serverNames as $serverName): ?>
@@ -34,20 +34,20 @@
 			</td>
 		</tr>
 		<?php endif ?>
-		<?php if (Flux::config('UseLoginCaptcha')): ?>
+		<?php if (Athena::config('UseLoginCaptcha')): ?>
 		<tr>
-			<?php if (Flux::config('EnableReCaptcha')): ?>
-			<th><label for="register_security_code"><?php echo htmlspecialchars(Flux::message('AccountSecurityLabel')) ?></label></th>
+			<?php if (Athena::config('EnableReCaptcha')): ?>
+			<th><label for="register_security_code"><?php echo htmlspecialchars(Athena::message('AccountSecurityLabel')) ?></label></th>
 			<td><?php echo $recaptcha ?></td>
 			<?php else: ?>
-			<th><label for="register_security_code"><?php echo htmlspecialchars(Flux::message('AccountSecurityLabel')) ?></label></th>
+			<th><label for="register_security_code"><?php echo htmlspecialchars(Athena::message('AccountSecurityLabel')) ?></label></th>
 			<td>
 				<div class="security-code">
 					<img src="<?php echo $this->url('captcha') ?>" />
 				</div>
 				<input type="text" name="security_code" id="register_security_code" />
 				<div style="font-size: smaller;" class="action">
-					<strong><a href="javascript:refreshSecurityCode('.security-code img')"><?php echo htmlspecialchars(Flux::message('RefreshSecurityCode')) ?></a></strong>
+					<strong><a href="javascript:refreshSecurityCode('.security-code img')"><?php echo htmlspecialchars(Athena::message('RefreshSecurityCode')) ?></a></strong>
 				</div>
 			</td>
 			<?php endif ?>
@@ -56,7 +56,7 @@
 		<tr>
 			<td></td>
 			<td>
-				<input type="submit" value="<?php echo htmlspecialchars(Flux::message('LoginButton')) ?>" />
+				<input type="submit" value="<?php echo htmlspecialchars(Athena::message('LoginButton')) ?>" />
 			</td>
 		</tr>
 	</table>

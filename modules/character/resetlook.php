@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
@@ -17,13 +17,13 @@ if (!$char || ($char->account_id != $session->account->account_id && !$auth->all
 
 $reset = $server->resetLook($charID);
 if ($reset === -1) {
-	$message = sprintf(Flux::message('CantResetLookWhenOnline'), $char->name);
+	$message = sprintf(Athena::message('CantResetLookWhenOnline'), $char->name);
 }
 elseif ($reset === true) {
-	$message = sprintf(Flux::message('ResetLookSuccessful'), $char->name);
+	$message = sprintf(Athena::message('ResetLookSuccessful'), $char->name);
 }
 else {
-	$message = sprintf(Flux::message('ResetLookFailed'), $char->name);
+	$message = sprintf(Athena::message('ResetLookFailed'), $char->name);
 }
 
 $session->setMessageData($message);

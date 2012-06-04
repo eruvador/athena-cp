@@ -1,7 +1,7 @@
 <?php
-require_once 'Flux/Error.php';
+require_once 'Athena/Error.php';
 
-class Flux_LoginError extends Flux_Error {
+class Athena_LoginError extends Athena_Error {
 	const UNEXPECTED     = 0;
 	const INVALID_SERVER = 1;
 	const INVALID_LOGIN  = 2;

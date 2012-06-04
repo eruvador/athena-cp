@@ -1,11 +1,11 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
 $num = $params->get('num');
 if (!is_null($num)) {
-	if ($num instanceOf Flux_Config) {
+	if ($num instanceOf Athena_Config) {
 		$num = $num->toArray();
 	}
 	

@@ -1,10 +1,10 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-require_once 'Flux/Installer/SchemaPermissionError.php';
+require_once 'Athena/Installer/SchemaPermissionError.php';
 
 // Force debug mode off here.
-Flux::config('DebugMode', false);
+Athena::config('DebugMode', false);
 
 if ($session->installerAuth) {
 	if ($params->get('logout')) {
@@ -13,16 +13,16 @@ if ($session->installerAuth) {
 	else {
 		$requiredMySqlVersion = '5.0';
 
-		foreach (Flux::$loginAthenaGroupRegistry as $serverName => $loginAthenaGroup) {
+		foreach (Athena::$loginAthenaGroupRegistry as $serverName => $loginAthenaGroup) {
 			$sth = $loginAthenaGroup->connection->getStatement("SELECT VERSION() AS mysql_version, CURRENT_USER() AS mysql_user");
 			$sth->execute();
 			
 			$res = $sth->fetch();
 			if (!$res || version_compare($res->mysql_version, $requiredMySqlVersion, '<')) {
-				$message  = "MySQL version $requiredMySqlVersion or greater is required for Flux.";
+				$message  = "MySQL version $requiredMySqlVersion or greater is required for Athena.";
 				$message .= $res ? " You are running version {$res->mysql_version}" : "You are running an unknown version";
 				$message .= " on the server '$serverName'"; 
-				throw new Flux_Error($message);
+				throw new Athena_Error($message);
 			}
 		}
 		
@@ -35,13 +35,13 @@ if ($session->installerAuth) {
 					$this->redirect();
 				}
 			}
-			catch (Flux_Installer_SchemaPermissionError $e) {
+			catch (Athena_Installer_SchemaPermissionError $e) {
 				$permissionError = $e;
 			}
 		}
-		elseif (($username=$params->get('username')) && $username instanceOf Flux_Config &&
-				($password=$params->get('password')) && $password instanceOf Flux_Config &&
-				($update=$params->get('update')) && $update instanceOf Flux_Config) {
+		elseif (($username=$params->get('username')) && $username instanceOf Athena_Config &&
+				($password=$params->get('password')) && $password instanceOf Athena_Config &&
+				($update=$params->get('update')) && $update instanceOf Athena_Config) {
 				
 			$server64     = key($update->toArray());
 			$username     = $username->get($server64);
@@ -84,7 +84,7 @@ if ($session->installerAuth) {
 					$session->setMessageData("Updates for $serverName have been installed.");
 					$this->redirect();
 				}
-				catch (Flux_Installer_SchemaPermissionError $e) {
+				catch (Athena_Installer_SchemaPermissionError $e) {
 					$permissionError = $e;
 				}
 			}
@@ -94,7 +94,7 @@ if ($session->installerAuth) {
 
 if (count($_POST) && !$session->installerAuth) {
 	$inputPassword  = $params->get('installer_password');
-	$actualPassword = Flux::config('InstallerPassword');
+	$actualPassword = Athena::config('InstallerPassword');
 	
 	if ($inputPassword == $actualPassword) {
 		$session->setInstallerAuthData(true);

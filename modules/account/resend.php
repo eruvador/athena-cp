@@ -1,14 +1,14 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-//if (!Flux::config('RequireEmailConfirm')) {
+//if (!Athena::config('RequireEmailConfirm')) {
 //	$this->deny();
 //}
 
-$title = Flux::message('ResendTitle');
+$title = Athena::message('ResendTitle');
 
 $serverNames = $this->getServerNames();
-$createTable = Flux::config('FluxTables.AccountCreateTable');
+$createTable = Athena::config('AthenaTables.AccountCreateTable');
 
 if (count($_POST)) {
 	$userid    = $params->get('userid');
@@ -16,13 +16,13 @@ if (count($_POST)) {
 	$groupName = $params->get('login');
 	
 	if (!$userid) {
-		$errorMessage = Flux::message('ResendEnterUsername');
+		$errorMessage = Athena::message('ResendEnterUsername');
 	}
 	elseif (!$email) {
-		$errorMessage = Flux::message('ResendEnterEmail');
+		$errorMessage = Athena::message('ResendEnterEmail');
 	}
 	else {
-		if (!$groupName || !($loginAthenaGroup=Flux::getServerGroupByName($groupName))) {
+		if (!$groupName || !($loginAthenaGroup=Athena::getServerGroupByName($groupName))) {
 			$loginAthenaGroup = $session->loginAthenaGroup;
 		}
 
@@ -33,19 +33,19 @@ if (count($_POST)) {
 
 		$row  = $sth->fetch();
 		if ($row) {
-			require_once 'Flux/Mailer.php';
+			require_once 'Athena/Mailer.php';
 			$code = $row->confirm_code;
 			$name = $loginAthenaGroup->serverName;
 			$link = $this->url('account', 'confirm', array('_host' => true, 'code' => $code, 'user' => $userid, 'login' => $name));
-			$mail = new Flux_Mailer();
+			$mail = new Athena_Mailer();
 			$sent = $mail->send($email, 'Account Confirmation', 'confirm', array('AccountUsername' => $userid, 'ConfirmationLink' => htmlspecialchars($link)));
 		}
 
 		if (empty($sent)) {
-			$errorMessage = Flux::message('ResendFailed');
+			$errorMessage = Athena::message('ResendFailed');
 		}
 		else {
-			$session->setMessageData(Flux::message('ResendEmailSent'));
+			$session->setMessageData(Athena::message('ResendEmailSent'));
 			$this->redirect();
 		}
 	}

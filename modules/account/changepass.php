@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('PasswordChangeTitle');
+$title = Athena::message('PasswordChangeTitle');
 
 if (count($_POST)) {
 	$currentPassword    = $params->get('currentpass');
@@ -11,25 +11,25 @@ if (count($_POST)) {
 	$confirmNewPassword = trim($params->get('confirmnewpass'));
 	
 	if (!$currentPassword) {
-		$errorMessage = Flux::message('NeedCurrentPassword');
+		$errorMessage = Athena::message('NeedCurrentPassword');
 	}
 	elseif (!$newPassword) {
-		$errorMessage = Flux::message('NeedNewPassword');
+		$errorMessage = Athena::message('NeedNewPassword');
 	}
-	elseif (strlen($newPassword) < Flux::config('MinPasswordLength')) {
-		$errorMessage = Flux::message('PasswordTooShort');
+	elseif (strlen($newPassword) < Athena::config('MinPasswordLength')) {
+		$errorMessage = Athena::message('PasswordTooShort');
 	}
-	elseif (strlen($newPassword) > Flux::config('MaxPasswordLength')) {
-		$errorMessage = Flux::message('PasswordTooLong');
+	elseif (strlen($newPassword) > Athena::config('MaxPasswordLength')) {
+		$errorMessage = Athena::message('PasswordTooLong');
 	}
 	elseif (!$confirmNewPassword) {
-		$errorMessage = Flux::message('ConfirmNewPassword');
+		$errorMessage = Athena::message('ConfirmNewPassword');
 	}
 	elseif ($newPassword != $confirmNewPassword) {
-		$errorMessage = Flux::message('PasswordsDoNotMatch');
+		$errorMessage = Athena::message('PasswordsDoNotMatch');
 	}
 	elseif ($newPassword == $currentPassword) {
-		$errorMessage = Flux::message('NewPasswordSameAsOld');
+		$errorMessage = Athena::message('NewPasswordSameAsOld');
 	}
 	else {
 		$sql = "SELECT user_pass AS currentPassword FROM {$server->loginDatabase}.login WHERE account_id = ?";
@@ -38,18 +38,18 @@ if (count($_POST)) {
 		
 		$account         = $sth->fetch();
 		$useMD5          = $session->loginServer->config->getUseMD5();
-		$currentPassword = $useMD5 ? Flux::hashPassword($currentPassword) : $currentPassword;
-		$newPassword     = $useMD5 ? Flux::hashPassword($newPassword) : $newPassword;
+		$currentPassword = $useMD5 ? Athena::hashPassword($currentPassword) : $currentPassword;
+		$newPassword     = $useMD5 ? Athena::hashPassword($newPassword) : $newPassword;
 		
 		if ($currentPassword != $account->currentPassword) {
-			$errorMessage = Flux::message('OldPasswordInvalid');
+			$errorMessage = Athena::message('OldPasswordInvalid');
 		}
 		else {
 			$sql = "UPDATE {$server->loginDatabase}.login SET user_pass = ? WHERE account_id = ?";
 			$sth = $server->connection->getStatement($sql);
 			
 			if ($sth->execute(array($newPassword, $session->account->account_id))) {
-				$pwChangeTable = Flux::config('FluxTables.ChangePasswordTable');
+				$pwChangeTable = Athena::config('AthenaTables.ChangePasswordTable');
 				
 				$sql  = "INSERT INTO {$server->loginDatabase}.$pwChangeTable ";
 				$sql .= "(account_id, old_password, new_password, change_ip, change_date) ";
@@ -57,12 +57,12 @@ if (count($_POST)) {
 				$sth  = $server->connection->getStatement($sql);
 				$sth->execute(array($session->account->account_id, $currentPassword, $newPassword, $_SERVER['REMOTE_ADDR']));
 				
-				$session->setMessageData(Flux::message('PasswordHasBeenChanged'));
+				$session->setMessageData(Athena::message('PasswordHasBeenChanged'));
 				$session->logout();
 				$this->redirect($this->url('account', 'login'));
 			}
 			else {
-				$errorMessage = Flux::message('FailedToChangePassword');
+				$errorMessage = Athena::message('FailedToChangePassword');
 			}
 		}
 	}

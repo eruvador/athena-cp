@@ -1,10 +1,10 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title    = 'Death Ranking';
-$classes  = Flux::config('JobClasses')->toArray();
+$classes  = Athena::config('JobClasses')->toArray();
 $jobClass = $params->get('jobclass');
-$bind     = array((int)Flux::config('RankingHideLevel'));
+$bind     = array((int)Athena::config('RankingHideLevel'));
 
 if (trim($jobClass) === '') {
 	$jobClass = null;
@@ -24,16 +24,16 @@ $sql .= "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = ch.accou
 $sql .= "LEFT JOIN {$server->charMapDatabase}.`global_reg_value` AS reg ON reg.char_id = ch.char_id AND reg.str = 'PC_DIE_COUNTER' ";
 $sql .= "WHERE 1=1 ";
 
-if (Flux::config('HidePermBannedDeathRank')) {
+if (Athena::config('HidePermBannedDeathRank')) {
 	$sql .= "AND login.state != 5 ";
 }
-if (Flux::config('HideTempBannedDeathRank')) {
+if (Athena::config('HideTempBannedDeathRank')) {
 	$sql .= "AND (login.unban_time IS NULL OR login.unban_time = 0) ";
 }
 
 $sql .= "AND login.level < ? ";
 
-if ($days=Flux::config('DeathRankingThreshold')) {
+if ($days=Athena::config('DeathRankingThreshold')) {
 	$sql    .= 'AND TIMESTAMPDIFF(DAY, login.lastlogin, NOW()) <= ? ';
 	$bind[]  = $days * 24 * 60 * 60;
 }
@@ -44,7 +44,7 @@ if (!is_null($jobClass)) {
 }
 
 $sql .= "ORDER BY death_count DESC, ch.char_id DESC ";
-$sql .= "LIMIT ".(int)Flux::config('DeathRankingLimit');
+$sql .= "LIMIT ".(int)Athena::config('DeathRankingLimit');
 $sth  = $server->connection->getStatement($sql);
 
 $sth->execute($bind);

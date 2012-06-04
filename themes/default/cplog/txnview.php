@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Viewing PayPal Transaction Details</h2>
 <?php if ($txn): ?>
 <p>If the transaction contains negative payment and settle amounts, it is likely there was a chargeback and the donor was reimbursed.</p>
@@ -35,7 +35,7 @@
 	</tr>
 	<tr>
 		<th>Payment Date</th>
-		<td><?php echo htmlspecialchars(date(Flux::config('DateTimeFormat'), strtotime($txn->payment_date))) ?></td>
+		<td><?php echo htmlspecialchars(date(Athena::config('DateTimeFormat'), strtotime($txn->payment_date))) ?></td>
 		<th>Date Processed</th>
 		<td colspan="3"><?php echo $this->formatDateTime($txn->process_date) ?></td>
 	</tr>

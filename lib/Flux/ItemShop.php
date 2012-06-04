@@ -1,15 +1,15 @@
 <?php
-require_once 'Flux/TemporaryTable.php';
-require_once 'Flux/ItemExistsError.php';
+require_once 'Athena/TemporaryTable.php';
+require_once 'Athena/ItemExistsError.php';
 
-class Flux_ItemShop {
+class Athena_ItemShop {
 	/**
 	 * @access public
-	 * @var Flux_Athena
+	 * @var Athena_Athena
 	 */
 	public $server;
 	
-	public function __construct(Flux_Athena $server)
+	public function __construct(Athena_Athena $server)
 	{
 		$this->server = $server;
 	}
@@ -20,7 +20,7 @@ class Flux_ItemShop {
 	public function add($itemID, $categoryID, $cost, $quantity, $info, $useExisting = 0)
 	{
 		$db    = $this->server->charMapDatabase;
-		$table = Flux::config('FluxTables.ItemShopTable');
+		$table = Athena::config('AthenaTables.ItemShopTable');
 		$sql   = "INSERT INTO $db.$table (nameid, category, quantity, cost, info, use_existing, create_date) VALUES (?, ?, ?, ?, ?, ?, NOW())";
 		$sth   = $this->server->connection->getStatement($sql);
 		$res   = $sth->execute(array($itemID, $categoryID, $quantity, $cost, $info, $useExisting));
@@ -101,7 +101,7 @@ class Flux_ItemShop {
 		}
 		
 		$db    = $this->server->charMapDatabase;
-		$table = Flux::config('FluxTables.ItemShopTable');
+		$table = Athena::config('AthenaTables.ItemShopTable');
 		$sql   = "UPDATE $db.$table SET $catQ $crdQ $qtyQ $infQ $imgQ WHERE id = ?";
 		$sth   = $this->server->connection->getStatement($sql);
 		
@@ -115,7 +115,7 @@ class Flux_ItemShop {
 	public function delete($shopItemID)
 	{
 		$db    = $this->server->charMapDatabase;
-		$table = Flux::config('FluxTables.ItemShopTable');
+		$table = Athena::config('AthenaTables.ItemShopTable');
 		$sql   = "DELETE FROM $db.$table WHERE id = ?";
 		$sth   = $this->server->connection->getStatement($sql);
 		
@@ -125,7 +125,7 @@ class Flux_ItemShop {
 	/**
 	 *
 	 */
-	public function buy(Flux_DataObject $account, $shopItemID)
+	public function buy(Athena_DataObject $account, $shopItemID)
 	{
 		
 	}
@@ -136,8 +136,8 @@ class Flux_ItemShop {
 	public function getItem($shopItemID)
 	{
 		$db    = $this->server->charMapDatabase;
-		$temp  = new Flux_TemporaryTable($this->server->connection, "$db.items", array("$db.item_db", "$db.item_db2"));
-		$shop  = Flux::config('FluxTables.ItemShopTable');
+		$temp  = new Athena_TemporaryTable($this->server->connection, "$db.items", array("$db.item_db", "$db.item_db2"));
+		$shop  = Athena::config('AthenaTables.ItemShopTable');
 		$col   = "$shop.id AS shop_item_id, $shop.category AS shop_item_category, $shop.cost AS shop_item_cost, $shop.quantity AS shop_item_qty, $shop.use_existing AS shop_item_use_existing, ";
 		$col  .= "$shop.nameid AS shop_item_nameid, $shop.info AS shop_item_info, items.name_japanese AS shop_item_name";
 		$sql   = "SELECT $col FROM $db.$shop LEFT OUTER JOIN $db.items ON items.id = $shop.nameid WHERE $shop.id = ?";
@@ -158,8 +158,8 @@ class Flux_ItemShop {
 	{	
 		$bind  = array();
 		$db    = $this->server->charMapDatabase;
-		$temp  = new Flux_TemporaryTable($this->server->connection, "$db.items", array("$db.item_db", "$db.item_db2"));
-		$shop  = Flux::config('FluxTables.ItemShopTable');
+		$temp  = new Athena_TemporaryTable($this->server->connection, "$db.items", array("$db.item_db", "$db.item_db2"));
+		$shop  = Athena::config('AthenaTables.ItemShopTable');
 		$col   = "$shop.id AS shop_item_id, $shop.cost AS shop_item_cost, $shop.quantity AS shop_item_qty, $shop.use_existing AS shop_item_use_existing, ";
 		$col  .= "$shop.nameid AS shop_item_nameid, $shop.info AS shop_item_info, items.name_japanese AS shop_item_name";
 		$sql   = "SELECT $col FROM $db.$shop LEFT OUTER JOIN $db.items ON items.id = $shop.nameid";
@@ -184,7 +184,7 @@ class Flux_ItemShop {
 	{
 		$serverName       = $this->server->loginAthenaGroup->serverName;
 		$athenaServerName = $this->server->serverName;
-		$dir              = FLUX_DATA_DIR."/itemshop/$serverName/$athenaServerName";
+		$dir              = ATHENA_DATA_DIR."/itemshop/$serverName/$athenaServerName";
 		$files            = glob("$dir/$shopItemID.*");
 		
 		foreach ($files as $file) {
@@ -197,13 +197,13 @@ class Flux_ItemShop {
 	/**
 	 *
 	 */
-	public function uploadShopItemImage($shopItemID, Flux_Config $file)
+	public function uploadShopItemImage($shopItemID, Athena_Config $file)
 	{
 		if ($file->get('error')) {
 			return false;
 		}
 		
-		$validexts = array_map('strtolower', Flux::config('ShopImageExtensions')->toArray());
+		$validexts = array_map('strtolower', Athena::config('ShopImageExtensions')->toArray());
 		$extension = strtolower(pathinfo($file->get('name'), PATHINFO_EXTENSION));
 		
 		if (!in_array($extension, $validexts)) {
@@ -212,10 +212,10 @@ class Flux_ItemShop {
 		
 		$serverName       = $this->server->loginAthenaGroup->serverName;
 		$athenaServerName = $this->server->serverName;
-		$dir              = FLUX_DATA_DIR."/itemshop/$serverName/$athenaServerName";
+		$dir              = ATHENA_DATA_DIR."/itemshop/$serverName/$athenaServerName";
 		
-		if (!is_dir(FLUX_DATA_DIR."/itemshop/$serverName")) {
-			mkdir(FLUX_DATA_DIR."/itemshop/$serverName");
+		if (!is_dir(ATHENA_DATA_DIR."/itemshop/$serverName")) {
+			mkdir(ATHENA_DATA_DIR."/itemshop/$serverName");
 		}
 		
 		if (!is_dir($dir)) {

@@ -4,7 +4,7 @@ require_once 'functions/imagecreatefrombmpstring.php';
 /**
  *
  */
-class Flux_EmblemExporter {
+class Athena_EmblemExporter {
 	/**
 	 *
 	 */
@@ -18,7 +18,7 @@ class Flux_EmblemExporter {
 	/**
 	 *
 	 */
-	public function __construct(Flux_LoginAthenaGroup $loginAthenaGroup)
+	public function __construct(Athena_LoginAthenaGroup $loginAthenaGroup)
 	{
 		$this->loginAthenaGroup = $loginAthenaGroup;
 	}
@@ -26,10 +26,10 @@ class Flux_EmblemExporter {
 	/**
 	 *
 	 */
-	public function addAthenaServer(Flux_Athena $athenaServer)
+	public function addAthenaServer(Athena_Athena $athenaServer)
 	{
 		if (!in_array($athenaServer, $this->loginAthenaGroup->athenaServers, true)) {
-			throw new Flux_Error(
+			throw new Athena_Error(
 				"{$athenaServer->serverName} is not a valid char/map server defined in the {$this->loginAthenaGroup->serverName} group.");
 		}
 		
@@ -42,7 +42,7 @@ class Flux_EmblemExporter {
 	public function exportArchive()
 	{
 		$topDir  = $this->sanitizePathName($this->loginAthenaGroup->serverName);
-		$tmpDir  = FLUX_DATA_DIR.'/tmp';
+		$tmpDir  = ATHENA_DATA_DIR.'/tmp';
 		$tmpFile = tempnam($tmpDir, 'zip');
 		
 		// Create zip archive.

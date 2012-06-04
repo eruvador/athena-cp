@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 ?>
 <html>
@@ -94,7 +94,7 @@ if (!defined('FLUX_ROOT')) exit;
 	</head>
 	
 	<body>
-		<h2><?php echo Flux::config('SiteTitle') ?></h2>
+		<h2><?php echo Athena::config('SiteTitle') ?></h2>
 		<h1>Install &amp; Update</h1>
 		
 		<div id="content">

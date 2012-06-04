@@ -1,7 +1,7 @@
 <?php
-require_once 'Flux/Error.php';
+require_once 'Athena/Error.php';
 
-class Flux_PermissionError extends Flux_Error {
+class Athena_PermissionError extends Athena_Error {
 	
 }
 ?>

@@ -1,21 +1,21 @@
 <?php
-if (!defined('FLUX_ROOT')) exit; 
+if (!defined('ATHENA_ROOT')) exit; 
 
 $this->loginRequired();
 
 $title = 'Add Item to Shop';
 
-require_once 'Flux/TemporaryTable.php';
-require_once 'Flux/ItemShop.php';
+require_once 'Athena/TemporaryTable.php';
+require_once 'Athena/ItemShop.php';
 
 $itemID = $params->get('id');
 
 $category   = null;
-$categories = Flux::config('ShopCategories')->toArray();
+$categories = Athena::config('ShopCategories')->toArray();
 $tableName  = "{$server->charMapDatabase}.items";
 $fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
-$shopTable  = Flux::config('FluxTables.ItemShopTable');
+$tempTable  = new Athena_TemporaryTable($server->connection, $tableName, $fromTables);
+$shopTable  = Athena::config('AthenaTables.ItemShopTable');
 
 $col = "id AS item_id, name_japanese AS item_name, type";
 $sql = "SELECT $col FROM $tableName WHERE items.id = ?";
@@ -25,15 +25,15 @@ $sth->execute(array($itemID));
 $item = $sth->fetch();
 
 $stackable = false;
-if ($item && Flux::isStackableItemType($item->type)) {
+if ($item && Athena::isStackableItemType($item->type)) {
 	$stackable = true;
 }
 
 if ($item && count($_POST)) {
-	$maxCost     = (int)Flux::config('ItemShopMaxCost');
-	$maxQty      = (int)Flux::config('ItemShopMaxQuantity');
+	$maxCost     = (int)Athena::config('ItemShopMaxCost');
+	$maxQty      = (int)Athena::config('ItemShopMaxQuantity');
 	$category    = $params->get('category');
-	$shop        = new Flux_ItemShop($server);
+	$shop        = new Athena_ItemShop($server);
 	$cost        = (int)$params->get('cost');
 	$quantity    = (int)$params->get('qty');
 	$info        = trim($params->get('info'));

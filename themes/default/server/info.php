@@ -1,34 +1,34 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2><?php echo htmlspecialchars(Flux::message('ServerInfoHeading')) ?></h2>
-<p><?php echo htmlspecialchars(Flux::message('ServerInfoText')) ?></p>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
+<h2><?php echo htmlspecialchars(Athena::message('ServerInfoHeading')) ?></h2>
+<p><?php echo htmlspecialchars(Athena::message('ServerInfoText')) ?></p>
 
-<h3><?php echo htmlspecialchars(sprintf(Flux::message('ServerInfoSubHeading'), $server->serverName)) ?></h3>
+<h3><?php echo htmlspecialchars(sprintf(Athena::message('ServerInfoSubHeading'), $server->serverName)) ?></h3>
 <div class="generic-form-div">
 	<table class="generic-form-table">
 		<tr>
-			<th><label><?php echo htmlspecialchars(Flux::message('ServerInfoAccountLabel')) ?></label></th>
+			<th><label><?php echo htmlspecialchars(Athena::message('ServerInfoAccountLabel')) ?></label></th>
 			<td><p><?php echo number_format($info['accounts']) ?></p></td>
 		</tr>
 		<tr>
-			<th><label><?php echo htmlspecialchars(Flux::message('ServerInfoCharLabel')) ?></label></th>
+			<th><label><?php echo htmlspecialchars(Athena::message('ServerInfoCharLabel')) ?></label></th>
 			<td><p><?php echo number_format($info['characters']) ?></p></td>
 		</tr>
 		<tr>
-			<th><label><?php echo htmlspecialchars(Flux::message('ServerInfoGuildLabel')) ?></label></th>
+			<th><label><?php echo htmlspecialchars(Athena::message('ServerInfoGuildLabel')) ?></label></th>
 			<td><p><?php echo number_format($info['guilds']) ?></p></td>
 		</tr>
 		<tr>
-			<th><label><?php echo htmlspecialchars(Flux::message('ServerInfoPartyLabel')) ?></label></th>
+			<th><label><?php echo htmlspecialchars(Athena::message('ServerInfoPartyLabel')) ?></label></th>
 			<td><p><?php echo number_format($info['parties']) ?></p></td>
 		</tr>
 		<tr>
-			<th><label><?php echo htmlspecialchars(Flux::message('ServerInfoZenyLabel')) ?></label></th>
+			<th><label><?php echo htmlspecialchars(Athena::message('ServerInfoZenyLabel')) ?></label></th>
 			<td><p><?php echo number_format($info['zeny']) ?></p></td>
 		</tr>
 	</table>
 </div>
 
-<h3><?php echo htmlspecialchars(sprintf(Flux::message('ServerInfoSubHeading2'), $server->serverName)) ?></h3>
+<h3><?php echo htmlspecialchars(sprintf(Athena::message('ServerInfoSubHeading2'), $server->serverName)) ?></h3>
 <div class="generic-form-div">
 	<table class="generic-form-table job-classes">
 		<tr>

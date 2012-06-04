@@ -1,10 +1,10 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title    = 'Zeny Ranking';
-$classes  = Flux::config('JobClasses')->toArray();
+$classes  = Athena::config('JobClasses')->toArray();
 $jobClass = $params->get('jobclass');
-$bind     = array((int)Flux::config('RankingHideLevel'));
+$bind     = array((int)Athena::config('RankingHideLevel'));
 
 if (trim($jobClass) === '') {
 	$jobClass = null;
@@ -14,7 +14,7 @@ if (!is_null($jobClass) && !array_key_exists($jobClass, $classes)) {
 	$this->deny();
 }
 
-$charPrefsTable = Flux::config('FluxTables.CharacterPrefsTable');
+$charPrefsTable = Athena::config('AthenaTables.CharacterPrefsTable');
 
 $col  = "ch.char_id, ch.name AS char_name, ch.zeny, ch.class AS char_class, ch.base_level, ch.base_exp, ch.job_level, ch.job_exp, ";
 $col .= "ch.guild_id, guild.name AS guild_name, guild.emblem_len AS guild_emblem_len";
@@ -26,16 +26,16 @@ $sql .= "LEFT JOIN {$server->charMapDatabase}.guild ON guild.guild_id = ch.guild
 $sql .= "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = ch.account_id ";
 $sql .= "WHERE 1=1 ";
 
-if (Flux::config('HidePermBannedZenyRank')) {
+if (Athena::config('HidePermBannedZenyRank')) {
 	$sql .= "AND login.state != 5 ";
 }
-if (Flux::config('HideTempBannedZenyRank')) {
+if (Athena::config('HideTempBannedZenyRank')) {
 	$sql .= "AND (login.unban_time IS NULL OR login.unban_time = 0) ";
 }
 
 $sql .= "AND login.group_id < ? ";
 
-if ($days=Flux::config('ZenyRankingThreshold')) {
+if ($days=Athena::config('ZenyRankingThreshold')) {
 	$sql    .= 'AND TIMESTAMPDIFF(DAY, login.lastlogin, NOW()) <= ? ';
 	$bind[]  = $days * 24 * 60 * 60;
 }
@@ -51,7 +51,7 @@ if (!is_null($jobClass)) {
 }
 
 $sql .= "ORDER BY ch.zeny DESC, ch.base_level DESC, ch.base_exp DESC, ch.job_level DESC, ch.job_exp DESC, ch.char_id ASC ";
-$sql .= "LIMIT ".(int)Flux::config('ZenyRankingLimit');
+$sql .= "LIMIT ".(int)Athena::config('ZenyRankingLimit');
 $sth  = $server->connection->getStatement($sql);
 
 $sth->execute($bind);

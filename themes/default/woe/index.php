@@ -1,12 +1,12 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2><?php echo htmlspecialchars(Flux::message('WoeHeading')) ?></h2>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
+<h2><?php echo htmlspecialchars(Athena::message('WoeHeading')) ?></h2>
 <?php if ($woeTimes): ?>
-<p><?php echo htmlspecialchars(sprintf(Flux::message('WoeInfo'), $session->loginAthenaGroup->serverName)) ?></p>
-<p><?php echo htmlspecialchars(Flux::message('WoeServerTimeInfo')) ?> <strong class="important"><?php echo $server->getServerTime('Y-m-d H:i:s (l)') ?></strong>.</p>
+<p><?php echo htmlspecialchars(sprintf(Athena::message('WoeInfo'), $session->loginAthenaGroup->serverName)) ?></p>
+<p><?php echo htmlspecialchars(Athena::message('WoeServerTimeInfo')) ?> <strong class="important"><?php echo $server->getServerTime('Y-m-d H:i:s (l)') ?></strong>.</p>
 <table class="woe-table">
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('WoeServerLabel')) ?></th>
-		<th colspan="3"><?php echo htmlspecialchars(Flux::message('WoeTimesLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('WoeServerLabel')) ?></th>
+		<th colspan="3"><?php echo htmlspecialchars(Athena::message('WoeTimesLabel')) ?></th>
 	</tr>
 	<?php foreach ($woeTimes as $serverName => $times): ?>
 	<tr>
@@ -30,5 +30,5 @@
 	<?php endforeach ?>
 </table>
 <?php else: ?>
-<p><?php echo htmlspecialchars(Flux::message('WoeNotScheduledInfo')) ?></p>
+<p><?php echo htmlspecialchars(Athena::message('WoeNotScheduledInfo')) ?></p>
 <?php endif ?>

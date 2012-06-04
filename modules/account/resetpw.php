@@ -1,19 +1,19 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-$title = Flux::message('ResetPassButton');
+$title = Athena::message('ResetPassButton');
 
 $account = $params->get('account');
 $code    = $params->get('code');
 $login   = $params->get('login');
 
-$resetPassTable = Flux::config('FluxTables.ResetPasswordTable');
+$resetPassTable = Athena::config('AthenaTables.ResetPasswordTable');
 
 if (!$login || !$account || !$code || strlen($code) !== 32) {
 	$this->deny();
 }
 
-$loginAthenaGroup = Flux::getServerGroupByName($login);
+$loginAthenaGroup = Athena::getServerGroupByName($login);
 if (!$loginAthenaGroup) {
 	$this->deny();
 }
@@ -42,7 +42,7 @@ $sth  = $loginAthenaGroup->connection->getStatement($sql);
 $newPassword = '';
 $characters  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 $characters  = str_split($characters, 1);
-$passLength  = intval(($len=Flux::config('RandomPasswordLength')) < 1 ? 8 : $len);
+$passLength  = intval(($len=Athena::config('RandomPasswordLength')) < 1 ? 8 : $len);
 
 for ($i = 0; $i < $passLength; ++$i) {
 	$newPassword .= $characters[array_rand($characters)];
@@ -50,11 +50,11 @@ for ($i = 0; $i < $passLength; ++$i) {
 
 $unhashedNewPassword = $newPassword;
 if ($loginAthenaGroup->loginServer->config->getUseMD5()) {
-	$newPassword = Flux::hashPassword($newPassword);
+	$newPassword = Athena::hashPassword($newPassword);
 }
 
 if (!$sth->execute(array($_SERVER['REMOTE_ADDR'], $newPassword, $reset->id))) {
-	$session->setMessageData(Flux::message('ResetPwFailed'));
+	$session->setMessageData(Athena::message('ResetPwFailed'));
 	$this->redirect();	
 }
 
@@ -62,19 +62,19 @@ $sql = "UPDATE {$loginAthenaGroup->loginDatabase}.login SET user_pass = ? WHERE 
 $sth = $loginAthenaGroup->connection->getStatement($sql);
 
 if (!$sth->execute(array($newPassword, $account))) {
-	$session->setMessageData(Flux::message('ResetPwFailed'));
+	$session->setMessageData(Athena::message('ResetPwFailed'));
 	$this->redirect();
 }
 
-require_once 'Flux/Mailer.php';
-$mail = new Flux_Mailer();
+require_once 'Athena/Mailer.php';
+$mail = new Athena_Mailer();
 $sent = $mail->send($acc->email, 'Password Has Been Reset', 'newpass', array('AccountUsername' => $acc->userid, 'NewPassword' => $unhashedNewPassword));
 
 if ($sent) {
-	$message = Flux::message('ResetPwDone');
+	$message = Athena::message('ResetPwDone');
 }
 else {
-	$message = Flux::message('ResetPwDone2');
+	$message = Athena::message('ResetPwDone2');
 }
 
 $session->setMessageData($message);

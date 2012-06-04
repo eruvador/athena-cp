@@ -1,10 +1,10 @@
 <?php
-require_once 'Flux/Installer/MainServer.php';
+require_once 'Athena/Installer/MainServer.php';
 
 /**
  *
  */
-class Flux_Installer {
+class Athena_Installer {
 	/**
 	 *
 	 */
@@ -20,8 +20,8 @@ class Flux_Installer {
 	 */
 	private function __construct()
 	{
-		foreach (Flux::$loginAthenaGroupRegistry as $serverName => $loginAthenaGroup) {
-			$this->servers[$serverName] = new Flux_Installer_MainServer($loginAthenaGroup);
+		foreach (Athena::$loginAthenaGroupRegistry as $serverName => $loginAthenaGroup) {
+			$this->servers[$serverName] = new Athena_Installer_MainServer($loginAthenaGroup);
 		}
 	}
 	
@@ -31,7 +31,7 @@ class Flux_Installer {
 	public static function getInstance()
 	{
 		if (!self::$installer) {
-			self::$installer = new Flux_Installer();
+			self::$installer = new Athena_Installer();
 		}
 		return self::$installer;
 	}

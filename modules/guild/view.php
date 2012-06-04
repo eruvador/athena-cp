@@ -1,15 +1,15 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
 $title = 'Viewing Guild';
 
-require_once 'Flux/TemporaryTable.php';
+require_once 'Athena/TemporaryTable.php';
 
 $tableName  = "{$server->charMapDatabase}.items";
 $fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+$tempTable  = new Athena_TemporaryTable($server->connection, $tableName, $fromTables);
 
 $guildID = $params->get('id');
 
@@ -95,7 +95,7 @@ $sth->execute(array($guildID));
 
 $expulsions = $sth->fetchAll();
 
-if (!Flux::config('GStorageLeaderOnly') || $amOwner || $auth->allowedToViewGuild) {
+if (!Athena::config('GStorageLeaderOnly') || $amOwner || $auth->allowedToViewGuild) {
 	$col  = "guild_storage.*, items.name_japanese, items.type, items.slots, c.char_id, c.name AS char_name";
 
 	$sql  = "SELECT $col FROM {$server->charMapDatabase}.guild_storage ";
@@ -162,6 +162,6 @@ if (!Flux::config('GStorageLeaderOnly') || $amOwner || $auth->allowedToViewGuild
 		}
 	}
 	
-	$itemAttributes = Flux::config('Attributes')->toArray();
+	$itemAttributes = Athena::config('Attributes')->toArray();
 }
 ?>

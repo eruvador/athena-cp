@@ -1,6 +1,6 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
-$siteTitle  = Flux::config('SiteTitle');
+if (!defined('ATHENA_ROOT')) exit;
+$siteTitle  = Athena::config('SiteTitle');
 $emailTitle = sprintf('%s: Reset Password', $siteTitle);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"

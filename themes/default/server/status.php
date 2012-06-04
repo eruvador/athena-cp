@@ -1,15 +1,15 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2><?php echo htmlspecialchars(Flux::message('ServerStatusHeading')) ?></h2>
-<p><?php echo htmlspecialchars(Flux::message('ServerStatusInfo')) ?></p>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
+<h2><?php echo htmlspecialchars(Athena::message('ServerStatusHeading')) ?></h2>
+<p><?php echo htmlspecialchars(Athena::message('ServerStatusInfo')) ?></p>
 <?php foreach ($serverStatus as $privServerName => $gameServers): ?>
 <h3>Server Status for <?php echo htmlspecialchars($privServerName) ?></h3>
 <table id="server_status">
 	<tr>
-		<td class="status"><?php echo htmlspecialchars(Flux::message('ServerStatusServerLabel')) ?></td>
-		<td class="status"><?php echo htmlspecialchars(Flux::message('ServerStatusLoginLabel')) ?></td>
-		<td class="status"><?php echo htmlspecialchars(Flux::message('ServerStatusCharLabel')) ?></td>
-		<td class="status"><?php echo htmlspecialchars(Flux::message('ServerStatusMapLabel')) ?></td>
-		<td class="status"><?php echo htmlspecialchars(Flux::message('ServerStatusOnlineLabel')) ?></td>
+		<td class="status"><?php echo htmlspecialchars(Athena::message('ServerStatusServerLabel')) ?></td>
+		<td class="status"><?php echo htmlspecialchars(Athena::message('ServerStatusLoginLabel')) ?></td>
+		<td class="status"><?php echo htmlspecialchars(Athena::message('ServerStatusCharLabel')) ?></td>
+		<td class="status"><?php echo htmlspecialchars(Athena::message('ServerStatusMapLabel')) ?></td>
+		<td class="status"><?php echo htmlspecialchars(Athena::message('ServerStatusOnlineLabel')) ?></td>
 	</tr>
 	<?php foreach ($gameServers as $serverName => $gameServer): ?>
 	<tr>

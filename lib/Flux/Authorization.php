@@ -1,17 +1,17 @@
 <?php
-require_once 'Flux/Error.php';
+require_once 'Athena/Error.php';
 
 /**
  * The authorization component allows you to find out whether or not the
  * the current user is allowed to perform a certain task based on his account
  * level.
  */
-class Flux_Authorization {
+class Athena_Authorization {
 	/**
 	 * Authorization instance.
 	 *
 	 * @access private
-	 * @var Flux_Authorization
+	 * @var Athena_Authorization
 	 */
 	private static $auth;
 	
@@ -19,7 +19,7 @@ class Flux_Authorization {
 	 * Access configuration.
 	 *
 	 * @access private
-	 * @var Flux_Config
+	 * @var Athena_Config
 	 */
 	private $config;
 	
@@ -27,18 +27,18 @@ class Flux_Authorization {
 	 * Session data object.
 	 *
 	 * @access private
-	 * @var Flux_SessionData
+	 * @var Athena_SessionData
 	 */
 	private $session;
 	
 	/**
-	 * Construct new Flux_Authorization instance.
+	 * Construct new Athena_Authorization instance.
 	 *
-	 * @param Flux_Config $accessConfig
-	 * @param Flux_SessionData $sessionData
+	 * @param Athena_Config $accessConfig
+	 * @param Athena_SessionData $sessionData
 	 * @access private
 	 */
-	private function __construct(Flux_Config $accessConfig, Flux_SessionData $sessionData)
+	private function __construct(Athena_Config $accessConfig, Athena_SessionData $sessionData)
 	{
 		$this->config  = $accessConfig;
 		$this->session = $sessionData;
@@ -47,15 +47,15 @@ class Flux_Authorization {
 	/**
 	 * Get authorization instance, creates one if it doesn't already exist.
 	 *
-	 * @param Flux_Config $accessConfig
-	 * @param Flux_SessionData $sessionData
-	 * @return Flux_Authorization
+	 * @param Athena_Config $accessConfig
+	 * @param Athena_SessionData $sessionData
+	 * @return Athena_Authorization
 	 * @access public
 	 */
 	public static function getInstance($accessConfig = null, $sessionData = null)
 	{
 		if (!self::$auth) {
-			self::$auth = new Flux_Authorization($accessConfig, $sessionData);
+			self::$auth = new Athena_Authorization($accessConfig, $sessionData);
 		}
 		return self::$auth;	
 	}
@@ -76,7 +76,7 @@ class Flux_Authorization {
 		$accountLevel = $this->session->account->group_id;
 		$existentKeys = array();
 		
-		if ($accessConfig instanceOf Flux_Config) {
+		if ($accessConfig instanceOf Athena_Config) {
 			foreach ($accessKeys as $accessKey) {
 				$accessLevel = $accessConfig->get($accessKey);
 			
@@ -113,7 +113,7 @@ class Flux_Authorization {
 		$accessConfig = $this->config->get('features');
 		$accountLevel = $this->session->account->group_id;
 		
-		if (($accessConfig instanceOf Flux_Config)) {
+		if (($accessConfig instanceOf Athena_Config)) {
 			$accessLevel = $accessConfig->get($featureName);
 			
 			if (!is_null($accessLevel) &&
@@ -139,7 +139,7 @@ class Flux_Authorization {
 		}
 		elseif (preg_match("/^getLevelTo(.+)/i", $prop, $m)) {
 			$accessConfig = $this->config->get('features');
-			if ($accessConfig instanceOf Flux_Config) {
+			if ($accessConfig instanceOf Athena_Config) {
 				return $accessConfig->get($m[1]);
 			}
 		}

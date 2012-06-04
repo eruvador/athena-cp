@@ -1,7 +1,7 @@
 <?php
-require_once 'Flux/Config.php';
+require_once 'Athena/Config.php';
 
-class Flux_Addon {
+class Athena_Addon {
 	public $name;
 	public $addonDir;
 	public $configDir;
@@ -14,10 +14,10 @@ class Flux_Addon {
 	public function __construct($name, $addonDir = null)
 	{
 		$this->name       = $name;
-		$this->addonDir   = is_null($addonDir) ? FLUX_ADDON_DIR."/$name" : $addonDir;
+		$this->addonDir   = is_null($addonDir) ? ATHENA_ADDON_DIR."/$name" : $addonDir;
 		$this->configDir  = "{$this->addonDir}/config";
 		$this->moduleDir  = "{$this->addonDir}/modules";
-		$this->themeDir   = "{$this->addonDir}/themes/".Flux::config('ThemeName');
+		$this->themeDir   = "{$this->addonDir}/themes/".Athena::config('ThemeName');
 		
 		$files = array(
 			'addonConfig'    => "{$this->configDir}/addon.php",
@@ -27,17 +27,17 @@ class Flux_Addon {
 		
 		foreach ($files as $configName => $filename) {
 			if (file_exists($filename)) {
-				$this->{$configName} = Flux::parseConfigFile($filename);
+				$this->{$configName} = Athena::parseConfigFile($filename);
 			}
 			
-			if (!($this->{$configName} instanceOf Flux_Config)) {
+			if (!($this->{$configName} instanceOf Athena_Config)) {
 				$tempArr = array();
-				$this->{$configName} = new Flux_Config($tempArr);
+				$this->{$configName} = new Athena_Config($tempArr);
 			}
 		}
 		
 		// Use new language system for messages (also supports addons).
-		$this->messagesConfig = Flux::parseLanguageConfigFile($name);
+		$this->messagesConfig = Athena::parseLanguageConfigFile($name);
 	}
 	
 	public function respondsTo($module, $action = null)

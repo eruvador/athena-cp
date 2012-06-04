@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$txnTable = Flux::config('FluxTables.TransactionTable');
+$txnTable = Athena::config('AthenaTables.TransactionTable');
 
 /** Completed Transactions **/
 

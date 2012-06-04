@@ -1,12 +1,12 @@
 <?php 
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 
-if (!($password=$params->get('password')) || $password !== Flux::config('InstallerPassword')) {
+if (!($password=$params->get('password')) || $password !== Athena::config('InstallerPassword')) {
 	$this->deny();
 }
 else {
-	Flux::pruneUnconfirmedAccounts();
+	Athena::pruneUnconfirmedAccounts();
 	exit('DONE');
 }
 ?>

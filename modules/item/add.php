@@ -1,7 +1,7 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-require_once 'Flux/Config.php';
+require_once 'Athena/Config.php';
 
 $title = 'Add Item';
 
@@ -36,17 +36,17 @@ if (is_null($weight)) {
 
 if (count($_POST) && $params->get('additem')) {
 	// Equip locations.
-	if ($equipLocs instanceOf Flux_Config) {
+	if ($equipLocs instanceOf Athena_Config) {
 		$equipLocs = $equipLocs->toArray();
 	}
 
 	// Equip upper.
-	if ($equipUpper instanceOf Flux_Config) {
+	if ($equipUpper instanceOf Athena_Config) {
 		$equipUpper = $equipUpper->toArray();
 	}
 
 	// Equip jobs.
-	if ($equipJobs instanceOf Flux_Config) {
+	if ($equipJobs instanceOf Athena_Config) {
 		$equipJobs = $equipJobs->toArray();
 	}
 	
@@ -110,7 +110,7 @@ if (count($_POST) && $params->get('additem')) {
 	}
 	else {
 		if (empty($errorMessage) && is_array($equipLocs)) {
-			$locs = Flux::getEquipLocationList();
+			$locs = Athena::getEquipLocationList();
 			foreach ($equipLocs as $bit) {
 				if (!array_key_exists($bit, $locs)) {
 					$errorMessage = 'Invalid equip location specified.';
@@ -120,7 +120,7 @@ if (count($_POST) && $params->get('additem')) {
 			}
 		}
 		if (empty($errorMessage) && is_array($equipUpper)) {
-			$upper = Flux::getEquipUpperList();
+			$upper = Athena::getEquipUpperList();
 			foreach ($equipUpper as $bit) {
 				if (!array_key_exists($bit, $upper)) {
 					$errorMessage = 'Invalid equip upper specified.';
@@ -130,7 +130,7 @@ if (count($_POST) && $params->get('additem')) {
 			}
 		}
 		if (empty($errorMessage) && is_array($equipJobs)) {
-			$jobs = Flux::getEquipJobsList();
+			$jobs = Athena::getEquipJobsList();
 			foreach ($equipJobs as $bit) {
 				if (!array_key_exists($bit, $jobs)) {
 					$errorMessage = 'Invalid equippable job specified.';
@@ -140,7 +140,7 @@ if (count($_POST) && $params->get('additem')) {
 			}
 		}
 		if (empty($errorMessage)) {
-			require_once 'Flux/TemporaryTable.php';
+			require_once 'Athena/TemporaryTable.php';
 
 			$tableName  = "{$server->charMapDatabase}.items";
 			if($server->isRenewal) {
@@ -148,8 +148,8 @@ if (count($_POST) && $params->get('additem')) {
 			} else {
 				$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
 			}
-			$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
-			$shopTable  = Flux::config('FluxTables.ItemShopTable');
+			$tempTable  = new Athena_TemporaryTable($server->connection, $tableName, $fromTables);
+			$shopTable  = Athena::config('AthenaTables.ItemShopTable');
 			
 			$sth = $server->connection->getStatement("SELECT id, name_japanese, origin_table FROM $tableName WHERE id = ? LIMIT 1");
 			$sth->execute(array($itemID));

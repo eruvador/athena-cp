@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Viewing Monster</h2>
 <?php if ($monster): ?>
 <h3>
@@ -80,7 +80,7 @@
 	<tr>
 		<th>Race</th>
 		<td>
-			<?php if ($race=Flux::monsterRaceName($monster->race)): ?>
+			<?php if ($race=Athena::monsterRaceName($monster->race)): ?>
 				<?php echo htmlspecialchars($race) ?>
 			<?php else: ?>
 				<span class="not-applicable">Unknown</span>
@@ -91,7 +91,7 @@
 	</tr>
 	<tr>
 		<th>Element</th>
-		<td><?php echo Flux::elementName($monster->element_type) ?> (Level <?php echo floor($monster->element_level) ?>)</td>
+		<td><?php echo Athena::elementName($monster->element_type) ?> (Level <?php echo floor($monster->element_level) ?>)</td>
 		<th>Speed</th>
 		<td><?php echo number_format($monster->speed) ?></td>
 	</tr>

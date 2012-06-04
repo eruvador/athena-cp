@@ -3,7 +3,7 @@
  * Basically acts as an uppermost container holding the LoginServer and Athena
  * instances on a top level.
  */
-class Flux_LoginAthenaGroup {
+class Athena_LoginAthenaGroup {
 	/**
 	 * Global server name, representing all Athena servers.
 	 *
@@ -16,7 +16,7 @@ class Flux_LoginAthenaGroup {
 	 * Connection to the MySQL server.
 	 *
 	 * @access public
-	 * @var Flux_Connection
+	 * @var Athena_Connection
 	 */
 	public $connection;
 	
@@ -24,7 +24,7 @@ class Flux_LoginAthenaGroup {
 	 * Main login server for the contained Athena servers.
 	 *
 	 * @access public
-	 * @var Flux_LoginServer
+	 * @var Athena_LoginServer
 	 */
 	public $loginServer;
 	
@@ -45,7 +45,7 @@ class Flux_LoginAthenaGroup {
 	public $logsDatabase;
 	
 	/**
-	 * Array of Flux_Athena instances.
+	 * Array of Athena_Athena instances.
 	 *
 	 * @access public
 	 * @var array
@@ -53,11 +53,11 @@ class Flux_LoginAthenaGroup {
 	public $athenaServers = array();
 	
 	/**
-	 * Construct new Flux_LoginAthenaGroup instance.
+	 * Construct new Athena_LoginAthenaGroup instance.
 	 *
 	 * @access public
 	 */
-	public function __construct($serverName, Flux_Connection $connection, Flux_LoginServer $loginServer, array $athenaServers = array())
+	public function __construct($serverName, Athena_Connection $connection, Athena_LoginServer $loginServer, array $athenaServers = array())
 	{
 		$this->serverName    = $serverName;
 		$this->connection    = $connection;
@@ -80,7 +80,7 @@ class Flux_LoginAthenaGroup {
 	 * @return mixed Returns false if login servers aren't identical.
 	 * @access public
 	 */
-	public function addAthenaServer(Flux_Athena $athenaServer)
+	public function addAthenaServer(Athena_Athena $athenaServer)
 	{
 		if ($athenaServer->loginServer === $this->loginServer) {
 			$athenaServer->setLoginAthenaGroup($this);
@@ -94,7 +94,7 @@ class Flux_LoginAthenaGroup {
 	}
 	
 	/**
-	 * See Flux_LoginServer->isAuth().
+	 * See Athena_LoginServer->isAuth().
 	 *
 	 * @param string $username
 	 * @param string $password

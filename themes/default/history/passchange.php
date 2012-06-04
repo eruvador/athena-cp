@@ -1,11 +1,11 @@
-<?php if (!defined('FLUX_ROOT')) exit ?>
-<h2><?php echo htmlspecialchars(Flux::message('HistoryPassChangeHeading')) ?></h2>
+<?php if (!defined('ATHENA_ROOT')) exit ?>
+<h2><?php echo htmlspecialchars(Athena::message('HistoryPassChangeHeading')) ?></h2>
 <?php if ($changes): ?>
 <?php echo $paginator->infoText() ?>
 <table class="horizontal-table">
 	<tr>
-		<th><?php echo $paginator->sortableColumn('change_date', Flux::message('HistoryPassChangeChangeDate')) ?></th>
-		<th><?php echo $paginator->sortableColumn('change_ip', Flux::message('HistoryPassChangeChangeIp')) ?></th>
+		<th><?php echo $paginator->sortableColumn('change_date', Athena::message('HistoryPassChangeChangeDate')) ?></th>
+		<th><?php echo $paginator->sortableColumn('change_ip', Athena::message('HistoryPassChangeChangeIp')) ?></th>
 	</tr>
 	<?php foreach ($changes as $change): ?>
 	<tr>
@@ -23,7 +23,7 @@
 <?php echo $paginator->getHTML() ?>
 <?php else: ?>
 <p>
-	<?php echo htmlspecialchars(Flux::message('HistoryNoPassChanges')) ?>
-	<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Flux::message('GoBackLabel')) ?></a>
+	<?php echo htmlspecialchars(Athena::message('HistoryNoPassChanges')) ?>
+	<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Athena::message('GoBackLabel')) ?></a>
 </p>
 <?php endif ?>

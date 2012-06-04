@@ -1,7 +1,7 @@
 <?php
-require_once 'Flux/Error.php';
+require_once 'Athena/Error.php';
 
-class Flux_ItemShop_Cart {
+class Athena_ItemShop_Cart {
 	/**
 	 *
 	 */
@@ -12,7 +12,7 @@ class Flux_ItemShop_Cart {
 	 */
 	private $cart = array();
 	
-	public function setAccount(Flux_DataObject $account)
+	public function setAccount(Athena_DataObject $account)
 	{
 		$this->account = $account;
 		return $account;
@@ -21,17 +21,17 @@ class Flux_ItemShop_Cart {
 	public function requiresAccount()
 	{
 		if (!$this->account) {
-			throw new Flux_Error('Account is required to use the shopping cart.');
+			throw new Athena_Error('Account is required to use the shopping cart.');
 		}
 	}
 	
-	public function add(Flux_DataObject $item)
+	public function add(Athena_DataObject $item)
 	{
 		$this->cart[] = $item;
 		return $item;
 	}
 	
-	public function delete(Flux_DataObject $item, $deleteAll = false)
+	public function delete(Athena_DataObject $item, $deleteAll = false)
 	{
 		$deleted = array();
 		
@@ -54,7 +54,7 @@ class Flux_ItemShop_Cart {
 		}
 	}
 	
-	public function deleteAll(Flux_DataObject $item)
+	public function deleteAll(Athena_DataObject $item)
 	{
 		return $this->delete($item, true);
 	}
@@ -66,7 +66,7 @@ class Flux_ItemShop_Cart {
 		return $itemCount;
 	}
 	
-	public function buy(Flux_ItemShop $fromShop)
+	public function buy(Athena_ItemShop $fromShop)
 	{
 		if (!$this->hasFunds()) {
 			return false;

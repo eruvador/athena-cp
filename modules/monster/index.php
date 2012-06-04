@@ -1,16 +1,16 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 //$this->loginRequired();
 
 $title = 'List Monsters';
 
-require_once 'Flux/TemporaryTable.php';
+require_once 'Athena/TemporaryTable.php';
 
 try {
 	$tableName  = "{$server->charMapDatabase}.monsters";
 	$fromTables = array("{$server->charMapDatabase}.mob_db", "{$server->charMapDatabase}.mob_db2");
-	$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+	$tempTable  = new Athena_TemporaryTable($server->connection, $tableName, $fromTables);
 	
 	// Statement parameters, joins and conditions.
 	$bind        = array();
@@ -80,7 +80,7 @@ try {
 	
 	$authorized = $auth->actionAllowed('monster', 'view');
 	
-	if ($monsters && count($monsters) === 1 && $authorized && Flux::config('SingleMatchRedirectMobs')) {
+	if ($monsters && count($monsters) === 1 && $authorized && Athena::config('SingleMatchRedirectMobs')) {
 		$this->redirect($this->url('monster', 'view', array('id' => $monsters[0]->monster_id)));
 	}
 }

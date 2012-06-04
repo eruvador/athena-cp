@@ -1,10 +1,10 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('HistoryCpLoginTitle');
-$loginLogTable = Flux::config('FluxTables.LoginLogTable');
+$title = Athena::message('HistoryCpLoginTitle');
+$loginLogTable = Athena::config('AthenaTables.LoginLogTable');
 
 // Partial SQL query.
 $sqlpartial = "WHERE account_id = ?";
@@ -28,7 +28,7 @@ $sth->execute($bind);
 $logins = $sth->fetchAll();
 
 if ($logins) {
-	$loginErrors = Flux::config('LoginErrors');
+	$loginErrors = Athena::config('LoginErrors');
 	foreach ($logins as $login) {
 		if ($errorType=$loginErrors->get($login->error_code)) {
 			$login->error_type = $errorType;

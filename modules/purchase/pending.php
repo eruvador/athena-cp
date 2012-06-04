@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
@@ -7,12 +7,12 @@ $title = 'Pending Redemption';
 
 try {
 	// Create item db temp table.
-	require_once 'Flux/TemporaryTable.php';
+	require_once 'Athena/TemporaryTable.php';
 	$tableName  = "{$server->charMapDatabase}.items";
 	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-	$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+	$tempTable  = new Athena_TemporaryTable($server->connection, $tableName, $fromTables);
 
-	$redeemTable = Flux::config('FluxTables.RedemptionTable');
+	$redeemTable = Athena::config('AthenaTables.RedemptionTable');
 
 	// JOINs, conditions etc
 	$sqlpartial  = "LEFT OUTER JOIN $tableName ON items.id = $redeemTable.nameid WHERE account_id = ? ";

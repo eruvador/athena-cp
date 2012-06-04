@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
@@ -10,6 +10,6 @@ if ($server->cart->isEmpty()) {
 
 $title = 'Shopping Cart';
 
-require_once 'Flux/ItemShop.php';
+require_once 'Athena/ItemShop.php';
 $items = $server->cart->getCartItems();
 ?>

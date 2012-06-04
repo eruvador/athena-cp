@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title = 'Password Changes';
 
-$changeTable  = Flux::config('FluxTables.ChangePasswordTable');
+$changeTable  = Athena::config('AthenaTables.ChangePasswordTable');
 $sqlpartial  = "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = log.account_id ";
 $sqlpartial .= 'WHERE 1=1 ';
 $bind        = array();

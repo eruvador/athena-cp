@@ -1,11 +1,11 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('XferLogTitle');
+$title = Athena::message('XferLogTitle');
 
-$xferTable = Flux::config('FluxTables.CreditTransferTable');
+$xferTable = Athena::config('AthenaTables.CreditTransferTable');
 
 $col  = "from_account_id, target_account_id, amount, transfer_date, ";
 $col .= "fa.userid AS from_userid, ta.userid AS target_userid, ";

@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
@@ -9,9 +9,9 @@ if (!$shopItemID) {
 	$this->deny();
 }
 
-require_once 'Flux/ItemShop.php';
+require_once 'Athena/ItemShop.php';
 
-$shop = new Flux_ItemShop($server);
+$shop = new Athena_ItemShop($server);
 $shop->deleteShopItemImage($shopItemID);
 
 $session->setMessageData('Shop item image has been deleted.');

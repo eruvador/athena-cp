@@ -2,7 +2,7 @@
 /**
  * The paginator helps in creating pages for SQL-stored data.
  */
-class Flux_Paginator {
+class Athena_Paginator {
 	/**
 	 * Number of records.
 	 *
@@ -107,17 +107,17 @@ class Flux_Paginator {
 		
 		$this->requestURI = $requestURI;
 		
-		$perPage = Flux::config('ResultsPerPage');
+		$perPage = Athena::config('ResultsPerPage');
 		if (!$perPage) {
 			$perPage = 20;
 		}
 		
-		$pagesToShow = Flux::config('PagesToShow');
+		$pagesToShow = Athena::config('PagesToShow');
 		if (!$pagesToShow) {
 			$pagesToShow = 10;
 		}
 		
-		$showSinglePage = (bool)Flux::config('ShowSinglePage');
+		$showSinglePage = (bool)Athena::config('ShowSinglePage');
 		
 		$options = array_merge(
 			array(
@@ -216,7 +216,7 @@ class Flux_Paginator {
 	 */
 	public function getHTML()
 	{
-		if (!Flux::config('DisplaySinglePages') && $this->numberOfPages === 1) {
+		if (!Athena::config('DisplaySinglePages') && $this->numberOfPages === 1) {
 			return '';
 		}
 		
@@ -262,7 +262,7 @@ class Flux_Paginator {
 		
 		$links  = sprintf('<div class="pages">%s</div>', implode(" {$this->pageSeparator} ", $pages))."\n";
 		
-		if (Flux::config('ShowPageJump') && $this->numberOfPages > Flux::config('PageJumpMinimumPages')) {
+		if (Athena::config('ShowPageJump') && $this->numberOfPages > Athena::config('PageJumpMinimumPages')) {
 			// This is some tricky shit.  Don't even attempt to understand it =(
 			// Page jumping is entirely JavaScript dependent.
 			$pageVar = preg_quote($this->pageVariable);
@@ -383,11 +383,11 @@ class Flux_Paginator {
 				switch (strtolower($this->currentSortOrder[$column])) {
 					case 'asc':
 						$order = 'desc';
-						$name .= Flux::config('ColumnSortAscending');
+						$name .= Athena::config('ColumnSortAscending');
 						break;
 					case 'desc':
 						$order = is_null($this->sortableColumns[$column]) ? false : 'none';
-						$name .= Flux::config('ColumnSortDescending');
+						$name .= Athena::config('ColumnSortDescending');
 						break;
 					default:
 						$order = 'asc';
@@ -421,9 +421,9 @@ class Flux_Paginator {
 	public function infoText()
 	{
 		$currPage = $this->currentPage;
-		$results  = Flux::config('ResultsPerPage');
+		$results  = Athena::config('ResultsPerPage');
 		$infoText = sprintf(
-			Flux::message('FoundSearchResults'),
+			Athena::message('FoundSearchResults'),
 			$this->total, $this->numberOfPages, ($currPage*$results-($results - 1)), $currPage * $results < $this->total ? ($currPage*$results) : ($this->total)
 		);
 		return sprintf('<p class="info-text">%s</p>', $infoText);

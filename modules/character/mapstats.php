@@ -1,12 +1,12 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title = 'Map Statistics';
 
 $bind = array();
 $sql  = "SELECT last_map AS map_name, COUNT(last_map) AS player_count FROM {$server->charMapDatabase}.`char` ";
 
-if (($hideLevel=(int)Flux::config('HideFromMapStats')) > 0 && !$auth->allowedToSeeHiddenMapStats) {
+if (($hideLevel=(int)Athena::config('HideFromMapStats')) > 0 && !$auth->allowedToSeeHiddenMapStats) {
 	$sql .= "LEFT JOIN {$server->loginDatabase}.login ON `char`.account_id = login.account_id ";
 }
 

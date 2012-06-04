@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 // Check for "special" date fields.
 $__dates = array();
@@ -12,7 +12,7 @@ foreach ($params->toArray() as $key => $value) {
 			// Not too sure why, but if I don't create a separate index for this array,
 			// It will use the previous iteration's reference.
 			$__dateArray[$__dateParam] = array();
-			$__dates[$__dateParam] = new Flux_Config($__dateArray[$__dateParam]);
+			$__dates[$__dateParam] = new Athena_Config($__dateArray[$__dateParam]);
 		}
 		
 		$__dates[$__dateParam]->set($__dateType, $value);
@@ -38,17 +38,17 @@ foreach ($__dates as $__dateName => $__date) {
 	}
 }
 
-$installer = Flux_Installer::getInstance();
+$installer = Athena_Installer::getInstance();
 if ($installer->updateNeeded() && $params->get('module') != 'install') {
 	$this->redirect($this->url('install'));
 }
 
-if (Flux::config('AutoUnholdAccount')) {
-	Flux::processHeldCredits();
+if (Athena::config('AutoUnholdAccount')) {
+	Athena::processHeldCredits();
 }
 
-if (Flux::config('AutoPruneAccounts')) {
-	Flux::pruneUnconfirmedAccounts();
+if (Athena::config('AutoPruneAccounts')) {
+	Athena::pruneUnconfirmedAccounts();
 }
 
 $ppReturn = array(
@@ -87,7 +87,7 @@ $woeDisallowModule = $server->woeDisallow->get($_thisModule);
 $woeDisallowAction = $server->woeDisallow->get("$_thisModule.$_thisAction");
 
 if (!$auth->allowedToViewWoeDisallowed && ($woeDisallowModule || $woeDisallowAction) && $server->isWoe()) {
-	$session->setMessageData(Flux::message('DisallowedDuringWoE'));
+	$session->setMessageData(Athena::message('DisallowedDuringWoE'));
 	$this->redirect();
 }
 ?>

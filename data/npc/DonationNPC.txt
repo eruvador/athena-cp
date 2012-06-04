@@ -3,7 +3,7 @@ map,x,y,d	script	Donor Rewards Redeemer	987,{
 	// --- SET THESE BEFORE LOADING THE SCRIPT! ---
 	
 	// Server Name
-	set .serverName$,"FluxRO";
+	set .serverName$,"AthenaRO";
 	
 	// NPC Name to display during chat.
 	// Default: "[Donor Rewards Redeemer]"
@@ -13,7 +13,7 @@ map,x,y,d	script	Donor Rewards Redeemer	987,{
 	// Default: "cp_redeemlog"
 	set .redeemTable$,"cp_redeemlog";
 	
-	// Display Credits to FluxCP Creators?
+	// Display Credits to AthenaRO Creators?
 	// Help promote our product if its useful.
 	// 0 = Disable. 1 = Enable.
 	// Default: 1
@@ -53,7 +53,7 @@ map,x,y,d	script	Donor Rewards Redeemer	987,{
 					mes "Please enjoy your stay on " + .serverName$ + "!";
 				}
 				if (.showCredits)
-					callfunc "F_FluxCredits";
+					callfunc "F_AthenaCredits";
 			} else {
 				mes "My records indicate that there are no rewards awaiting to be redeemed.";
 				mes "My deepest apologies for the misunderstanding.";
@@ -72,17 +72,17 @@ map,x,y,d	script	Donor Rewards Redeemer	987,{
 	// ------------------ End Script ------------------
 }
 
-// ------------ Credits to FluxCP Creators ------------
+// ------------ Credits to AthenaCP Creators ------------
 // - Please do not modify or delete this function or  -
 // - its contents. To disable the credits from being  -
 // - shown, set .showCredits to 0 in the NPC Settings -
 // - at the top of this file.                         -
 // ----------------------------------------------------
 
-function	script	F_FluxCredits	{
+function	script	F_AthenaCredits	{
 	mes "-----------------------------------";
-	mes "Powered by Flux Control Panel.";
-	mes "Copyright © 2008-2012 Matthew Harris and Nikunj Mehta.";
-	mes "http://fluxcp.googlecode.com/";
+	mes "Powered by Athena Control Panel.";
+	mes "Copyright © 2012 Xantara.";
+	mes "https://github.com/missxantara/athena-cp";
 	return;
 }

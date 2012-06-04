@@ -1,7 +1,7 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-$title = Flux::message('LogoutTitle');
+$title = Athena::message('LogoutTitle');
 
 $session->logout();
 $metaRefresh = array('seconds' => 2, 'location' => $this->basePath);

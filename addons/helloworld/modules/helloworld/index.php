@@ -1,6 +1,6 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-$fluxVersion  = Flux::VERSION;
-$fluxVersion .= Flux::SVNVERSION ? '.'.Flux::SVNVERSION : '';
+$athenaVersion  = Athena::VERSION;
+$athenaVersion .= Athena::SVNVERSION ? '.'.Athena::SVNVERSION : '';
 ?>

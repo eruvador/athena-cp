@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Viewing Guild</h2>
 <?php if ($guild): ?>
 <h3>Guild Information for “<?php echo htmlspecialchars($guild->name) ?>”</h3>
@@ -201,9 +201,9 @@
 <?php else: ?>
 	<p>There are no member expulsions for this guild.</p>
 <?php endif ?>
-<?php if (!Flux::config('GStorageLeaderOnly') || $amOwner || $auth->allowedToViewGuild): ?>
+<?php if (!Athena::config('GStorageLeaderOnly') || $amOwner || $auth->allowedToViewGuild): ?>
 	<h3>Guild Storage Items of “<?php echo htmlspecialchars($guild->name) ?>”</h3>
-	<?php if (Flux::config('GStorageLeaderOnly')): ?>
+	<?php if (Athena::config('GStorageLeaderOnly')): ?>
 		<p>Note: Guild Storage Items are only visible to you, the guild leader.</p>
 	<?php endif ?>
 	<?php if ($items): ?>
@@ -246,7 +246,7 @@
 								<?php echo htmlspecialchars($item->char_name . "'s") ?>
 							<?php endif ?>
 						<?php else: ?>
-							<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('UnknownLabel')) ?></span>'s
+							<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('UnknownLabel')) ?></span>'s
 						<?php endif ?>
 					<?php endif ?>
 					<?php if ($item->card0 == 255 && array_key_exists($item->card1%1280, $itemAttributes)): ?>

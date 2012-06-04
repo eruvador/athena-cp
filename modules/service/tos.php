@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-$title = Flux::message('TermsTitle');
+$title = Athena::message('TermsTitle');
 ?>

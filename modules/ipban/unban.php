@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
@@ -7,14 +7,14 @@ if (!count($_POST) || !$params->get('unban') ) {
 	$this->deny();
 }
 
-if (!(($unbanList=$params->get('unban_list')) instanceOf Flux_Config) || !count($unbanList=$unbanList->toArray())) {
-	$session->setMessageData(Flux::message('IpbanNothingToUnban'));
+if (!(($unbanList=$params->get('unban_list')) instanceOf Athena_Config) || !count($unbanList=$unbanList->toArray())) {
+	$session->setMessageData(Athena::message('IpbanNothingToUnban'));
 }
 else {
 	$reason = trim($params->get('reason'));
 	
 	if (!$reason) {
-		$session->setMessageData(Flux::message('IpbanEnterUnbanReason'));
+		$session->setMessageData(Athena::message('IpbanEnterUnbanReason'));
 	}
 	else {
 		$didAllSucceed = true;
@@ -28,10 +28,10 @@ else {
 		}
 		
 		if ($didAllSucceed) {
-			$session->setMessageData(Flux::message('IpbanUnbanned'));
+			$session->setMessageData(Athena::message('IpbanUnbanned'));
 		}
 		else {
-			$session->setMessageData(sprintf(Flux::message('IpbanUnbanFailed'), $numFailed));
+			$session->setMessageData(sprintf(Athena::message('IpbanUnbanFailed'), $numFailed));
 		}
 	}
 }

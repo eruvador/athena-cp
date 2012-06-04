@@ -1,12 +1,12 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('GenderChangeTitle');
+$title = Athena::message('GenderChangeTitle');
 
-$cost    = +(int)Flux::config('ChargeGenderChange');
-$badJobs = Flux::config('GenderLinkedJobClasses')->toArray();
+$cost    = +(int)Athena::config('ChargeGenderChange');
+$badJobs = Athena::config('GenderLinkedJobClasses')->toArray();
 
 if ($cost && $session->account->balance < $cost && !$auth->allowedToAvoidSexChangeCost) {
 	$hasNecessaryFunds = false;
@@ -26,7 +26,7 @@ if (count($_POST)) {
 		$sth = $athenaServer->connection->getStatement($sql);
 		$sth->execute(array_merge(array($session->account->account_id), array_keys($badJobs)));
 		if ($sth->fetch()->num) {
-			$errorMessage = sprintf(Flux::message('GenderChangeBadChars'), implode(', ', array_values($badJobs)));
+			$errorMessage = sprintf(Athena::message('GenderChangeBadChars'), implode(', ', array_values($badJobs)));
 			break;
 		}
 	}
@@ -43,10 +43,10 @@ if (count($_POST)) {
 
 		if ($cost && !$auth->allowedToAvoidSexChangeCost) {
 			$session->loginServer->depositCredits($session->account->account_id, -$cost);
-			$session->setMessageData(sprintf(Flux::message('GenderChanged'), $cost));
+			$session->setMessageData(sprintf(Athena::message('GenderChanged'), $cost));
 		}
 		else {
-			$session->setMessageData(Flux::message('GenderChangedForFree'));
+			$session->setMessageData(Athena::message('GenderChangedForFree'));
 		}
 
 		$this->redirect($this->url('account', 'view'));

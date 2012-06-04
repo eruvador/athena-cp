@@ -1,13 +1,13 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('AccountEditTitle');
+$title = Athena::message('AccountEditTitle');
 
 $accountID = $params->get('id');
 
-$creditsTable  = Flux::config('FluxTables.CreditsTable');
+$creditsTable  = Athena::config('AthenaTables.CreditsTable');
 $creditColumns = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
 
 
@@ -29,10 +29,10 @@ if ($account) {
 	$isMine = $account->account_id == $session->account->account_id;
 	
 	if ($isMine) {
-		$title = Flux::message('AccountEditTitle2');
+		$title = Athena::message('AccountEditTitle2');
 	}
 	else {
-		$title = sprintf(Flux::message('AccountEditTitle3'), $account->userid);
+		$title = sprintf(Athena::message('AccountEditTitle3'), $account->userid);
 	}
 	
 	if (count($_POST)) {
@@ -45,22 +45,22 @@ if ($account) {
 		$balance    = (int)$params->get('balance');
 		
 		if ($isMine && $account->group_id != $group_id) {
-			$errorMessage = Flux::message('CannotModifyOwnLevel');
+			$errorMessage = Athena::message('CannotModifyOwnLevel');
 		}
 		elseif ($account->group_id != $group_id && !$auth->allowedToEditAccountLevel) {
-			$errorMessage = Flux::message('CannotModifyAnyLevel');
+			$errorMessage = Athena::message('CannotModifyAnyLevel');
 		}
 		elseif ($group_id > $session->account->group_id) {
-			$errorMessage = Flux::message('CannotModifyLevelSoHigh');
+			$errorMessage = Athena::message('CannotModifyLevelSoHigh');
 		}
 		elseif (!in_array($gender, array('M', 'F'))) {
-			$errorMessage = Flux::message('InvalidGender');
+			$errorMessage = Athena::message('InvalidGender');
 		}
 		elseif ($account->balance != $balance && !$auth->allowedToEditAccountBalance) {
-			$errorMessage = Flux::message('CannotModifyBalance');
+			$errorMessage = Athena::message('CannotModifyBalance');
 		}
 		elseif ($lastLogin && !preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $lastLogin)) {
-			$errorMessage = Flux::message('InvalidLastLoginDate');
+			$errorMessage = Athena::message('InvalidLastLoginDate');
 		}
 		else {
 			$bind = array(
@@ -90,7 +90,7 @@ if ($account) {
 				$session->loginServer->depositCredits($account->account_id, $deposit);
 			}
 			
-			$session->setMessageData(Flux::message('AccountModified'));
+			$session->setMessageData(Athena::message('AccountModified'));
 			$this->redirect($this->url('account', 'view', array('id' => $account->account_id)));
 		}
 	}

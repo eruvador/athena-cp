@@ -1,5 +1,5 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2><?php echo htmlspecialchars(Flux::message('IpbanListHeading')) ?></h2>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
+<h2><?php echo htmlspecialchars(Athena::message('IpbanListHeading')) ?></h2>
 <?php if ($banlist): ?>
 <?php echo $paginator->infoText() ?>
 <form action="<?php echo $this->url('ipban', 'unban') ?>" method="post">
@@ -9,15 +9,15 @@
 			<?php if ($auth->allowedToRemoveIpBan && $auth->actionAllowed('ipban', 'unban')): ?>
 			<th><input type="checkbox" onclick="$('.unban-cb').attr('checked', this.checked)" /></th>
 			<?php endif ?>
-			<th><?php echo $paginator->sortableColumn('list', Flux::message('IpbanBannedIpLabel')) ?></th>
-			<th><?php echo $paginator->sortableColumn('btime', Flux::message('IpbanBanDateLabel')) ?></th>
-			<th><?php echo $paginator->sortableColumn('reason', Flux::message('IpbanBanReasonLabel')) ?></th>
-			<th><?php echo $paginator->sortableColumn('rtime', Flux::message('IpbanBanExpireLabel')) ?></th>
+			<th><?php echo $paginator->sortableColumn('list', Athena::message('IpbanBannedIpLabel')) ?></th>
+			<th><?php echo $paginator->sortableColumn('btime', Athena::message('IpbanBanDateLabel')) ?></th>
+			<th><?php echo $paginator->sortableColumn('reason', Athena::message('IpbanBanReasonLabel')) ?></th>
+			<th><?php echo $paginator->sortableColumn('rtime', Athena::message('IpbanBanExpireLabel')) ?></th>
 			<?php if ($auth->allowedToModifyIpBan && $auth->actionAllowed('ipban', 'edit')): ?>
-			<th><?php echo htmlspecialchars(Flux::message('IpbanModifyLink')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('IpbanModifyLink')) ?></th>
 			<?php endif ?>
 			<?php if ($auth->allowedToRemoveIpBan && $auth->actionAllowed('ipban', 'remove')): ?>
-			<th><?php echo htmlspecialchars(Flux::message('IpbanRemoveLink')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('IpbanRemoveLink')) ?></th>
 			<?php endif ?>
 		</tr>
 		<?php foreach ($banlist as $list): ?>
@@ -39,21 +39,21 @@
 				<?php if ($list->reason): ?>
 					<?php echo htmlspecialchars($list->reason) ?>
 				<?php else: ?>
-					<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+					<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 				<?php endif ?>
 			</td>
 			<td>
 				<?php if (!$list->rtime || $list->rtime == '0000-00-00 00:00:00'): ?>
-					<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NeverLabel')) ?></span>
+					<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NeverLabel')) ?></span>
 				<?php else: ?>
 					<?php echo $this->formatDateTime($list->rtime) ?>
 				<?php endif ?>
 			</td>
 			<?php if ($auth->allowedToModifyIpBan && $auth->actionAllowed('ipban', 'edit')): ?>
-			<td class="td-action action"><a href="<?php echo $this->url('ipban', 'edit', array('list' => $list->list)) ?>"><?php echo htmlspecialchars(Flux::message('IpbanModifyLink')) ?></a></td>
+			<td class="td-action action"><a href="<?php echo $this->url('ipban', 'edit', array('list' => $list->list)) ?>"><?php echo htmlspecialchars(Athena::message('IpbanModifyLink')) ?></a></td>
 			<?php endif ?>
 			<?php if ($auth->allowedToRemoveIpBan && $auth->actionAllowed('ipban', 'remove')): ?>
-			<td class="td-action action"><a href="<?php echo $this->url('ipban', 'remove', array('list' => $list->list)) ?>"><?php echo htmlspecialchars(Flux::message('IpbanRemoveLink')) ?></a></td>
+			<td class="td-action action"><a href="<?php echo $this->url('ipban', 'remove', array('list' => $list->list)) ?>"><?php echo htmlspecialchars(Athena::message('IpbanRemoveLink')) ?></a></td>
 			<?php endif ?>
 		</tr>
 		<?php endforeach ?>
@@ -61,7 +61,7 @@
 	<?php if ($auth->allowedToRemoveIpBan && $auth->actionAllowed('ipban', 'unban')): ?>
 	<table class="generic-form-table">
 		<tr>
-			<th><label for="reason"><?php echo htmlspecialchars(Flux::message('IpbanRemoveReasonLabel')) ?></label></th>
+			<th><label for="reason"><?php echo htmlspecialchars(Athena::message('IpbanRemoveReasonLabel')) ?></label></th>
 			<td>
 				<textarea name="reason" id="reason" class="reason"><?php
 					echo htmlspecialchars(empty($reason) ? '' : $reason)
@@ -71,7 +71,7 @@
 		<tr>
 			<td></td>
 			<td class="button-action">
-				<input type="submit" value="<?php echo htmlspecialchars(Flux::message('IpbanUnbanButton')) ?>" />
+				<input type="submit" value="<?php echo htmlspecialchars(Athena::message('IpbanUnbanButton')) ?>" />
 			</td>
 		</tr>
 	</table>
@@ -80,7 +80,7 @@
 <?php echo $paginator->getHTML() ?>
 <?php else: ?>
 <p>
-	<?php echo htmlspecialchars(Flux::message('IpbanListNoBans')) ?>
-	<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Flux::message('GoBackLabel')) ?></a>
+	<?php echo htmlspecialchars(Athena::message('IpbanListNoBans')) ?>
+	<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Athena::message('GoBackLabel')) ?></a>
 </p>
 <?php endif ?>

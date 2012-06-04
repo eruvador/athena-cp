@@ -1,7 +1,7 @@
 <?php
-require_once 'Flux/Error.php';
+require_once 'Athena/Error.php';
 
-class Flux_ItemExistsError extends Flux_Error {
+class Athena_ItemExistsError extends Athena_Error {
 	
 }
 ?>

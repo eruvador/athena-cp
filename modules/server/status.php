@@ -1,15 +1,15 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-$title = Flux::message('ServerStatusTitle');
-$cache = FLUX_DATA_DIR.'/tmp/ServerStatus.cache';
+$title = Athena::message('ServerStatusTitle');
+$cache = ATHENA_DATA_DIR.'/tmp/ServerStatus.cache';
 
-if (file_exists($cache) && (time() - filemtime($cache)) < (Flux::config('ServerStatusCache') * 60)) {
+if (file_exists($cache) && (time() - filemtime($cache)) < (Athena::config('ServerStatusCache') * 60)) {
 	$serverStatus = unserialize(file_get_contents($cache));
 }
 else {
 	$serverStatus = array();
-	foreach (Flux::$loginAthenaGroupRegistry as $groupName => $loginAthenaGroup) {
+	foreach (Athena::$loginAthenaGroupRegistry as $groupName => $loginAthenaGroup) {
 		if (!array_key_exists($groupName, $serverStatus)) {
 			$serverStatus[$groupName] = array();
 		}

@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Castles</h2>
 <p>This page shows what castles are activated and which guilds own them.</p>
 <?php if ($castles): ?>
@@ -26,7 +26,7 @@
 					<td colspan="2"><?php echo htmlspecialchars($castle->guild_name) ?></td>
 				<?php endif ?>
 			<?php else: ?>
-				<td colspan="2"><span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span></td>
+				<td colspan="2"><span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span></td>
 			<?php endif ?>
 		</tr>
 	<?php endforeach ?>

@@ -1,12 +1,12 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired('Please log-in to add items to your cart.');
 
-require_once 'Flux/ItemShop.php';
+require_once 'Athena/ItemShop.php';
 
 $id   = $params->get('id');
-$shop = new Flux_ItemShop($server);
+$shop = new Athena_ItemShop($server);
 $item = $shop->getItem($id);
 
 if ($item) {

@@ -1,32 +1,32 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('EmailChangeTitle');
+$title = Athena::message('EmailChangeTitle');
 
-$emailChangeTable = Flux::config('FluxTables.ChangeEmailTable');
+$emailChangeTable = Athena::config('AthenaTables.ChangeEmailTable');
 
 if (count($_POST)) {
 	$email = trim($params->get('email'));
 	
 	if (!$email) {
-		$errorMessage = Flux::message('EnterEmailAddress');
+		$errorMessage = Athena::message('EnterEmailAddress');
 	}
 	elseif ($email == $session->account->email) {
 		$errorMessage = '';
 	}
 	elseif (!preg_match('/(.+?)@(.+?)/', $email)) {
-		$errorMessage = Flux::message('EmailCannotBeSame');
+		$errorMessage = Athena::message('EmailCannotBeSame');
 	}
-	elseif (!Flux::config('AllowDuplicateEmails')) {
+	elseif (!Athena::config('AllowDuplicateEmails')) {
 		$sql = "SELECT email FROM {$server->loginDatabase}.login WHERE email = ? LIMIT 1";
 		$sth = $server->connection->getStatement($sql);
 		$sth->execute(array($email));
 		
 		$row = $sth->fetch();
 		if ($row && $row->email) {
-			$errorMessage = Flux::message('EmailAlreadyRegistered');
+			$errorMessage = Athena::message('EmailAlreadyRegistered');
 		}
 	}
 	
@@ -35,7 +35,7 @@ if (count($_POST)) {
 		$ip   = $_SERVER['REMOTE_ADDR'];
 		$fail = false;
 		
-		if (Flux::config('RequireChangeConfirm')) {
+		if (Athena::config('RequireChangeConfirm')) {
 			$sql  = "INSERT INTO {$server->loginDatabase}.$emailChangeTable ";
 			$sql .= "(code, account_id, old_email, new_email, request_date, request_ip, change_done) ";
 			$sql .= "VALUES (?, ?, ?, ?, NOW(), ?, 0)";
@@ -43,10 +43,10 @@ if (count($_POST)) {
 			$res  = $sth->execute(array($code, $session->account->account_id, $session->account->email, $email, $ip));
 			
 			if ($res) {
-				require_once 'Flux/Mailer.php';
+				require_once 'Athena/Mailer.php';
 				$name = $session->loginAthenaGroup->serverName;
 				$link = $this->url('account', 'confirmemail', array('_host' => true, 'code' => $code, 'account' => $session->account->account_id, 'login' => $name));
-				$mail = new Flux_Mailer();
+				$mail = new Athena_Mailer();
 				$sent = $mail->send($email, 'Change E-mail', 'changemail', array(
 					'AccountUsername' => $session->account->userid,
 					'OldEmail'        => $session->account->email,
@@ -55,7 +55,7 @@ if (count($_POST)) {
 				));
 
 				if ($sent) {
-					$session->setMessageData(Flux::message('EmailChangeSent'));
+					$session->setMessageData(Athena::message('EmailChangeSent'));
 					$this->redirect();
 				}
 				else {
@@ -80,7 +80,7 @@ if (count($_POST)) {
 				$res  = $sth->execute(array($code, $session->account->account_id, $old, $email, $ip, $ip));
 				
 				if ($res) {
-					$session->setMessageData(Flux::message('EmailAddressChanged'));
+					$session->setMessageData(Athena::message('EmailAddressChanged'));
 					$this->redirect();
 				}
 				else {
@@ -94,7 +94,7 @@ if (count($_POST)) {
 	}
 	
 	if (!empty($fail)) {
-		$errorMessage = Flux::message('EmailChangeFailed');
+		$errorMessage = Athena::message('EmailChangeFailed');
 	}
 }
 ?>

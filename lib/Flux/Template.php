@@ -1,5 +1,5 @@
 <?php
-require_once 'Flux/Paginator.php';
+require_once 'Athena/Paginator.php';
 
 /**
  * The template is mostly responsible for the presentation logic of things, but
@@ -13,7 +13,7 @@ require_once 'Flux/Paginator.php';
  * be used to access the template instance's methods, and is also how helpers
  * are currently implemented.
  */
-class Flux_Template {
+class Athena_Template {
 	/**
 	 * Default data which gets exposed as globals to the templates, and may be
 	 * set with the setDefaultData() method.
@@ -27,7 +27,7 @@ class Flux_Template {
 	 * Request parameters.
 	 *
 	 * @access protected
-	 * @var Flux_Config
+	 * @var Athena_Config
 	 */
 	protected $params;
 	
@@ -185,10 +185,10 @@ class Flux_Template {
 	/**
 	 * Construct new template onbject.
 	 *
-	 * @param Flux_Config $config
+	 * @param Athena_Config $config
 	 * @access public
 	 */
-	public function __construct(Flux_Config $config)
+	public function __construct(Athena_Config $config)
 	{
 		$this->params                    = $config->get('params');
 		$this->basePath                  = $config->get('basePath');
@@ -229,18 +229,18 @@ class Flux_Template {
 	public function render(array $dataArr = array())
 	{
 		// GZip compression.
-		if (Flux::config('GzipCompressOutput')) {
+		if (Athena::config('GzipCompressOutput')) {
 			header('Accept-Encoding: gzip');
 			ini_set('zlib.output_handler', '');
 			ini_set('zlib.output_compression', 'On');
-			ini_set('zlib.output_compression_level', (int)Flux::config('GzipCompressionLevel'));
+			ini_set('zlib.output_compression_level', (int)Athena::config('GzipCompressionLevel'));
 		}
 		
 		$addon = false;
 		$this->actionPath = sprintf('%s/%s/%s.php', $this->modulePath, $this->moduleName, $this->actionName);
 		
 		if (!file_exists($this->actionPath)) {
-			foreach (Flux::$addons as $_tmpAddon) {
+			foreach (Athena::$addons as $_tmpAddon) {
 				if ($_tmpAddon->respondsTo($this->moduleName, $this->actionName)) {
 					$addon = $_tmpAddon;
 					$this->actionPath = sprintf('%s/%s/%s.php', $addon->moduleDir, $this->moduleName, $this->actionName);
@@ -299,10 +299,10 @@ class Flux_Template {
 		$this->urlWithQs  = $this->urlWithQS;
 		
 		// Tidy up!
-		if (Flux::config('OutputCleanHTML')) {
-			$dispatcher = Flux_Dispatcher::getInstance();
+		if (Athena::config('OutputCleanHTML')) {
+			$dispatcher = Athena_Dispatcher::getInstance();
 			$tidyIgnore = false;
-			if (($tidyIgnores = Flux::config('TidyIgnore')) instanceOf Flux_Config) {
+			if (($tidyIgnores = Athena::config('TidyIgnore')) instanceOf Athena_Config) {
 				foreach ($tidyIgnores->getChildrenConfigs() as $ignore) {
 					$ignore = $ignore->toArray();
 					if (is_array($ignore) && array_key_exists('module', $ignore)) {
@@ -327,7 +327,7 @@ class Flux_Template {
 		extract($data, EXTR_REFS);
 		
 		// Files object.
-		$files = new Flux_Config($_FILES);
+		$files = new Athena_Config($_FILES);
 		
 		$preprocessorPath = sprintf('%s/main/preprocess.php', $this->modulePath);
 		if (file_exists($preprocessorPath)) {
@@ -336,7 +336,7 @@ class Flux_Template {
 		
 		include $this->actionPath;
 		
-		$pageMenuFile   = FLUX_ROOT."/modules/{$this->moduleName}/pagemenu/{$this->actionName}.php";
+		$pageMenuFile   = ATHENA_ROOT."/modules/{$this->moduleName}/pagemenu/{$this->actionName}.php";
 		$pageMenuItems  = array();
 		
 		// Get the main menu file first (located in the actual module).
@@ -346,7 +346,7 @@ class Flux_Template {
 			ob_end_clean();
 		}
 		
-		$addonPageMenuFiles = glob(FLUX_ADDON_DIR."/*/modules/{$this->moduleName}/pagemenu/{$this->actionName}.php");
+		$addonPageMenuFiles = glob(ATHENA_ADDON_DIR."/*/modules/{$this->moduleName}/pagemenu/{$this->actionName}.php");
 		if ($addonPageMenuFiles) {
 			foreach ($addonPageMenuFiles as $addonPageMenuFile) {
 				ob_start();
@@ -366,7 +366,7 @@ class Flux_Template {
 		}
 		
 		// Really, tidy up!
-		if (Flux::config('OutputCleanHTML') && !$tidyIgnore && function_exists('tidy_repair_string')) {
+		if (Athena::config('OutputCleanHTML') && !$tidyIgnore && function_exists('tidy_repair_string')) {
 			$content = ob_get_clean();
 			$content = tidy_repair_string($content, array('indent' => true, 'wrap' => false, 'output-xhtml' => true), 'utf8');
 			echo $content;
@@ -382,14 +382,14 @@ class Flux_Template {
 	 */
 	public function getMenuItems($adminMenus = false)
 	{
-		$auth           = Flux_Authorization::getInstance();
-		$accountLevel   = Flux::$sessionData->account->group_id;
-		$adminMenuLevel = Flux::config('AdminMenuLevel');
-		$defaultAction  = Flux_Dispatcher::getInstance()->defaultAction;
-		$menuItems      = Flux::config('MenuItems');
+		$auth           = Athena_Authorization::getInstance();
+		$accountLevel   = Athena::$sessionData->account->group_id;
+		$adminMenuLevel = Athena::config('AdminMenuLevel');
+		$defaultAction  = Athena_Dispatcher::getInstance()->defaultAction;
+		$menuItems      = Athena::config('MenuItems');
 		$allowedItems   = array();
 		
-		if (!($menuItems instanceOf Flux_Config)) {
+		if (!($menuItems instanceOf Athena_Config)) {
 			return array();
 		}
 		
@@ -441,7 +441,7 @@ class Flux_Template {
 	}
 	
 	/**
-	 * @see Flux_Template::getMenuItems()
+	 * @see Athena_Template::getMenuItems()
 	 */
 	public function getAdminMenuItems()
 	{
@@ -456,12 +456,12 @@ class Flux_Template {
 	 */
 	public function getSubMenuItems($moduleName = null)
 	{
-		$auth         = Flux_Authorization::getInstance();
+		$auth         = Athena_Authorization::getInstance();
 		$moduleName   = $moduleName ? $moduleName : $this->moduleName;
-		$subMenuItems = Flux::config('SubMenuItems');
+		$subMenuItems = Athena::config('SubMenuItems');
 		$allowedItems = array();
 		
-		if (!($subMenuItems instanceOf Flux_Config) || !( ($menus = $subMenuItems->get($moduleName)) instanceOf Flux_Config )) {
+		if (!($subMenuItems instanceOf Athena_Config) || !( ($menus = $subMenuItems->get($moduleName)) instanceOf Athena_Config )) {
 			return array();
 		}
 		
@@ -481,7 +481,7 @@ class Flux_Template {
 	 */
 	public function getServerNames()
 	{
-		return array_keys(Flux::$loginAthenaGroupRegistry);
+		return array_keys(Athena::$loginAthenaGroupRegistry);
 	}
 	
 	/**
@@ -491,7 +491,7 @@ class Flux_Template {
 	 */
 	public function hasManyServers()
 	{
-		return count(Flux::$loginAthenaGroupRegistry) > 1;
+		return count(Athena::$loginAthenaGroupRegistry) > 1;
 	}
 	
 	/**
@@ -535,11 +535,11 @@ class Flux_Template {
 	 */
 	public function url($moduleName, $actionName = null, $params = array())
 	{
-		$defaultAction  = Flux_Dispatcher::getInstance()->defaultAction;
+		$defaultAction  = Athena_Dispatcher::getInstance()->defaultAction;
 		$serverProtocol = '';
 		$serverAddress  = '';
 		
-		if ($params instanceOf Flux_Config) {
+		if ($params instanceOf Athena_Config) {
 			$params = $params->toArray();
 		}
 		
@@ -547,7 +547,7 @@ class Flux_Template {
 			$_host  = $params['_host'];
 			$_https = false;
 			
-			if ($_host && ($addr=Flux::config('ServerAddress'))) {
+			if ($_host && ($addr=Athena::config('ServerAddress'))) {
 				if (array_key_exists('_https', $params)) {
 					$_https = $params['_https'];
 				}
@@ -572,7 +572,7 @@ class Flux_Template {
 		$queryString = '';
 		
 		if (count($params)) {
-			$queryString .= Flux::config('UseCleanUrls') ? '?' : '&';
+			$queryString .= Athena::config('UseCleanUrls') ? '?' : '&';
 			foreach ($params as $param => $value) {
 				$queryString .= sprintf('%s=%s&', $param, urlencode($value));
 			}
@@ -609,9 +609,9 @@ class Flux_Template {
 		$number = (float)$number;
 		$amount = number_format(
 			$number,
-			Flux::config('MoneyDecimalPlaces'),
-			Flux::config('MoneyDecimalSymbol'),
-			Flux::config('MoneyThousandsSymbol')
+			Athena::config('MoneyDecimalPlaces'),
+			Athena::config('MoneyDecimalSymbol'),
+			Athena::config('MoneyThousandsSymbol')
 		);
 		return $amount;
 	}
@@ -626,7 +626,7 @@ class Flux_Template {
 	public function formatDate($date = null)
 	{
 		$ts = $date ? strtotime($date) : time();
-		return date(Flux::config('DateFormat'), $ts);
+		return date(Athena::config('DateFormat'), $ts);
 	}
 	
 	/**
@@ -639,7 +639,7 @@ class Flux_Template {
 	public function formatDateTime($dateTime = null)
 	{
 		$ts = $dateTime ? strtotime($dateTime) : time();
-		return date(Flux::config('DateTimeFormat'), $ts);
+		return date(Athena::config('DateTimeFormat'), $ts);
 	}
 	
 	/**
@@ -655,8 +655,8 @@ class Flux_Template {
 		$year  = ($year =$this->params->get("{$name}_year"))  ? $year  : date('Y', $ts);
 		$month = ($month=$this->params->get("{$name}_month")) ? $month : date('m', $ts);
 		$day   = ($day  =$this->params->get("{$name}_day"))   ? $day   : date('d', $ts);
-		$fw    = $year + (int)Flux::config('ForwardYears');
-		$bw    = $year - (int)Flux::config('BackwardYears');
+		$fw    = $year + (int)Athena::config('ForwardYears');
+		$bw    = $year - (int)Athena::config('BackwardYears');
 		
 		// Get years.
 		$years = sprintf('<select name="%s_year">', $name);
@@ -810,12 +810,12 @@ class Flux_Template {
 	 *
 	 * @param int $total Total number of records.
 	 * @param array $options Paginator options.
-	 * @return Flux_Paginator
+	 * @return Athena_Paginator
 	 * @access public
 	 */
 	public function getPaginator($total, array $options = array())
 	{
-		$paginator = new Flux_Paginator($total, $this->url($this->moduleName, $this->actionName, array('_host' => false)), $options);
+		$paginator = new Athena_Paginator($total, $this->url($this->moduleName, $this->actionName, array('_host' => false)), $options);
 		return $paginator;
 	}
 	
@@ -902,13 +902,13 @@ class Flux_Template {
 	{
 		switch (strtoupper($gender)) {
 			case 'M':
-				return Flux::message('GenderTypeMale');
+				return Athena::message('GenderTypeMale');
 				break;
 			case 'F':
-				return Flux::message('GenderTypeFemale');
+				return Athena::message('GenderTypeFemale');
 				break;
 			case 'S':
-				return Flux::message('GenderTypeServer');
+				return Athena::message('GenderTypeServer');
 				break;
 			default:
 				return false;
@@ -930,11 +930,11 @@ class Flux_Template {
 		
 		switch ($state) {
 			case 0:
-				$text  = Flux::message('AccountStateNormal');
+				$text  = Athena::message('AccountStateNormal');
 				$class = 'state-normal';
 				break;
 			case 5:
-				$text  = Flux::message('AccountStatePermBanned');
+				$text  = Athena::message('AccountStatePermBanned');
 				$class = 'state-permanently-banned';
 				break;
 		}
@@ -957,7 +957,7 @@ class Flux_Template {
 	 */
 	public function jobClassText($id)
 	{
-		return Flux::getJobClass($id);
+		return Athena::getJobClass($id);
 	}
 	
 	/**
@@ -972,9 +972,9 @@ class Flux_Template {
 	public function moduleActionFormInputs($moduleName, $actionName = null)
 	{	
 		$inputs = '';
-		if (!Flux::config('UseCleanUrls')) {
+		if (!Athena::config('UseCleanUrls')) {
 			if (!$actionName) {
-				$dispatcher = Flux_Dispatcher::getInstance();
+				$dispatcher = Athena_Dispatcher::getInstance();
 				$actionName = $dispatcher->defaultAction;
 			}
 			$inputs .= sprintf('<input type="hidden" name="module" value="%s" />', htmlspecialchars($moduleName))."\n";
@@ -992,7 +992,7 @@ class Flux_Template {
 	 */
 	public function homunClassText($id)
 	{
-		return Flux::getHomunClass($id);
+		return Athena::getHomunClass($id);
 	}
 
 	/**
@@ -1005,7 +1005,7 @@ class Flux_Template {
 	 */
 	public function itemTypeText($id, $id2 = null)
 	{
-		return Flux::getItemType($id, $id2);
+		return Athena::getItemType($id, $id2);
 	}
 	
 	/**
@@ -1017,7 +1017,7 @@ class Flux_Template {
 	 */
 	public function equipLocationCombinationText($id)
 	{
-		return Flux::getEquipLocationCombination($id);
+		return Athena::getEquipLocationCombination($id);
 	}
 	
 	/**
@@ -1027,11 +1027,11 @@ class Flux_Template {
 	public function emblem($guildID, $serverName = null, $athenaServerName = null)
 	{
 		if (!$serverName) {
-			$serverName = Flux::$sessionData->loginAthenaGroup->serverName;
+			$serverName = Athena::$sessionData->loginAthenaGroup->serverName;
 		}
 		
 		if (!$athenaServerName) {
-			$athenaServerName = Flux::$sessionData->getAthenaServer(Flux::$sessionData->athenaServerName);
+			$athenaServerName = Athena::$sessionData->getAthenaServer(Athena::$sessionData->athenaServerName);
 		}
 		
 		return $this->url('guild', 'emblem',
@@ -1043,7 +1043,7 @@ class Flux_Template {
 	 */
 	public function loginRequired($message = null)
 	{
-		$dispatcher = Flux_Dispatcher::getInstance();
+		$dispatcher = Athena_Dispatcher::getInstance();
 		$dispatcher->loginRequired($this->basePath, $message);
 	}
 	
@@ -1097,16 +1097,16 @@ class Flux_Template {
 	{
 		$banType = (int)$banType;
 		if (!$banType) {
-			return Flux::message('BanTypeUnbanned');
+			return Athena::message('BanTypeUnbanned');
 		}
 		elseif ($banType === 2) {
-			return Flux::message('BanTypePermBanned');
+			return Athena::message('BanTypePermBanned');
 		}
 		elseif ($banType === 1) {
-			return Flux::message('BanTypeTempBanned');
+			return Athena::message('BanTypeTempBanned');
 		}
 		else {
-			return Flux::message('UnknownLabel');
+			return Athena::message('UnknownLabel');
 		}
 	}
 	
@@ -1117,7 +1117,7 @@ class Flux_Template {
 	{
 		$jobs      = array();
 		$equipJob  = (int)$equipJob;
-		$equipJobs = Flux::getEquipJobsList();
+		$equipJobs = Athena::getEquipJobsList();
 		
 		foreach ($equipJobs as $bit => $name) {
 			if ($equipJob & $bit) {
@@ -1164,7 +1164,7 @@ class Flux_Template {
 	{
 		$locations   = array();
 		$equipLoc    = (int)$equipLoc;
-		$equipLocs   = Flux::getEquipLocationList();
+		$equipLocs   = Athena::getEquipLocationList();
 		
 		foreach ($equipLocs as $bit => $name) {
 			if ($equipLoc & $bit) {
@@ -1181,7 +1181,7 @@ class Flux_Template {
 	public function equipUpper($equipUpper)
 	{
 		$upper   = array();
-		$table   = Flux::getEquipUpperList();
+		$table   = Athena::getEquipUpperList();
 		
 		foreach ($table as $bit => $name) {
 			if ($equipUpper & $bit) {
@@ -1222,7 +1222,7 @@ class Flux_Template {
 	public function donateButton($amount)
 	{
 		ob_start();
-		include FLUX_DATA_DIR.'/paypal/button.php';
+		include ATHENA_DATA_DIR.'/paypal/button.php';
 		$button = ob_get_clean();
 		return $button;
 	}
@@ -1233,19 +1233,19 @@ class Flux_Template {
 	public function shopItemImage($shopItemID, $serverName = null, $athenaServerName = null)
 	{
 		if (!$serverName) {
-			$serverName = Flux::$sessionData->loginAthenaGroup->serverName;
+			$serverName = Athena::$sessionData->loginAthenaGroup->serverName;
 		}
 		
 		if (!$athenaServerName) {
-			$athenaServerName = Flux::$sessionData->getAthenaServer(Flux::$sessionData->athenaServerName);
+			$athenaServerName = Athena::$sessionData->getAthenaServer(Athena::$sessionData->athenaServerName);
 		}
 		
 		if (!$serverName || !$athenaServerName) {
 			return false;
 		}
 		
-		$dir   = FLUX_DATA_DIR."/itemshop/$serverName/$athenaServerName";
-		$exts  = implode('|', array_map('preg_quote', Flux::config('ShopImageExtensions')->toArray()));
+		$dir   = ATHENA_DATA_DIR."/itemshop/$serverName/$athenaServerName";
+		$exts  = implode('|', array_map('preg_quote', Athena::config('ShopImageExtensions')->toArray()));
 		$imgs  = glob("$dir/$shopItemID.*");
 		
 		if (is_array($imgs)) {
@@ -1270,7 +1270,7 @@ class Flux_Template {
 	 */
 	public function iconImage($itemID)
 	{
-		$path = sprintf(FLUX_DATA_DIR."/items/icons/".Flux::config('ItemIconNameFormat'), $itemID);
+		$path = sprintf(ATHENA_DATA_DIR."/items/icons/".Athena::config('ItemIconNameFormat'), $itemID);
 		$link = preg_replace('&/{2,}&', '/', "{$this->basePath}/$path");
 		return file_exists($path) ? $link : false;
 	}
@@ -1280,7 +1280,7 @@ class Flux_Template {
 	 */
 	public function itemImage($itemID)
 	{
-		$path = sprintf(FLUX_DATA_DIR."/items/images/".Flux::config('ItemImageNameFormat'), $itemID);
+		$path = sprintf(ATHENA_DATA_DIR."/items/images/".Athena::config('ItemImageNameFormat'), $itemID);
 		$link = preg_replace('&/{2,}&', '/', "{$this->basePath}/$path");
 		return file_exists($path) ? $link : false;
 	}
@@ -1290,9 +1290,9 @@ class Flux_Template {
 	 */
 	public function monsterMode($mode)
 	{
-		$modes = Flux::monsterModeToArray($mode);
+		$modes = Athena::monsterModeToArray($mode);
 		$array = array();
-		foreach (Flux::config('MonsterModes')->toArray() as $bit => $name) {
+		foreach (Athena::config('MonsterModes')->toArray() as $bit => $name) {
 			if (in_array($bit, $modes)) {
 				$array[] = $name;
 			}

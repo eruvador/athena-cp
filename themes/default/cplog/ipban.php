@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>IP Bans</h2>
 <p class="toggler"><a href="javascript:toggleSearchForm()">Search...</a></p>
 <form action="<?php echo $this->url ?>" method="get" class="search-form">
@@ -12,7 +12,7 @@
 		...
 		<label for="ban_type">Ban Type:</label>
 		<select name="ban_type" id="ban_type">
-			<option value=""<?php if (!($ban_type=$params->get('ban_type'))) echo ' selected="selected"' ?>><?php echo htmlspecialchars(Flux::message('AllLabel')) ?></option>
+			<option value=""<?php if (!($ban_type=$params->get('ban_type'))) echo ' selected="selected"' ?>><?php echo htmlspecialchars(Athena::message('AllLabel')) ?></option>
 			<option value="unban"<?php if ($ban_type == 'unban') echo ' selected="selected"' ?>>Unban</option>
 			<option value="ban"<?php if ($ban_type == 'ban') echo ' selected="selected"' ?>>Ban</option>
 		</select>

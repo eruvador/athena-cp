@@ -2,7 +2,7 @@
 // This file should control all access to specified modules and actions.
 return array(
 	// Module/action permissions.
-	// These are handled during runtime by Flux.
+	// These are handled during runtime by Athena.
 	// '*' is a default that is checked for any action that has not been
 	// specified an access level.
 	'modules' => array(

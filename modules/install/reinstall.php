@@ -1,11 +1,11 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title = 'Re-Install Database Schemas';
 
 if (count($_POST) && $params->get('reinstall')) {
-	$loginDbFiles   = glob(FLUX_DATA_DIR.'/logs/schemas/logindb/*/*.txt');
-	$charMapDbFiles = glob(FLUX_DATA_DIR.'/logs/schemas/charmapdb/*/*.txt');
+	$loginDbFiles   = glob(ATHENA_DATA_DIR.'/logs/schemas/logindb/*/*.txt');
+	$charMapDbFiles = glob(ATHENA_DATA_DIR.'/logs/schemas/charmapdb/*/*.txt');
 	
 	foreach (array($loginDbFiles, $charMapDbFiles) as $dbDir) {
 		if ($dbDir) {

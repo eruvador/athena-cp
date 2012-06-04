@@ -1,9 +1,9 @@
 <?php
 require_once 'phpmailer/class.phpmailer.php';
 require_once 'markdown/markdown.php';
-require_once 'Flux/LogFile.php';
+require_once 'Athena/LogFile.php';
 
-class Flux_Mailer {
+class Athena_Mailer {
 	protected $pm;
 	protected static $errLog;
 	protected static $log;
@@ -11,49 +11,49 @@ class Flux_Mailer {
 	public function __construct()
 	{
 		if (!self::$errLog) {
-			self::$errLog = new Flux_LogFile(FLUX_DATA_DIR.'/logs/errors/mail/'.date('Ymd').'.log');
+			self::$errLog = new Athena_LogFile(ATHENA_DATA_DIR.'/logs/errors/mail/'.date('Ymd').'.log');
 		}
 		if (!self::$log) {
-			self::$log = new Flux_LogFile(FLUX_DATA_DIR.'/logs/mail/'.date('Ymd').'.log');
+			self::$log = new Athena_LogFile(ATHENA_DATA_DIR.'/logs/mail/'.date('Ymd').'.log');
 		}
 		
 		$this->pm     = $pm = new PHPMailer();
 		$this->errLog = self::$errLog;
 		$this->log    = self::$log;
 		
-		if (Flux::config('MailerUseSMTP')) {
+		if (Athena::config('MailerUseSMTP')) {
 			$pm->IsSMTP();
 			
-			if (is_array($hosts=Flux::config('MailerSMTPHosts'))) {
+			if (is_array($hosts=Athena::config('MailerSMTPHosts'))) {
 				$hosts = implode(';', $hosts);
 			}
 			
 			$pm->Host = $hosts;
 			
-			if ($user=Flux::config('MailerSMTPUsername')) {
+			if ($user=Athena::config('MailerSMTPUsername')) {
 				$pm->SMTPAuth = true;
 				
-				if (Flux::config('MailerSMTPUseTLS')) {
+				if (Athena::config('MailerSMTPUseTLS')) {
 					$pm->SMTPSecure = 'tls';
 				}
-				if (Flux::config('MailerSMTPUseSSL')) {
+				if (Athena::config('MailerSMTPUseSSL')) {
 					$pm->SMTPSecure = 'ssl';
 				}
-				if ($port=Flux::config('MailerSMTPPort')) {
+				if ($port=Athena::config('MailerSMTPPort')) {
 					$pm->Port = (int)$port;
 				}
 				
 				$pm->Username = $user;
 				
-				if ($pass=Flux::config('MailerSMTPPassword')) {
+				if ($pass=Athena::config('MailerSMTPPassword')) {
 					$pm->Password = $pass;
 				}
 			}
 		}
 		
 		// From address.
-		$pm->From     = Flux::config('MailerFromAddress');
-		$pm->FromName = Flux::config('MailerFromName');
+		$pm->From     = Athena::config('MailerFromAddress');
+		$pm->FromName = Athena::config('MailerFromName');
 		
 		// Always use HTML.
 		$pm->IsHTML(true);
@@ -68,7 +68,7 @@ class Flux_Mailer {
 			}
 		}
 		else {
-			$templatePath = FLUX_DATA_DIR."/templates/$template.php";
+			$templatePath = ATHENA_DATA_DIR."/templates/$template.php";
 			if (!file_exists($templatePath)) {
 				return false;
 			}

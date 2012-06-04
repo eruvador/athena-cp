@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('TransferTitle');
+$title = Athena::message('TransferTitle');
 
 if (count($_POST)) {
 	if ($session->account->balance) {
@@ -11,25 +11,25 @@ if (count($_POST)) {
 		$charName = trim($params->get('char_name'));
 		
 		if (!$credits || $credits < 1) {
-			$errorMessage = Flux::message('TransferGreaterThanOne');
+			$errorMessage = Athena::message('TransferGreaterThanOne');
 		}
 		elseif (!$charName) {
-			$errorMessage = Flux::message('TransferEnterCharName');
+			$errorMessage = Athena::message('TransferEnterCharName');
 		}
 		else {
 			$res = $server->transferCredits($session->account->account_id, $charName, $credits);
 			
 			if ($res === -3) {
-				$errorMessage = sprintf(Flux::message('TransferNoCharExists'), $charName);
+				$errorMessage = sprintf(Athena::message('TransferNoCharExists'), $charName);
 			}
 			elseif ($res === -2) {
-				$errorMessage = Flux::message('TransferNoBalance');
+				$errorMessage = Athena::message('TransferNoBalance');
 			}
 			elseif ($res !== true) {
-				$errorMessage = Flux::message('TransferUnexpectedError');
+				$errorMessage = Athena::message('TransferUnexpectedError');
 			}
 			else {
-				$session->setMessageData(Flux::message('TransferSuccessful'));
+				$session->setMessageData(Athena::message('TransferSuccessful'));
 				$this->redirect();
 			}
 		}

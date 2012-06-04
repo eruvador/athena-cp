@@ -1,20 +1,20 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 if (empty($amount)) {
 	return false;
 }
 
-$session            = Flux::$sessionData;
+$session            = Athena::$sessionData;
 $customDataArray    = array('server_name' => $session->loginAthenaGroup->serverName, 'account_id' => $session->account->account_id);
 $customDataEscaped  = htmlspecialchars(base64_encode(serialize($customDataArray)));
-$businessEmail      = htmlspecialchars(Flux::config('PayPalBusinessEmail'));
-$donationCurrency   = htmlspecialchars(Flux::config('DonationCurrency'));
-$creditExchangeRate = Flux::config('CreditExchangeRate');
+$businessEmail      = htmlspecialchars(Athena::config('PayPalBusinessEmail'));
+$donationCurrency   = htmlspecialchars(Athena::config('DonationCurrency'));
+$creditExchangeRate = Athena::config('CreditExchangeRate');
 $donationCredits    = floor($amount / $creditExchangeRate);
 $itemName           = htmlspecialchars(sprintf('Donation Credits: %s CREDIT(s)', number_format($donationCredits)));
 ?>
-<form action="https://<?php echo Flux::config('PayPalIpnUrl') ?>/cgi-bin/webscr" method="post">
+<form action="https://<?php echo Athena::config('PayPalIpnUrl') ?>/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_donations" />
 <input type="hidden" name="notify_url" value="<?php echo $this->url('donate', 'notify', array('_host' => true)) ?>" />
 <input type="hidden" name="return" value="<?php echo $this->url('main', 'index', array('_host' => true)) ?>" />

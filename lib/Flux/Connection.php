@@ -1,6 +1,6 @@
 <?php
-require_once 'Flux/Connection/Statement.php';
-require_once 'Flux/DataObject.php';
+require_once 'Athena/Connection/Statement.php';
+require_once 'Athena/DataObject.php';
 
 /**
  * The connection class acts more like a container, or connection manager and
@@ -9,12 +9,12 @@ require_once 'Flux/DataObject.php';
  * connections to TWO databases, the logs database from which all the eA logs
  * are stored, and the main database where everything else is stored.
  */
-class Flux_Connection {
+class Athena_Connection {
 	/**
 	 * Main database configuration object.
 	 *
 	 * @access public
-	 * @var Flux_Config
+	 * @var Athena_Config
 	 */
 	public $dbConfig;
 	
@@ -22,7 +22,7 @@ class Flux_Connection {
 	 * Logs database configuration object.
 	 *
 	 * @access public
-	 * @var Flux_Config
+	 * @var Athena_Config
 	 */
 	public $logsDbConfig;
 	
@@ -39,11 +39,11 @@ class Flux_Connection {
 	private $pdoLogs;
 	
 	/**
-	 * @param Flux_Config $dbConfig
-	 * @param Flux_Config $logsDbConfig
+	 * @param Athena_Config $dbConfig
+	 * @param Athena_Config $logsDbConfig
 	 * @access public
 	 */
-	public function __construct(Flux_Config $dbConfig, Flux_Config $logsDbConfig)
+	public function __construct(Athena_Config $dbConfig, Athena_Config $logsDbConfig)
 	{
 		$this->dbConfig     = $dbConfig;
 		$this->logsDbConfig = $logsDbConfig;
@@ -52,11 +52,11 @@ class Flux_Connection {
 	/**
 	 * Establish connection to server based on config.
 	 *
-	 * @param Flux_Config $dbConfig
+	 * @param Athena_Config $dbConfig
 	 * @return PDO
 	 * @access private
 	 */
-	private function connect(Flux_Config $dbConfig)
+	private function connect(Athena_Config $dbConfig)
 	{
 		$dsn = 'mysql:';
 		
@@ -158,10 +158,10 @@ class Flux_Connection {
 	{
 		$dbh = $this->getConnection();
 		$sth = $dbh->prepare($statement, $options);
-		@$sth->setFetchMode(PDO::FETCH_CLASS, 'Flux_DataObject', array(null, array('dbconfig' => $this->dbConfig)));
+		@$sth->setFetchMode(PDO::FETCH_CLASS, 'Athena_DataObject', array(null, array('dbconfig' => $this->dbConfig)));
 		
 		if ($sth) {
-			return new Flux_Connection_Statement($sth);
+			return new Athena_Connection_Statement($sth);
 		}
 		else {
 			return false;
@@ -178,10 +178,10 @@ class Flux_Connection {
 	{
 		$dbh = $this->getLogsConnection();
 		$sth = $dbh->prepare($statement, $options);
-		@$sth->setFetchMode(PDO::FETCH_CLASS, 'Flux_DataObject', array(null, array('dbconfig' => $this->logsDbConfig)));
+		@$sth->setFetchMode(PDO::FETCH_CLASS, 'Athena_DataObject', array(null, array('dbconfig' => $this->logsDbConfig)));
 		
 		if ($sth) {
-			return new Flux_Connection_Statement($sth);
+			return new Athena_Connection_Statement($sth);
 		}
 		else {
 			return false;

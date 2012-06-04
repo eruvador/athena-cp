@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('IpbanEditTitle');
+$title = Athena::message('IpbanEditTitle');
 
 $banID = $params->get('list');
 
@@ -29,25 +29,25 @@ if (count($_POST)) {
 	$editReason = trim($params->get('edit_reason'));
 	
 	if (!$list) {
-		$errorMessage = Flux::message('IpbanEnterIpPattern');
+		$errorMessage = Athena::message('IpbanEnterIpPattern');
 	}
 	elseif (!preg_match('/^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]|\*)\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]|\*)\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]|\*)$/', $list, $m)) {
-		$errorMessage = Flux::message('IpbanInvalidPattern');
+		$errorMessage = Athena::message('IpbanInvalidPattern');
 	}
-	elseif (preg_match('/' . Flux::config('IpWhitelistPattern') . '/', $list)) {
-		$errorMessage = Flux::message('IpbanWhitelistedPattern');
+	elseif (preg_match('/' . Athena::config('IpWhitelistPattern') . '/', $list)) {
+		$errorMessage = Athena::message('IpbanWhitelistedPattern');
 	}
 	elseif (!$reason) {
-		$errorMessage = Flux::message('IpbanEnterReason');
+		$errorMessage = Athena::message('IpbanEnterReason');
 	}
 	elseif (!$rtime) {
-		$errorMessage = Flux::message('IpbanSelectUnbanDate');
+		$errorMessage = Athena::message('IpbanSelectUnbanDate');
 	}
 	elseif (!$editReason) {
-		$errorMessage = Flux::message('IpbanEnterEditReason');
+		$errorMessage = Athena::message('IpbanEnterEditReason');
 	}
 	elseif (strtotime($rtime) <= time()) {
-		$errorMessage = Flux::message('IpbanFutureDate');
+		$errorMessage = Athena::message('IpbanFutureDate');
 	}
 	else {
 		if ($list != $ipban->list) {
@@ -65,7 +65,7 @@ if (count($_POST)) {
 			$ipban2 = $sth->fetch();
 			
 			if ($ipban2 && $ipban2->list) {
-				$errorMessage = sprintf(Flux::message('IpbanAlreadyBanned'), $ipban2->list);
+				$errorMessage = sprintf(Athena::message('IpbanAlreadyBanned'), $ipban2->list);
 			}
 		}
 		
@@ -73,11 +73,11 @@ if (count($_POST)) {
 			if ($server->loginServer->removeIpBan($session->account->account_id, $editReason, $ipban->list)
 				&& $server->loginServer->addIpBan($session->account->account_id, $reason, $rtime, $list)
 			) {
-				$session->setMessageData(sprintf(Flux::message('IpbanPatternBanned'), $list));
+				$session->setMessageData(sprintf(Athena::message('IpbanPatternBanned'), $list));
 				$this->redirect($this->url('ipban'));
 			}
 			else {
-				$errorMessage = Flux::message('IpbanEditFailed');
+				$errorMessage = Athena::message('IpbanEditFailed');
 			}
 		}
 	}

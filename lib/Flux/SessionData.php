@@ -1,12 +1,12 @@
 <?php
-require_once 'Flux/DataObject.php';
-require_once 'Flux/ItemShop/Cart.php';
-require_once 'Flux/LoginError.php';
+require_once 'Athena/DataObject.php';
+require_once 'Athena/ItemShop/Cart.php';
+require_once 'Athena/LoginError.php';
 
 /**
- * Contains all of Flux's session data.
+ * Contains all of Athena's session data.
  */
-class Flux_SessionData {
+class Athena_SessionData {
 	/**
 	 * Actual session data array.
 	 *
@@ -27,7 +27,7 @@ class Flux_SessionData {
 	 * Selected login server group.
 	 *
 	 * @access public
-	 * @var Flux_LoginAthenaGroup
+	 * @var Athena_LoginAthenaGroup
 	 */
 	public $loginAthenaGroup;
 	
@@ -35,7 +35,7 @@ class Flux_SessionData {
 	 * Selected login server.
 	 *
 	 * @access public
-	 * @var Flux_LoginServer
+	 * @var Athena_LoginServer
 	 */
 	public $loginServer;
 	
@@ -43,7 +43,7 @@ class Flux_SessionData {
 	 * Account object.
 	 *
 	 * @access public
-	 * @var Flux_DataObject
+	 * @var Athena_DataObject
 	 */
 	public $account;
 
@@ -86,20 +86,20 @@ class Flux_SessionData {
 		$loggedIn = true;
 		if (!$this->username) {
 			$loggedIn = false;
-			$cfgAthenaServerName = Flux::config('DefaultCharMapServer');
-			$cfgLoginAthenaGroup = Flux::config('DefaultLoginGroup');
+			$cfgAthenaServerName = Athena::config('DefaultCharMapServer');
+			$cfgLoginAthenaGroup = Athena::config('DefaultLoginGroup');
 			
-			if (Flux::getServerGroupByName($cfgLoginAthenaGroup)){
+			if (Athena::getServerGroupByName($cfgLoginAthenaGroup)){
 				$this->setServerNameData($cfgLoginAthenaGroup);
 			}
 			else {
-				$defaultServerName = current(array_keys(Flux::$loginAthenaGroupRegistry));
+				$defaultServerName = current(array_keys(Athena::$loginAthenaGroupRegistry));
 				$this->setServerNameData($defaultServerName);
 			}
 		}
 		
 		
-		if ($this->serverName && ($this->loginAthenaGroup = Flux::getServerGroupByName($this->serverName))) {
+		if ($this->serverName && ($this->loginAthenaGroup = Athena::getServerGroupByName($this->serverName))) {
 			$this->loginServer = $this->loginAthenaGroup->loginServer;
 			
 			if (!$loggedIn && $cfgAthenaServerName && $this->getAthenaServer($cfgAthenaServerName)) {
@@ -116,15 +116,15 @@ class Flux_SessionData {
 			$this->account = $account;
 			
 			// Automatically log out of account when detected as banned.
-			$permBan = ($account->state == 5 && !Flux::config('AllowPermBanLogin'));
-			$tempBan = (($account->unban_time > 0 && $account->unban_time < time()) && !Flux::config('AllowTempBanLogin'));
+			$permBan = ($account->state == 5 && !Athena::config('AllowPermBanLogin'));
+			$tempBan = (($account->unban_time > 0 && $account->unban_time < time()) && !Athena::config('AllowTempBanLogin'));
 			
 			if ($permBan || $tempBan) {
 				$this->logout();
 			}
 		}
 		else {
-			$this->account = new Flux_DataObject(null, array('group_id' => AccountLevel::UNAUTH));
+			$this->account = new Athena_DataObject(null, array('group_id' => AccountLevel::UNAUTH));
 		}
 		
 		//if (!$this->isLoggedIn()) {
@@ -151,7 +151,7 @@ class Flux_SessionData {
 				}
 				
 				if (!array_key_exists($athenaServerName, $cartArray[$accountID])) {
-					$cartArray[$accountID][$athenaServerName] = new Flux_ItemShop_Cart();
+					$cartArray[$accountID][$athenaServerName] = new Athena_ItemShop_Cart();
 				}
 				$cartArray[$accountID][$athenaServerName]->setAccount($this->account);
 				$athenaServer->setCart($cartArray[$accountID][$athenaServerName]);
@@ -249,44 +249,44 @@ class Flux_SessionData {
 	 * @param string $server Server name
 	 * @param string $username
 	 * @param string $password
-	 * @throws Flux_LoginError
+	 * @throws Athena_LoginError
 	 * @access public
 	 */
 	public function login($server, $username, $password, $securityCode = null)
 	{
-		$loginAthenaGroup = Flux::getServerGroupByName($server);
+		$loginAthenaGroup = Athena::getServerGroupByName($server);
 		if (!$loginAthenaGroup) {
-			throw new Flux_LoginError('Invalid server.', Flux_LoginError::INVALID_SERVER);
+			throw new Athena_LoginError('Invalid server.', Athena_LoginError::INVALID_SERVER);
 		}
 		
-		if ($loginAthenaGroup->loginServer->isIpBanned() && !Flux::config('AllowIpBanLogin')) {
-			throw new Flux_LoginError('IP address is banned', Flux_LoginError::IPBANNED);
+		if ($loginAthenaGroup->loginServer->isIpBanned() && !Athena::config('AllowIpBanLogin')) {
+			throw new Athena_LoginError('IP address is banned', Athena_LoginError::IPBANNED);
 		}
 		
-		if ($securityCode !== false && Flux::config('UseLoginCaptcha')) {
+		if ($securityCode !== false && Athena::config('UseLoginCaptcha')) {
 			if (strtolower($securityCode) != strtolower($this->securityCode)) {
-				throw new Flux_LoginError('Invalid security code', Flux_LoginError::INVALID_SECURITY_CODE);
+				throw new Athena_LoginError('Invalid security code', Athena_LoginError::INVALID_SECURITY_CODE);
 			}
-			elseif (Flux::config('EnableReCaptcha')) {
+			elseif (Athena::config('EnableReCaptcha')) {
 				require_once 'recaptcha/recaptchalib.php';
 				$resp = recaptcha_check_answer(
-					Flux::config('ReCaptchaPrivateKey'),
+					Athena::config('ReCaptchaPrivateKey'),
 					$_SERVER['REMOTE_ADDR'],
 					// Checks POST fields.
 					$_POST['recaptcha_challenge_field'],
 					$_POST['recaptcha_response_field']);
 				
 				if (!$resp->is_valid) {
-					throw new Flux_LoginError('Invalid security code', Flux_LoginError::INVALID_SECURITY_CODE);
+					throw new Athena_LoginError('Invalid security code', Athena_LoginError::INVALID_SECURITY_CODE);
 				}
 			}
 		}
 		
 		if (!$loginAthenaGroup->isAuth($username, $password)) {
-			throw new Flux_LoginError('Invalid login', Flux_LoginError::INVALID_LOGIN);
+			throw new Athena_LoginError('Invalid login', Athena_LoginError::INVALID_LOGIN);
 		}
 		
-		$creditsTable  = Flux::config('FluxTables.CreditsTable');
+		$creditsTable  = Athena::config('AthenaTables.CreditsTable');
 		$creditColumns = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
 		
 		$sql  = "SELECT login.*, {$creditColumns} FROM {$loginAthenaGroup->loginDatabase}.login ";
@@ -303,12 +303,12 @@ class Flux_SessionData {
 					$sth = $loginAthenaGroup->connection->getStatement($sql);
 					$sth->execute(array($row->account_id));
 				}
-				elseif (!Flux::config('AllowTempBanLogin')) {
-					throw new Flux_LoginError('Temporarily banned', Flux_LoginError::BANNED);
+				elseif (!Athena::config('AllowTempBanLogin')) {
+					throw new Athena_LoginError('Temporarily banned', Athena_LoginError::BANNED);
 				}
 			}
 			if ($row->state == 5) {
-				$createTable = Flux::config('FluxTables.AccountCreateTable');
+				$createTable = Athena::config('AthenaTables.AccountCreateTable');
 				$sql  = "SELECT id FROM {$loginAthenaGroup->loginDatabase}.$createTable ";
 				$sql .= "WHERE account_id = ? AND confirmed = 0";
 				$sth  = $loginAthenaGroup->connection->getStatement($sql);
@@ -316,11 +316,11 @@ class Flux_SessionData {
 				$row2 = $sth->fetch();
 				
 				if ($row2 && $row2->id) {
-					throw new Flux_LoginError('Pending confirmation', Flux_LoginError::PENDING_CONFIRMATION);
+					throw new Athena_LoginError('Pending confirmation', Athena_LoginError::PENDING_CONFIRMATION);
 				}
 			}
-			if (!Flux::config('AllowPermBanLogin') && $row->state == 5) {
-				throw new Flux_LoginError('Permanently banned', Flux_LoginError::PERMABANNED);
+			if (!Athena::config('AllowPermBanLogin') && $row->state == 5) {
+				throw new Athena_LoginError('Permanently banned', Athena_LoginError::PERMABANNED);
 			}
 			
 			$this->setServerNameData($server);
@@ -330,7 +330,7 @@ class Flux_SessionData {
 		else {
 			$message  = "Unexpected error during login.\n";
 			$message .= 'PDO error info, if any: '.print_r($smt->errorInfo(), true);
-			throw new Flux_LoginError($message, Flux_LoginError::UNEXPECTED);
+			throw new Athena_LoginError($message, Athena_LoginError::UNEXPECTED);
 		}
 		
 		return true;
@@ -339,14 +339,14 @@ class Flux_SessionData {
 	/**
 	 * Get account object for a particular user name.
 	 *
-	 * @param Flux_LoginAthenaGroup $loginAthenaGroup
+	 * @param Athena_LoginAthenaGroup $loginAthenaGroup
 	 * @param string $username
 	 * @return mixed
 	 * @access private
 	 */
-	private function getAccount(Flux_LoginAthenaGroup $loginAthenaGroup, $username)
+	private function getAccount(Athena_LoginAthenaGroup $loginAthenaGroup, $username)
 	{
-		$creditsTable  = Flux::config('FluxTables.CreditsTable');
+		$creditsTable  = Athena::config('AthenaTables.CreditsTable');
 		$creditColumns = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
 		
 		$sql  = "SELECT login.*, {$creditColumns} FROM {$loginAthenaGroup->loginDatabase}.login ";
@@ -383,7 +383,7 @@ class Flux_SessionData {
 	}
 	
 	/**
-	 * Get a Flux_Athena instance by its name based on current server settings.
+	 * Get a Athena_Athena instance by its name based on current server settings.
 	 * 
 	 * @param string $name
 	 * @access public
@@ -394,7 +394,7 @@ class Flux_SessionData {
 			return $this->getAthenaServer($this->athenaServerName);
 		}
 		
-		if ($this->loginAthenaGroup && ($server = Flux::getAthenaServerByName($this->serverName, $name))) {
+		if ($this->loginAthenaGroup && ($server = Athena::getAthenaServerByName($this->serverName, $name))) {
 			return $server;
 		}
 		else {

@@ -1,7 +1,7 @@
 <?php
-require_once 'Flux/Error.php';
+require_once 'Athena/Error.php';
 
-class Flux_RegisterError extends Flux_Error {
+class Athena_RegisterError extends Athena_Error {
 	const USERNAME_ALREADY_TAKEN = 0;
 	const USERNAME_TOO_SHORT     = 1;
 	const USERNAME_TOO_LONG      = 2;

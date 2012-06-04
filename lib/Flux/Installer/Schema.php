@@ -1,10 +1,10 @@
 <?php
-require_once 'Flux/Installer/SchemaPermissionError.php';
+require_once 'Athena/Installer/SchemaPermissionError.php';
 
 /**
  *
  */
-class Flux_Installer_Schema {	
+class Athena_Installer_Schema {	
 	/**
 	 *
 	 */
@@ -114,12 +114,12 @@ class Flux_Installer_Schema {
 				}
 				
 				if (!empty($errnum) && $errnum == 1045) {
-					throw new Flux_Error("Critical MySQL error in Installer/Updater: $errnum: $errmsg");
+					throw new Athena_Error("Critical MySQL error in Installer/Updater: $errnum: $errmsg");
 				}
 				elseif (!empty($errnum) && $errnum == 1142) {
 					// Bail-out.
 					$message = "MySQL error: $errmsg\n\n";
-					throw new Flux_Installer_SchemaPermissionError(
+					throw new Athena_Installer_SchemaPermissionError(
 						$message,
 						$this->schemaInfo['files'][$version],
 						$this->databaseName,
@@ -130,7 +130,7 @@ class Flux_Installer_Schema {
 				}
 				elseif (!empty($errmsg) && strcmp($errmsg,'00000') != 0) {
 					// Only quit with an error if there is actually an error.
-					throw new Flux_Error("Critical MySQL error in Installer/Updater: $errmsg");
+					throw new Athena_Error("Critical MySQL error in Installer/Updater: $errmsg");
 				}
 			}
 			
@@ -184,7 +184,7 @@ class Flux_Installer_Schema {
 	/**
 	 *
 	 */
-	public static function getSchemas(Flux_Installer_MainServer $mainServer, Flux_Installer_CharMapServer $charMapServer = null)
+	public static function getSchemas(Athena_Installer_MainServer $mainServer, Athena_Installer_CharMapServer $charMapServer = null)
 	{
 		$mainServerName = $mainServer->loginAthenaGroup->serverName;
 		
@@ -192,10 +192,10 @@ class Flux_Installer_Schema {
 			$charMapServerName  = null;
 			$databaseName       = $mainServer->loginAthenaGroup->loginDatabase;
 			$connection         = $mainServer->loginAthenaGroup->connection;
-			$availableSchemaDir = array(FLUX_DATA_DIR."/schemas/logindb");
-			$installedSchemaDir = FLUX_DATA_DIR."/logs/schemas/logindb/$mainServerName";
+			$availableSchemaDir = array(ATHENA_DATA_DIR."/schemas/logindb");
+			$installedSchemaDir = ATHENA_DATA_DIR."/logs/schemas/logindb/$mainServerName";
 			
-			foreach (Flux::$addons as $addon) {
+			foreach (Athena::$addons as $addon) {
 				$_schemaDir = "{$addon->addonDir}/schemas/logindb";
 				if (file_exists($_schemaDir) && is_dir($_schemaDir)) {
 					$availableSchemaDir[] = $_schemaDir;
@@ -206,10 +206,10 @@ class Flux_Installer_Schema {
 			$charMapServerName  = $charMapServer->athena->serverName;
 			$databaseName       = $charMapServer->athena->charMapDatabase;
 			$connection         = $charMapServer->athena->connection;
-			$availableSchemaDir = array(FLUX_DATA_DIR."/schemas/charmapdb");
-			$installedSchemaDir = FLUX_DATA_DIR."/logs/schemas/charmapdb/$mainServerName/{$charMapServer->athena->serverName}";
+			$availableSchemaDir = array(ATHENA_DATA_DIR."/schemas/charmapdb");
+			$installedSchemaDir = ATHENA_DATA_DIR."/logs/schemas/charmapdb/$mainServerName/{$charMapServer->athena->serverName}";
 			
-			foreach (Flux::$addons as $addon) {
+			foreach (Athena::$addons as $addon) {
 				$_schemaDir = "{$addon->addonDir}/schemas/charmapdb";
 				if (file_exists($_schemaDir) && is_dir($_schemaDir)) {
 					$availableSchemaDir[] = $_schemaDir;
@@ -289,7 +289,7 @@ class Flux_Installer_Schema {
 			}
 			
 			$dataArray['schemaInfo'] = $schemaInfo;
-			$objects[] = new Flux_Installer_Schema($dataArray);
+			$objects[] = new Athena_Installer_Schema($dataArray);
 		}
 		
 		return $objects;

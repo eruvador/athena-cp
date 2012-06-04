@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
@@ -17,8 +17,8 @@ elseif (!$server->cart->hasFunds()) {
 $items = $server->cart->getCartItems();
 
 if (count($_POST) && $params->get('process')) {
-	$redeemTable = Flux::config('FluxTables.RedemptionTable');
-	$creditTable = Flux::config('FluxTables.CreditsTable');
+	$redeemTable = Athena::config('AthenaTables.RedemptionTable');
+	$creditTable = Athena::config('AthenaTables.CreditsTable');
 	$deduct      = 0;
 	
 	$sql  = "INSERT INTO {$server->charMapDatabase}.$redeemTable ";

@@ -1,7 +1,7 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-$title = Flux::message('CommandLogTitle');
+$title = Athena::message('CommandLogTitle');
 
 $sql = "SELECT COUNT(atcommand_id) AS total FROM {$server->logsDatabase}.atcommandlog";
 $sth = $server->connection->getStatementForLogs($sql);

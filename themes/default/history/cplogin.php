@@ -1,12 +1,12 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2><?php echo htmlspecialchars(Flux::message('HistoryCpLoginHeading')) ?></h2>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
+<h2><?php echo htmlspecialchars(Athena::message('HistoryCpLoginHeading')) ?></h2>
 <?php if ($logins): ?>
 <?php echo $paginator->infoText() ?>
 <table class="horizontal-table">
 	<tr>
-		<th><?php echo $paginator->sortableColumn('login_date', Flux::message('HistoryLoginDateLabel')) ?></th>
-		<th><?php echo $paginator->sortableColumn('ip', Flux::message('HistoryIpAddrLabel')) ?></th>
-		<th><?php echo $paginator->sortableColumn('error_code', Flux::message('HistoryErrorCodeLabel')) ?></th>
+		<th><?php echo $paginator->sortableColumn('login_date', Athena::message('HistoryLoginDateLabel')) ?></th>
+		<th><?php echo $paginator->sortableColumn('ip', Athena::message('HistoryIpAddrLabel')) ?></th>
+		<th><?php echo $paginator->sortableColumn('error_code', Athena::message('HistoryErrorCodeLabel')) ?></th>
 	</tr>
 	<?php foreach ($logins as $login): ?>
 	<tr>
@@ -20,7 +20,7 @@
 		</td>
 		<td>
 			<?php if (is_null($login->error_code)): ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 			<?php else: ?>
 				<?php echo htmlspecialchars($login->error_type) ?>
 			<?php endif ?>
@@ -31,7 +31,7 @@
 <?php echo $paginator->getHTML() ?>
 <?php else: ?>
 	<p>
-		<?php echo htmlspecialchars(Flux::message('HistoryNoCpLogins')) ?>
-		<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Flux::message('GoBackLabel')) ?></a>
+		<?php echo htmlspecialchars(Athena::message('HistoryNoCpLogins')) ?>
+		<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Athena::message('GoBackLabel')) ?></a>
 	</p>
 <?php endif ?>

@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title = 'List Logins';
 
-$loginLogTable = Flux::config('FluxTables.LoginLogTable');
+$loginLogTable = Athena::config('AthenaTables.LoginLogTable');
 $sqlpartial    = "WHERE 1=1 ";
 $bind          = array();
 
@@ -71,7 +71,7 @@ $sth = $server->connection->getStatement($sql);
 $sth->execute($bind);
 
 $logins = $sth->fetchAll();
-$loginErrors = Flux::config('LoginErrors');
+$loginErrors = Athena::config('LoginErrors');
 
 if ($logins) {
 	foreach ($logins as $_tmplogin) {

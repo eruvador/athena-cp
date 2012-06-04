@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Logins</h2>
 <p class="toggler"><a href="javascript:toggleSearchForm()">Search...</a></p>
 <form action="<?php echo $this->url ?>" method="get" class="search-form">
@@ -45,7 +45,7 @@
 	<tr>
 		<th><?php echo $paginator->sortableColumn('account_id', 'Account ID') ?></th>
 		<th><?php echo $paginator->sortableColumn('username', 'Username') ?></th>
-		<?php if (($showPassword=Flux::config('CpLoginLogShowPassword')) && ($seePassword=$auth->allowedToSeeCpLoginLogPass)): ?>
+		<?php if (($showPassword=Athena::config('CpLoginLogShowPassword')) && ($seePassword=$auth->allowedToSeeCpLoginLogPass)): ?>
 		<th><?php echo $paginator->sortableColumn('password', 'Password') ?></th>
 		<?php endif ?>
 		<th><?php echo $paginator->sortableColumn('ip', 'IP Address') ?></th>

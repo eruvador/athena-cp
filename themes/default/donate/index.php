@@ -1,6 +1,6 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Donate</h2>
-<?php if (Flux::config('AcceptDonations')): ?>
+<?php if (Athena::config('AcceptDonations')): ?>
 	<?php if (!empty($errorMessage)): ?>
 		<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
 	<?php endif ?>
@@ -10,11 +10,11 @@
 	<p>All donations towards us are received by PayPal, but don't worry!  Even if you don't have an account with PayPal, you can still use your credit card to donate!</p>
 		
 	<?php
-	$currency         = Flux::config('DonationCurrency');
-	$dollarAmount     = (float)+Flux::config('CreditExchangeRate');
+	$currency         = Athena::config('DonationCurrency');
+	$dollarAmount     = (float)+Athena::config('CreditExchangeRate');
 	$creditAmount     = 1;
 	$rateMultiplier   = 10;
-	$hoursHeld        = +(int)Flux::config('HoldUntrustedAccount');
+	$hoursHeld        = +(int)Athena::config('HoldUntrustedAccount');
 	
 	while ($dollarAmount < 1) {
 		$dollarAmount  *= $rateMultiplier;
@@ -38,7 +38,7 @@
 			</tr>
 			<tr>
 				<th><label>Minimum Donation Amount:</label></th>
-				<td><p><?php echo $this->formatCurrency(Flux::config('MinDonationAmount')) ?> <?php echo htmlspecialchars($currency) ?></p></td>
+				<td><p><?php echo $this->formatCurrency(Athena::config('MinDonationAmount')) ?> <?php echo htmlspecialchars($currency) ?></p></td>
 			</tr>
 		</table>
 	</div>
@@ -52,14 +52,14 @@
 				Enter an amount you would like to donate:
 				<input class="money-input" type="text" name="amount"
 					value="<?php echo htmlspecialchars($params->get('amount')) ?>"
-					size="<?php echo (strlen((string)+Flux::config('CreditExchangeRate')) * 2) + 2 ?>" />
-				<?php echo htmlspecialchars(Flux::config('DonationCurrency')) ?>
+					size="<?php echo (strlen((string)+Athena::config('CreditExchangeRate')) * 2) + 2 ?>" />
+				<?php echo htmlspecialchars(Athena::config('DonationCurrency')) ?>
 			</label>
 			or
 			<label>
 				<input class="credit-input" type="text" name="credit-amount"
-					value="<?php echo htmlspecialchars(intval($params->get('amount') / Flux::config('CreditExchangeRate'))) ?>"
-					size="<?php echo (strlen((string)+Flux::config('CreditExchangeRate')) * 2) + 2 ?>" />
+					value="<?php echo htmlspecialchars(intval($params->get('amount') / Athena::config('CreditExchangeRate'))) ?>"
+					size="<?php echo (strlen((string)+Athena::config('CreditExchangeRate')) * 2) + 2 ?>" />
 				Credits
 			</label>
 		</p>
@@ -71,14 +71,14 @@
 		
 	<p class="credit-amount-text">
 		&mdash;
-		<span class="credit-amount"><?php echo number_format(floor($donationAmount / Flux::config('CreditExchangeRate'))) ?></span> credits
+		<span class="credit-amount"><?php echo number_format(floor($donationAmount / Athena::config('CreditExchangeRate'))) ?></span> credits
 		&mdash;
 	</p>
 		
 	<p class="donation-amount-text">Amount:
 		<span class="donation-amount">
 		<?php echo $this->formatCurrency($donationAmount) ?>
-		<?php echo htmlspecialchars(Flux::config('DonationCurrency')) ?>
+		<?php echo htmlspecialchars(Athena::config('DonationCurrency')) ?>
 		</span>
 	</p>
 	<p class="reset-amount-text">
@@ -87,5 +87,5 @@
 	<p><?php echo $this->donateButton($donationAmount) ?></p>
 	<?php endif ?>
 <?php else: ?>
-	<p><?php echo Flux::message('NotAcceptingDonations') ?></p>
+	<p><?php echo Athena::message('NotAcceptingDonations') ?></p>
 <?php endif ?>

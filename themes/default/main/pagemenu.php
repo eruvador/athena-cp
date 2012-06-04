@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <?php $menus = array() ?>
 <?php if (!empty($pageMenuItems)): ?>
 	<div id="pagemenu"><?php echo empty($title) ? 'Actions for this page' : htmlspecialchars($title) ?>:

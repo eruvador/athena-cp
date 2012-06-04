@@ -1,16 +1,16 @@
 <?php
-require_once 'Flux/BaseServer.php';
-require_once 'Flux/RegisterError.php';
+require_once 'Athena/BaseServer.php';
+require_once 'Athena/RegisterError.php';
 
 /**
  * Represents an eAthena Login Server.
  */
-class Flux_LoginServer extends Flux_BaseServer {
+class Athena_LoginServer extends Athena_BaseServer {
 	/**
 	 * Connection to the MySQL server.
 	 *
 	 * @access public
-	 * @var Flux_Connection
+	 * @var Athena_Connection
 	 */
 	public $connection;
 	
@@ -35,7 +35,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	 *
 	 * @access public
 	 */
-	public function __construct(Flux_Config $config)
+	public function __construct(Athena_Config $config)
 	{
 		parent::__construct($config);
 		$this->loginDatabase = $config->getDatabase();
@@ -44,11 +44,11 @@ class Flux_LoginServer extends Flux_BaseServer {
 	/**
 	 * Set the connection object to be used for this LoginServer instance.
 	 *
-	 * @param Flux_Connection $connection
-	 * @return Flux_Connection
+	 * @param Athena_Connection $connection
+	 * @return Athena_Connection
 	 * @access public
 	 */
-	public function setConnection(Flux_Connection $connection)
+	public function setConnection(Athena_Connection $connection)
 	{
 		$this->connection   = $connection;
 		$this->logsDatabase = $connection->logsDbConfig->getDatabase();
@@ -67,7 +67,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	public function isAuth($username, $password)
 	{
 		if ($this->config->get('UseMD5')) {
-			$password = Flux::hashPassword($password);
+			$password = Athena::hashPassword($password);
 		}
 		
 		if (trim($username) == '' || trim($password) == '') {
@@ -99,52 +99,52 @@ class Flux_LoginServer extends Flux_BaseServer {
 	 */
 	public function register($username, $password, $confirmPassword, $email, $gender, $securityCode,$birthdate)
 	{
-		if (preg_match('/[^' . Flux::config('UsernameAllowedChars') . ']/', $username)) {
-			throw new Flux_RegisterError('Invalid character(s) used in username', Flux_RegisterError::INVALID_USERNAME);
+		if (preg_match('/[^' . Athena::config('UsernameAllowedChars') . ']/', $username)) {
+			throw new Athena_RegisterError('Invalid character(s) used in username', Athena_RegisterError::INVALID_USERNAME);
 		}
-		elseif (strlen($username) < Flux::config('MinUsernameLength')) {
-			throw new Flux_RegisterError('Username is too short', Flux_RegisterError::USERNAME_TOO_SHORT);
+		elseif (strlen($username) < Athena::config('MinUsernameLength')) {
+			throw new Athena_RegisterError('Username is too short', Athena_RegisterError::USERNAME_TOO_SHORT);
 		}
-		elseif (strlen($username) > Flux::config('MaxUsernameLength')) {
-			throw new Flux_RegisterError('Username is too long', Flux_RegisterError::USERNAME_TOO_LONG);
+		elseif (strlen($username) > Athena::config('MaxUsernameLength')) {
+			throw new Athena_RegisterError('Username is too long', Athena_RegisterError::USERNAME_TOO_LONG);
 		}
-		elseif (strlen($password) < Flux::config('MinPasswordLength')) {
-			throw new Flux_RegisterError('Password is too short', Flux_RegisterError::PASSWORD_TOO_SHORT);
+		elseif (strlen($password) < Athena::config('MinPasswordLength')) {
+			throw new Athena_RegisterError('Password is too short', Athena_RegisterError::PASSWORD_TOO_SHORT);
 		}
-		elseif (strlen($password) > Flux::config('MaxPasswordLength')) {
-			throw new Flux_RegisterError('Password is too long', Flux_RegisterError::PASSWORD_TOO_LONG);
+		elseif (strlen($password) > Athena::config('MaxPasswordLength')) {
+			throw new Athena_RegisterError('Password is too long', Athena_RegisterError::PASSWORD_TOO_LONG);
 		}
 		elseif ($password !== $confirmPassword) {
-			throw new Flux_RegisterError('Passwords do not match', Flux_RegisterError::PASSWORD_MISMATCH);
+			throw new Athena_RegisterError('Passwords do not match', Athena_RegisterError::PASSWORD_MISMATCH);
 		}
 		elseif (!preg_match('#^((19|20)?[0-9]{2}[- /.](0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01]))*$#', $birthdate)) {
-			throw new Flux_RegisterError('Birthdate must be YYYY-MM-DD', Flux_RegisterError::INVALID_BIRTHDATE_FORMAT);
+			throw new Athena_RegisterError('Birthdate must be YYYY-MM-DD', Athena_RegisterError::INVALID_BIRTHDATE_FORMAT);
 		}
 		elseif (empty($birthdate)) {
-			throw new Flux_RegisterError('Birthdate field must not be empty', Flux_RegisterError::BIRTHDATE_MUSTNOTBE_EMPTY);
+			throw new Athena_RegisterError('Birthdate field must not be empty', Athena_RegisterError::BIRTHDATE_MUSTNOTBE_EMPTY);
 		}
 		elseif (!preg_match('/(.+?)@(.+?)/', $email)) {
-			throw new Flux_RegisterError('Invalid e-mail address', Flux_RegisterError::INVALID_EMAIL_ADDRESS);
+			throw new Athena_RegisterError('Invalid e-mail address', Athena_RegisterError::INVALID_EMAIL_ADDRESS);
 		}
 		elseif (!in_array(strtoupper($gender), array('M', 'F'))) {
-			throw new Flux_RegisterError('Invalid gender', Flux_RegisterError::INVALID_GENDER);
+			throw new Athena_RegisterError('Invalid gender', Athena_RegisterError::INVALID_GENDER);
 		}
-		elseif (Flux::config('UseCaptcha')) {
-			if (Flux::config('EnableReCaptcha')) {
+		elseif (Athena::config('UseCaptcha')) {
+			if (Athena::config('EnableReCaptcha')) {
 				require_once 'recaptcha/recaptchalib.php';
 				$resp = recaptcha_check_answer(
-					Flux::config('ReCaptchaPrivateKey'),
+					Athena::config('ReCaptchaPrivateKey'),
 					$_SERVER['REMOTE_ADDR'],
 					// Checks POST fields.
 					$_POST['recaptcha_challenge_field'],
 					$_POST['recaptcha_response_field']);
 				
 				if (!$resp->is_valid) {
-					throw new Flux_RegisterError('Invalid security code', Flux_RegisterError::INVALID_SECURITY_CODE);
+					throw new Athena_RegisterError('Invalid security code', Athena_RegisterError::INVALID_SECURITY_CODE);
 				}
 			}
-			elseif (strtolower($securityCode) !== strtolower(Flux::$sessionData->securityCode)) {
-				throw new Flux_RegisterError('Invalid security code', Flux_RegisterError::INVALID_SECURITY_CODE);
+			elseif (strtolower($securityCode) !== strtolower(Athena::$sessionData->securityCode)) {
+				throw new Athena_RegisterError('Invalid security code', Athena_RegisterError::INVALID_SECURITY_CODE);
 			}
 		}
 		
@@ -161,22 +161,22 @@ class Flux_LoginServer extends Flux_BaseServer {
 		
 		$res = $sth->fetch();
 		if ($res) {
-			throw new Flux_RegisterError('Username is already taken', Flux_RegisterError::USERNAME_ALREADY_TAKEN);
+			throw new Athena_RegisterError('Username is already taken', Athena_RegisterError::USERNAME_ALREADY_TAKEN);
 		}
 		
-		if (!Flux::config('AllowDuplicateEmails')) {
+		if (!Athena::config('AllowDuplicateEmails')) {
 			$sql = "SELECT email FROM {$this->loginDatabase}.login WHERE email = ? LIMIT 1";
 			$sth = $this->connection->getStatement($sql);
 			$sth->execute(array($email));
 
 			$res = $sth->fetch();
 			if ($res) {
-				throw new Flux_RegisterError('E-mail address is already in use', Flux_RegisterError::EMAIL_ADDRESS_IN_USE);
+				throw new Athena_RegisterError('E-mail address is already in use', Athena_RegisterError::EMAIL_ADDRESS_IN_USE);
 			}
 		}
 		
 		if ($this->config->getUseMD5()) {
-			$password = Flux::hashPassword($password);
+			$password = Athena::hashPassword($password);
 		}
 		
 		$sql = "INSERT INTO {$this->loginDatabase}.login (userid, user_pass, email, sex, group_id, birthdate) VALUES (?, ?, ?, ?, ?, ?)";
@@ -188,7 +188,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 			$idsth->execute();
 			
 			$idres = $idsth->fetch();
-			$createTable = Flux::config('FluxTables.AccountCreateTable');
+			$createTable = Athena::config('AthenaTables.AccountCreateTable');
 			
 			$sql  = "INSERT INTO {$this->loginDatabase}.{$createTable} (account_id, userid, user_pass, sex, email, reg_date, reg_ip, confirmed) ";
 			$sql .= "VALUES (?, ?, ?, ?, ?, NOW(), ?, 1)";
@@ -208,7 +208,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	public function temporarilyBan($bannedBy, $banReason, $accountID, $until)
 	{
 		$info  = $this->getBanInfo($accountID);
-		$table = Flux::config('FluxTables.AccountBanTable');
+		$table = Athena::config('AthenaTables.AccountBanTable');
 		
 		if (!$info || $info->ban_type !== '1') {
 			$sql  = "INSERT INTO {$this->loginDatabase}.$table (account_id, banned_by, ban_type, ban_until, ban_date, ban_reason) ";
@@ -236,7 +236,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	public function permanentlyBan($bannedBy, $banReason, $accountID)
 	{
 		$info  = $this->getBanInfo($accountID);
-		$table = Flux::config('FluxTables.AccountBanTable');
+		$table = Athena::config('AthenaTables.AccountBanTable');
 		
 		if (!$info || $info->ban_type !== '2') {
 			$sql  = "INSERT INTO {$this->loginDatabase}.$table (account_id, banned_by, ban_type, ban_until, ban_date, ban_reason) ";
@@ -262,8 +262,8 @@ class Flux_LoginServer extends Flux_BaseServer {
 	 */
 	public function unban($unbannedBy, $unbanReason, $accountID)
 	{
-		$table = Flux::config('FluxTables.AccountBanTable');
-		$createTable = Flux::config('FluxTables.AccountCreateTable');
+		$table = Athena::config('AthenaTables.AccountBanTable');
+		$createTable = Athena::config('AthenaTables.AccountCreateTable');
 		
 		$sql  = "INSERT INTO {$this->loginDatabase}.$table (account_id, banned_by, ban_type, ban_until, ban_date, ban_reason) ";
 		$sql .= "VALUES (?, ?, 0, '0000-00-00 00:00:00', NOW(), ?)";
@@ -288,7 +288,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	 */
 	public function getBanInfo($accountID)
 	{
-		$table = Flux::config('FluxTables.AccountBanTable');
+		$table = Athena::config('AthenaTables.AccountBanTable');
 		$col   = "$table.id, $table.account_id, $table.banned_by, $table.ban_type, ";
 		$col  .= "$table.ban_until, $table.ban_date, $table.ban_reason, login.userid";
 		$sql   = "SELECT $col FROM {$this->loginDatabase}.$table ";
@@ -311,7 +311,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	 */
 	public function addIpBan($bannedBy, $banReason, $unbanTime, $ipAddress)
 	{
-		$table = Flux::config('FluxTables.IpBanTable');
+		$table = Athena::config('AthenaTables.IpBanTable');
 		
 		$sql  = "INSERT INTO {$this->loginDatabase}.$table (ip_address, banned_by, ban_type, ban_until, ban_date, ban_reason) ";
 		$sql .= "VALUES (?, ?, 1, ?, NOW(), ?)";
@@ -333,7 +333,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	 */
 	public function removeIpBan($unbannedBy, $unbanReason, $ipAddress)
 	{
-		$table = Flux::config('FluxTables.IpBanTable');
+		$table = Athena::config('AthenaTables.IpBanTable');
 		
 		$sql  = "INSERT INTO {$this->loginDatabase}.$table (ip_address, banned_by, ban_type, ban_until, ban_date, ban_reason) ";
 		$sql .= "VALUES (?, ?, 0, '0000-00-00 00:00:00', NOW(), ?)";
@@ -354,7 +354,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	 */
 	public function hasCreditsRecord($accountID)
 	{
-		$creditsTable = Flux::config('FluxTables.CreditsTable');
+		$creditsTable = Athena::config('AthenaTables.CreditsTable');
 		
 		$sql = "SELECT COUNT(account_id) AS hasRecord FROM {$this->loginDatabase}.$creditsTable WHERE account_id = ?";
 		$sth = $this->connection->getStatement($sql);
@@ -381,7 +381,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 			return false; // Account doesn't exist.
 		}
 		
-		$creditsTable = Flux::config('FluxTables.CreditsTable');
+		$creditsTable = Athena::config('AthenaTables.CreditsTable');
 		
 		if (!$this->hasCreditsRecord($targetAccountID)) {
 			$fields = 'account_id, balance';
@@ -432,7 +432,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 		$sth = $this->connection->getStatement($sql);
 		
 		if ($sth->execute(array($accountID)) && ($char=$sth->fetch())) {
-			$accountPrefsTable = Flux::config('FluxTables.AccountPrefsTable');
+			$accountPrefsTable = Athena::config('AthenaTables.AccountPrefsTable');
 			
 			$pref = array();
 			$bind = array($accountID);
@@ -455,7 +455,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 					$prefsArray[$p->name] = $p->value;
 				}
 				
-				return new Flux_Config($prefsArray);
+				return new Athena_Config($prefsArray);
 			}
 			else {
 				return false;
@@ -475,7 +475,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 		$sth = $this->connection->getStatement($sql);
 		
 		if ($sth->execute(array($accountID)) && ($char=$sth->fetch())) {
-			$accountPrefsTable = Flux::config('FluxTables.AccountPrefsTable');
+			$accountPrefsTable = Athena::config('AthenaTables.AccountPrefsTable');
 			
 			$pref = array();
 			$bind = array($accountID);
@@ -536,7 +536,7 @@ class Flux_LoginServer extends Flux_BaseServer {
 	public function getPref($accountID, $pref)
 	{
 		$prefs = $this->getPrefs($accountID, array($pref));
-		if ($prefs instanceOf Flux_Config) {
+		if ($prefs instanceOf Athena_Config) {
 			return $prefs->get($pref);
 		}
 		else {

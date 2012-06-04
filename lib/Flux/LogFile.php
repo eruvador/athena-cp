@@ -2,7 +2,7 @@
 /**
  * Convenient way to log information to files.
  */
-class Flux_LogFile {
+class Athena_LogFile {
 	/**
 	 * File handler for open log file.
 	 *

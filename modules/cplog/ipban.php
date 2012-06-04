@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title = 'List IP Ban History';
 
-$ipBanTable = Flux::config('FluxTables.IpBanTable');
+$ipBanTable = Athena::config('AthenaTables.IpBanTable');
 $sqlpartial = "WHERE 1=1 ";
 $bind       = array();
 

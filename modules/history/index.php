@@ -1,7 +1,7 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('HistoryIndexTitle');
+$title = Athena::message('HistoryIndexTitle');
 ?>

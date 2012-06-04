@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Viewing Item</h2>
 <?php if ($item): ?>
 <?php $icon = $this->iconImage($item->item_id); ?>
@@ -194,10 +194,10 @@
 		</td>
 		<td><strong><?php echo $itemDrop['drop_chance'] ?>%</strong></td>
 		<td><?php echo number_format($itemDrop['monster_level']) ?></td>
-		<td><?php echo Flux::monsterRaceName($itemDrop['monster_race']) ?></td>
+		<td><?php echo Athena::monsterRaceName($itemDrop['monster_race']) ?></td>
 		<td>
 			Level <?php echo floor($itemDrop['monster_ele_lv']) ?>
-			<em><?php echo Flux::elementName($itemDrop['monster_element']) ?></em>
+			<em><?php echo Athena::elementName($itemDrop['monster_element']) ?></em>
 		</td>
 	</tr>
 	<?php endforeach ?>

@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
@@ -94,7 +94,7 @@ $sth->execute($bind);
 $guilds     = $sth->fetchAll();
 $authorized = $auth->actionAllowed('guild', 'view') && $auth->allowedToViewGuild;
 
-if ($guilds && count($guilds) === 1 && $authorized && Flux::config('SingleMatchRedirect')) {
+if ($guilds && count($guilds) === 1 && $authorized && Athena::config('SingleMatchRedirect')) {
 	$this->redirect($this->url('guild', 'view', array('id' => $guilds[0]->guild_id)));
 }
 

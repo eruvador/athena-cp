@@ -1,11 +1,11 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 //$this->loginRequired();
 
 $title = 'List Items';
 
-require_once 'Flux/TemporaryTable.php';
+require_once 'Athena/TemporaryTable.php';
 
 try {
 	$tableName  = "{$server->charMapDatabase}.items";
@@ -14,8 +14,8 @@ try {
 	} else {
 		$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
 	}
-	$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
-	$shopTable  = Flux::config('FluxTables.ItemShopTable');
+	$tempTable  = new Athena_TemporaryTable($server->connection, $tableName, $fromTables);
+	$shopTable  = Athena::config('AthenaTables.ItemShopTable');
 	
 	// Statement parameters, joins and conditions.
 	$bind        = array();
@@ -63,7 +63,7 @@ try {
 				$itemType2 = $itemTypeSplit[1];
 			}
 			if (is_numeric($itemType) && (floatval($itemType) == intval($itemType))) {
-				$itemTypes = Flux::config('ItemTypes')->toArray();
+				$itemTypes = Athena::config('ItemTypes')->toArray();
 				if (array_key_exists($itemType, $itemTypes) && $itemTypes[$itemType]) {
 					$sqlpartial .= "AND type = ? ";
 					$bind[]      = $itemType;
@@ -72,7 +72,7 @@ try {
 				}
 				
 				if (count($itemTypeSplit) == 2 && is_numeric($itemType2) && (floatval($itemType2) == intval($itemType2))) {
-					$itemTypes2 = Flux::config('ItemTypes2')->toArray();
+					$itemTypes2 = Athena::config('ItemTypes2')->toArray();
 					if (array_key_exists($itemType, $itemTypes2) && array_key_exists($itemType2, $itemTypes2[$itemType]) && $itemTypes2[$itemType][$itemType2]) {
 						$sqlpartial .= "AND view = ? ";
 						$bind[]      = $itemType2;
@@ -82,7 +82,7 @@ try {
 				}
 			} else {
 				$typeName   = preg_quote($itemType, '/');
-				$itemTypes  = preg_grep("/.*?$typeName.*?/i", Flux::config('ItemTypes')->toArray());
+				$itemTypes  = preg_grep("/.*?$typeName.*?/i", Athena::config('ItemTypes')->toArray());
 				
 				if (count($itemTypes)) {
 					$itemTypes   = array_keys($itemTypes);
@@ -104,7 +104,7 @@ try {
 
 		if ($equipLoc !== false && $equipLoc !== '-1') {
 			if(is_numeric($equipLoc) && (floatval($equipLoc) == intval($equipLoc))) {
-				$equipLocationCombinations = Flux::config('EquipLocationCombinations')->toArray();
+				$equipLocationCombinations = Athena::config('EquipLocationCombinations')->toArray();
 				if (array_key_exists($equipLoc, $equipLocationCombinations) && $equipLocationCombinations[$equipLoc]) {
 					if ($equipLoc === '0') {
 						$sqlpartial .= "AND (equip_locations = 0 OR equip_locations IS NULL) ";
@@ -115,7 +115,7 @@ try {
 				}
 			} else {
 				$combinationName = preg_quote($equipLoc, '/');
-				$equipLocationCombinations = preg_grep("/.*?$combinationName.*?/i", Flux::config('EquipLocationCombinations')->toArray());
+				$equipLocationCombinations = preg_grep("/.*?$combinationName.*?/i", Athena::config('EquipLocationCombinations')->toArray());
 				
 				if (count($equipLocationCombinations)) {
 					$equipLocationCombinations = array_keys($equipLocationCombinations);
@@ -265,7 +265,7 @@ try {
 	
 	$authorized = $auth->actionAllowed('item', 'view');
 	
-	if ($items && count($items) === 1 && $authorized && Flux::config('SingleMatchRedirectItem')) {
+	if ($items && count($items) === 1 && $authorized && Athena::config('SingleMatchRedirectItem')) {
 		$this->redirect($this->url('item', 'view', array('id' => $items[0]->item_id)));
 	}
 }

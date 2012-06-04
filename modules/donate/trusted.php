@@ -1,11 +1,11 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
 $title = 'Trusted PayPal E-mails';
 
-$trustedTable = Flux::config('FluxTables.DonationTrustTable');
+$trustedTable = Athena::config('AthenaTables.DonationTrustTable');
 
 $sql  = "SELECT DISTINCT email, create_date FROM {$server->loginDatabase}.$trustedTable ";
 $sql .= "WHERE account_id = ? ORDER BY create_date DESC";

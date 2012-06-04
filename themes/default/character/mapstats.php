@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Map Statistics</h2>
 <?php if ($maps): ?>
 <?php $playerTotal = 0; foreach ($maps as $map) $playerTotal += $map->player_count ?>

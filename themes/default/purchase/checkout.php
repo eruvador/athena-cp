@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Checkout</h2>
 <p>The checkout process is fairly simple, and when you're done you'll be ready to redeem your items in-game through our <span class="keyword">Redemption NPC</span>.</p>
 

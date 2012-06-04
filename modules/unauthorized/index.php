@@ -1,7 +1,7 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-$title = Flux::message('UnauthorizedTitle');
+$title = Athena::message('UnauthorizedTitle');
 
 $metaRefresh = array('seconds' => 2, 'location' => $this->basePath);
 ?>

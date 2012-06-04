@@ -1,5 +1,5 @@
 <?php
-require_once 'Flux/Error.php';
+require_once 'Athena/Error.php';
 
 /**
  * This library provides a means of creating a temporary table in MySQL and
@@ -9,14 +9,14 @@ require_once 'Flux/Error.php';
  * destructive manner allowing you to view a result set that has been
  * overridden by following tables.
  *
- * Use-case in Flux would be combining item_db/item_db2 and mob_db/mob_db2.
+ * Use-case in Athena would be combining item_db/item_db2 and mob_db/mob_db2.
  */
-class Flux_TemporaryTable {
+class Athena_TemporaryTable {
 	/**
 	 * Connection object used to create table.
 	 *
 	 * @access public
-	 * @var Flux_Connection
+	 * @var Athena_Connection
 	 */
 	public $connection;
 	
@@ -44,17 +44,17 @@ class Flux_TemporaryTable {
 	 * @access public
 	 * @var array
 	 */
-	public static $exceptionClass = 'Flux_Error';
+	public static $exceptionClass = 'Athena_Error';
 	
 	/**
 	 * Create new temporary table.
 	 *
-	 * @param Flux_Connection $connection
+	 * @param Athena_Connection $connection
 	 * @param string $tableName
 	 * @param array $fromTables
 	 * @access public
 	 */
-	public function __construct(Flux_Connection $connection, $tableName, array $fromTables)
+	public function __construct(Athena_Connection $connection, $tableName, array $fromTables)
 	{
 		$this->connection = $connection;
 		$this->tableName  = $tableName;
@@ -112,7 +112,7 @@ class Flux_TemporaryTable {
 
 		// Origin column, indicates which table the record came from.
 		$varcharLength   = $this->findVarcharLength();
-		$origin          = new Flux_DataObject();
+		$origin          = new Athena_DataObject();
 		$origin->Field   = 'origin_table';
 		$origin->Type    = "varchar($varcharLength)";
 		$origin->Null    = 'YES';
@@ -219,7 +219,7 @@ class Flux_TemporaryTable {
 	 * Throw an exception.
 	 *
 	 * @param string $message
-	 * @throws Flux_Error
+	 * @throws Athena_Error
 	 * @access private
 	 * @static
 	 */

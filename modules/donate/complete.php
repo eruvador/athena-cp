@@ -1,12 +1,12 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 //$this->loginRequired();
 
 $ppReturn = $session->ppReturn;
 $session->setPpReturnData(null);
 
-//$txnLogTable = Flux::config('FluxTables.TransactionTable');
+//$txnLogTable = Athena::config('AthenaTables.TransactionTable');
 //
 //$sql  = "SELECT id FROM {$server->loginDatabase}.$txnLogTable ";
 //$sql .= "WHERE txn_id = :txn_id AND txn_type = :txn_type AND first_name = :first_name AND last_name = :last_name ";

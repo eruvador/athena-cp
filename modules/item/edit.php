@@ -1,8 +1,8 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-require_once 'Flux/Config.php';
-require_once 'Flux/TemporaryTable.php';
+require_once 'Athena/Config.php';
+require_once 'Athena/TemporaryTable.php';
 
 $tableName  = "{$server->charMapDatabase}.items";
 if($server->isRenewal) {
@@ -10,7 +10,7 @@ if($server->isRenewal) {
 } else {
 	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
 }
-$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+$tempTable  = new Athena_TemporaryTable($server->connection, $tableName, $fromTables);
 
 $title = 'Modify Item';
 
@@ -73,10 +73,10 @@ if ($item) {
 		$equipLoc      = $item->equip_locations;
 	}
 	if ($item->equip_upper) {
-		$item->equip_upper = Flux::equipUpperToArray($item->equip_upper);
+		$item->equip_upper = Athena::equipUpperToArray($item->equip_upper);
 	}
 	if ($item->equip_jobs) {
-		$item->equip_jobs = Flux::equipJobsToArray($item->equip_jobs);
+		$item->equip_jobs = Athena::equipJobsToArray($item->equip_jobs);
 	}
 	
 	$equipUpper    = $params->get('equip_upper')     ? $params->get('equip_upper')     : $item->equip_upper;
@@ -90,12 +90,12 @@ if ($item) {
 	$unequipScript = $params->get('unequip_script') ? $params->get('unequip_script') : $item->unequip_script;
 
 	// Equip upper.
-	if ($equipUpper instanceOf Flux_Config) {
+	if ($equipUpper instanceOf Athena_Config) {
 		$equipUpper = $equipUpper->toArray();
 	}
 
 	// Equip jobs.
-	if ($equipJobs instanceOf Flux_Config) {
+	if ($equipJobs instanceOf Athena_Config) {
 		$equipJobs = $equipJobs->toArray();
 	}
 	
@@ -172,7 +172,7 @@ if ($item) {
 		}
 		else {
 			if (empty($errorMessage) && is_array($equipUpper)) {
-				$upper = Flux::getEquipUpperList();
+				$upper = Athena::getEquipUpperList();
 				foreach ($equipUpper as $bit) {
 					if (!array_key_exists($bit, $upper)) {
 						$errorMessage = 'Invalid equip upper specified.';
@@ -182,7 +182,7 @@ if ($item) {
 				}
 			}
 			if (empty($errorMessage) && is_array($equipJobs)) {
-				$jobs = Flux::getEquipJobsList();
+				$jobs = Athena::getEquipJobsList();
 				foreach ($equipJobs as $bit) {
 					if (!array_key_exists($bit, $jobs)) {
 						$errorMessage = 'Invalid equippable job specified.';

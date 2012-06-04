@@ -1,11 +1,11 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 //$this->loginRequired();
 
 $title = 'Viewing Item';
 
-require_once 'Flux/TemporaryTable.php';
+require_once 'Athena/TemporaryTable.php';
 
 $tableName  = "{$server->charMapDatabase}.items";
 if($server->isRenewal) {
@@ -13,8 +13,8 @@ if($server->isRenewal) {
 } else {
 	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
 }
-$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
-$shopTable  = Flux::config('FluxTables.ItemShopTable');
+$tempTable  = new Athena_TemporaryTable($server->connection, $tableName, $fromTables);
+$shopTable  = Athena::config('AthenaTables.ItemShopTable');
 
 $itemID = $params->get('id');
 
@@ -42,7 +42,7 @@ if ($item) {
 	
 	$mobDB      = "{$server->charMapDatabase}.monsters";
 	$fromTables = array("{$server->charMapDatabase}.mob_db", "{$server->charMapDatabase}.mob_db2");
-	$mobTable   = new Flux_TemporaryTable($server->connection, $mobDB, $fromTables);
+	$mobTable   = new Athena_TemporaryTable($server->connection, $mobDB, $fromTables);
 	
 	$col  = 'ID AS monster_id, iName AS monster_name, LV AS monster_level, ';
 	$col .= 'Race AS monster_race, (Element%10) AS monster_element, (Element/20) AS monster_ele_lv, ';

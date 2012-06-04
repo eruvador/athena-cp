@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <?php if ($session->isLoggedIn()): ?>
 <table cellspacing="0" cellpadding="0" width="100%" id="loginbox">
 	<tr>
@@ -29,7 +29,7 @@
 		</td>
 		<td bgcolor="#e1eaf3"></td>
 	</tr>
-	<?php if (!empty($adminMenuItems) && Flux::config('AdminMenuNewStyle')): ?>
+	<?php if (!empty($adminMenuItems) && Athena::config('AdminMenuNewStyle')): ?>
 	<?php $mItems = array(); foreach ($adminMenuItems as $menuItem) $mItems[] = sprintf('<a href="%s">%s</a>', $menuItem['url'], $menuItem['name']) ?>
 	<tr>
 		<td bgcolor="#e1eaf3"></td>

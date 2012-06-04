@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $itemID = $params->get('id');
 if (!$itemID) {
@@ -8,7 +8,7 @@ if (!$itemID) {
 
 $title = 'Duplicate Item';
 
-require_once 'Flux/TemporaryTable.php';
+require_once 'Athena/TemporaryTable.php';
 
 $tableName  = "{$server->charMapDatabase}.items";
 if($server->isRenewal) {
@@ -16,7 +16,7 @@ if($server->isRenewal) {
 } else {
 	$fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
 }
-$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+$tempTable  = new Athena_TemporaryTable($server->connection, $tableName, $fromTables);
 
 $sql = "SELECT * FROM $tableName WHERE id = ? LIMIT 1";
 $sth = $server->connection->getStatement($sql);

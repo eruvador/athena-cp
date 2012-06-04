@@ -1,10 +1,10 @@
 <?php
-require_once 'Flux/Installer/Schema.php';
+require_once 'Athena/Installer/Schema.php';
 
 /**
  *
  */
-class Flux_Installer_CharMapServer {
+class Athena_Installer_CharMapServer {
 	/**
 	 *
 	 */
@@ -23,11 +23,11 @@ class Flux_Installer_CharMapServer {
 	/**
 	 *
 	 */
-	public function __construct(Flux_Installer_MainServer $mainServer, Flux_Athena $athena)
+	public function __construct(Athena_Installer_MainServer $mainServer, Athena_Athena $athena)
 	{
 		$this->mainServer = $mainServer;
 		$this->athena     = $athena;
-		$this->schemas    = Flux_Installer_Schema::getSchemas($mainServer, $this);
+		$this->schemas    = Athena_Installer_Schema::getSchemas($mainServer, $this);
 	}
 }
 ?>

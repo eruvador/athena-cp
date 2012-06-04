@@ -1,15 +1,15 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('EmailConfirmTitle');
+$title = Athena::message('EmailConfirmTitle');
 
 $account = $params->get('account');
 $code    = $params->get('code');
 $login   = $params->get('login');
 
-$emailChangeTable = Flux::config('FluxTables.ChangeEmailTable');
+$emailChangeTable = Athena::config('AthenaTables.ChangeEmailTable');
 
 if (!$login || !$account || !$code || strlen($code) !== 32) {
 	$this->deny();
@@ -37,7 +37,7 @@ $sql = "UPDATE {$server->loginDatabase}.$emailChangeTable SET change_date = NOW(
 $sth = $server->connection->getStatement($sql);
 
 if (!$sth->execute(array($_SERVER['REMOTE_ADDR'], $row->id))) {
-	$session->setMessageData(Flux::message('EmailConfirmFailed'));
+	$session->setMessageData(Athena::message('EmailConfirmFailed'));
 	$this->redirect();
 }
 else {
@@ -45,11 +45,11 @@ else {
 	$sth = $server->connection->getStatement($sql);
 	
 	if (!$sth->execute(array($row->email, $account))) {
-		$session->setMessageData(Flux::message('EmailConfirmFailed'));
+		$session->setMessageData(Athena::message('EmailConfirmFailed'));
 		$this->redirect();
 	}
 	else {
-		$session->setMessageData(Flux::message('EmailConfirmChanged'));
+		$session->setMessageData(Athena::message('EmailConfirmChanged'));
 		$this->redirect();
 	}
 }

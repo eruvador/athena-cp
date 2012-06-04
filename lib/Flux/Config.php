@@ -1,13 +1,13 @@
 <?php
 // You don't need this line if you decided to specify a custom $exceptionClass
-// property in your version of Flux_Config.
-require_once 'Flux/Error.php';
+// property in your version of Athena_Config.
+require_once 'Athena/Error.php';
 
 /**
- * Flux_Config acts as a convenient way to access arrays which are used as a
+ * Athena_Config acts as a convenient way to access arrays which are used as a
  * means of storing and retrieving configuration values to the application.
  */
-class Flux_Config {
+class Athena_Config {
 	/**
 	 * Configuration array.
 	 *
@@ -26,8 +26,8 @@ class Flux_Config {
 	
 	/**
 	 * This is here for any developer's convenience, just in case he/she would
-	 * like to re-use this library without having to depend on the Flux_Error
-	 * class to do so. This will cause Flux_Config to raise the exception class
+	 * like to re-use this library without having to depend on the Athena_Error
+	 * class to do so. This will cause Athena_Config to raise the exception class
 	 * of your choice.
 	 *
 	 * It's preferable that the developer change the value directly from the
@@ -36,10 +36,10 @@ class Flux_Config {
 	 * @access private
 	 * @var string
 	 */
-	private $exceptionClass = 'Flux_Error';
+	private $exceptionClass = 'Athena_Error';
 	
 	/**
-	 * Construct a Flux_Config instance which acts as a more convenient
+	 * Construct a Athena_Config instance which acts as a more convenient
 	 * accessor to the specified configuration array.
 	 *
 	 * @param array $configArray Configuration array.
@@ -64,9 +64,9 @@ class Flux_Config {
 	
 	/**
 	 * Goes through each child in the array which is also an array, and returns
-	 * them collectively as an array of Flux_Config instances.
+	 * them collectively as an array of Athena_Config instances.
 	 *
-	 * @return array Array of Flux_Config instances of all children arrays.
+	 * @return array Array of Athena_Config instances of all children arrays.
 	 * @access public
 	 */
 	public function &getChildrenConfigs()
@@ -74,7 +74,7 @@ class Flux_Config {
 		$children = array();
 		foreach ($this->configArr as $key => &$child) {
 			if (is_array($child)) {
-				$children[$key] = new Flux_Config($child);
+				$children[$key] = new Athena_Config($child);
 			}
 		}
 		return $children;
@@ -82,14 +82,14 @@ class Flux_Config {
 	
 	/**
 	 * Get the value held by the specified key. If the value is an array it
-	 * will be returned as an instance of Flux_Config by default, unless
+	 * will be returned as an instance of Athena_Config by default, unless
 	 * $configObjectIfArray is set to false.
 	 *
 	 * Keys are specified in an object-like format, such as: 'Foo.Bar.Baz'
 	 * where each dot would denote the difference in depth from key-to-key.
 	 *
 	 * @param string $key Key sequence.
-	 * @param bool $configObjectIfArray True/false whether or not to return Flux_Config instances for values that are an array.
+	 * @param bool $configObjectIfArray True/false whether or not to return Athena_Config instances for values that are an array.
 	 * @access public
 	 */
 	public function get($key, $configObjectIfArray = true)
@@ -116,7 +116,7 @@ class Flux_Config {
 				$configClassName = get_class($this);
 				return new $configClassName($value);
 			}
-			elseif ($value instanceOf Flux_Config && !$configObjectIfArray) {
+			elseif ($value instanceOf Athena_Config && !$configObjectIfArray) {
 				return $value->toArray();
 			}
 			else {
@@ -133,7 +133,7 @@ class Flux_Config {
 	
 	/**
 	 * Set a key to hold the specified value. The format for specifying a key
-	 * is 100% identical to Flux_Config::get().
+	 * is 100% identical to Athena_Config::get().
 	 *
 	 * Options outline:
 	 *   overwrite - true/false to overwrite existing keys.
@@ -216,7 +216,7 @@ class Flux_Config {
 	/**
 	 *
 	 */
-	public function merge(Flux_Config $config, $recursive = true)
+	public function merge(Athena_Config $config, $recursive = true)
 	{
 		$mergeMethod     = $recursive ? 'array_merge_recursive' : 'array_merge';
 		$this->configArr = $mergeMethod($this->configArr, $config->toArray());

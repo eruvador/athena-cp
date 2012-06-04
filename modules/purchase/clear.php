@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-require_once 'Flux/ItemShop.php';
+require_once 'Athena/ItemShop.php';
 
 if ($server->cart && $server->cart->clear()) {
 	$session->setMessageData("Your cart has been emptied.");

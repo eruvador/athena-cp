@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Trusted PayPal E-mails</h2>
 <?php if ($emails): ?>
 <p>Below is a list of your trusted PayPal e-mail addresses.</p>
@@ -17,7 +17,7 @@
 </table>
 <?php else: ?>
 <p>You do not have any trusted PayPal e-mail addresses.</p>
-<?php if (!Flux::config('HoldUntrustedAccount')): ?>
+<?php if (!Athena::config('HoldUntrustedAccount')): ?>
 <p>This is most likely because the credit holding system is currently <strong>not in effect</strong>, which means a donation made from any e-mail address is immediately accredited.</p>
 <?php endif ?>
 <?php endif ?>

@@ -1,13 +1,13 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-if (Flux::config('UseLoginCaptcha') && Flux::config('EnableReCaptcha')) {
+if (Athena::config('UseLoginCaptcha') && Athena::config('EnableReCaptcha')) {
 	require_once 'recaptcha/recaptchalib.php';
-	$recaptcha = recaptcha_get_html(Flux::config('ReCaptchaPublicKey'));
+	$recaptcha = recaptcha_get_html(Athena::config('ReCaptchaPublicKey'));
 }
 
-$title = Flux::message('LoginTitle');
-$loginLogTable = Flux::config('FluxTables.LoginLogTable');
+$title = Athena::message('LoginTitle');
+$loginLogTable = Athena::config('AthenaTables.LoginLogTable');
 
 if (count($_POST)) {
 	$server   = $params->get('server');
@@ -20,7 +20,7 @@ if (count($_POST)) {
 		$returnURL = $params->get('return_url');
 		
 		if ($session->loginAthenaGroup->loginServer->config->getUseMD5()) {
-			$password = Flux::hashPassword($password);
+			$password = Athena::hashPassword($password);
 		}
 		
 		$sql  = "INSERT INTO {$session->loginAthenaGroup->loginDatabase}.$loginLogTable ";
@@ -36,9 +36,9 @@ if (count($_POST)) {
 			$this->redirect();
 		}
 	}
-	catch (Flux_LoginError $e) {
-		if ($username && $password && $e->getCode() != Flux_LoginError::INVALID_SERVER) {
-			$loginAthenaGroup = Flux::getServerGroupByName($server);
+	catch (Athena_LoginError $e) {
+		if ($username && $password && $e->getCode() != Athena_LoginError::INVALID_SERVER) {
+			$loginAthenaGroup = Athena::getServerGroupByName($server);
 
 			$sql = "SELECT account_id FROM {$loginAthenaGroup->loginDatabase}.login WHERE ";
 			
@@ -57,7 +57,7 @@ if (count($_POST)) {
 				$accountID = $row->account_id;
 				
 				if ($loginAthenaGroup->loginServer->config->getUseMD5()) {
-					$password = Flux::hashPassword($password);
+					$password = Athena::hashPassword($password);
 				}
 
 				$sql  = "INSERT INTO {$loginAthenaGroup->loginDatabase}.$loginLogTable ";
@@ -69,32 +69,32 @@ if (count($_POST)) {
 		}
 		
 		switch ($e->getCode()) {
-			case Flux_LoginError::UNEXPECTED:
-				$errorMessage = Flux::message('UnexpectedLoginError');
+			case Athena_LoginError::UNEXPECTED:
+				$errorMessage = Athena::message('UnexpectedLoginError');
 				break;
-			case Flux_LoginError::INVALID_SERVER:
-				$errorMessage = Flux::message('InvalidLoginServer');
+			case Athena_LoginError::INVALID_SERVER:
+				$errorMessage = Athena::message('InvalidLoginServer');
 				break;
-			case Flux_LoginError::INVALID_LOGIN:
-				$errorMessage = Flux::message('InvalidLoginCredentials');
+			case Athena_LoginError::INVALID_LOGIN:
+				$errorMessage = Athena::message('InvalidLoginCredentials');
 				break;
-			case Flux_LoginError::BANNED:
-				$errorMessage = Flux::message('TemporarilyBanned');
+			case Athena_LoginError::BANNED:
+				$errorMessage = Athena::message('TemporarilyBanned');
 				break;
-			case Flux_LoginError::PERMABANNED:
-				$errorMessage = Flux::message('PermanentlyBanned');
+			case Athena_LoginError::PERMABANNED:
+				$errorMessage = Athena::message('PermanentlyBanned');
 				break;
-			case Flux_LoginError::IPBANNED:
-				$errorMessage = Flux::message('IpBanned');
+			case Athena_LoginError::IPBANNED:
+				$errorMessage = Athena::message('IpBanned');
 				break;
-			case Flux_LoginError::INVALID_SECURITY_CODE:
-				$errorMessage = Flux::message('InvalidSecurityCode');
+			case Athena_LoginError::INVALID_SECURITY_CODE:
+				$errorMessage = Athena::message('InvalidSecurityCode');
 				break;
-			case Flux_LoginError::PENDING_CONFIRMATION:
-				$errorMessage = Flux::message('PendingConfirmation');
+			case Athena_LoginError::PENDING_CONFIRMATION:
+				$errorMessage = Athena::message('PendingConfirmation');
 				break;
 			default:
-				$errorMessage = Flux::message('CriticalLoginError');
+				$errorMessage = Athena::message('CriticalLoginError');
 				break;
 		}
 	}

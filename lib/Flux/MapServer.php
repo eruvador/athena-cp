@@ -1,10 +1,10 @@
 <?php
-require_once 'Flux/BaseServer.php';
+require_once 'Athena/BaseServer.php';
 
 /**
  * Represents an eAthena Map Server.
  */
-class Flux_MapServer extends Flux_BaseServer {
+class Athena_MapServer extends Athena_BaseServer {
 	
 }
 ?>

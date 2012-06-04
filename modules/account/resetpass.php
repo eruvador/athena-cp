@@ -1,10 +1,10 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-$title = Flux::message('ResetPassTitle');
+$title = Athena::message('ResetPassTitle');
 
 $serverNames    = $this->getServerNames();
-$resetPassTable = Flux::config('FluxTables.ResetPasswordTable');
+$resetPassTable = Athena::config('AthenaTables.ResetPasswordTable');
 
 if (count($_POST)) {
 	$userid    = $params->get('userid');
@@ -12,13 +12,13 @@ if (count($_POST)) {
 	$groupName = $params->get('login');
 	
 	if (!$userid) {
-		$errorMessage = Flux::message('ResetPassEnterAccount');
+		$errorMessage = Athena::message('ResetPassEnterAccount');
 	}
 	elseif (!$email) {
-		$errorMessage = Flux::message('ResetPassEnterEmail');
+		$errorMessage = Athena::message('ResetPassEnterEmail');
 	}
 	else {
-		if (!$groupName || !($loginAthenaGroup=Flux::getServerGroupByName($groupName))) {
+		if (!$groupName || !($loginAthenaGroup=Athena::getServerGroupByName($groupName))) {
 			$loginAthenaGroup = $session->loginAthenaGroup;
 		}
 
@@ -35,8 +35,8 @@ if (count($_POST)) {
 
 		$row = $sth->fetch();
 		if ($row) {
-			if ($row->group_id >= Flux::config('NoResetPassLevel')) {
-				$errorMessage = Flux::message('ResetPassDisallowed');
+			if ($row->group_id >= Athena::config('NoResetPassLevel')) {
+				$errorMessage = Athena::message('ResetPassDisallowed');
 			}
 			else {
 				$code = md5(rand() + $row->account_id);
@@ -47,10 +47,10 @@ if (count($_POST)) {
 				$res  = $sth->execute(array($code, $row->account_id, $row->user_pass, $_SERVER['REMOTE_ADDR']));
 				
 				if ($res) {
-					require_once 'Flux/Mailer.php';
+					require_once 'Athena/Mailer.php';
 					$name = $loginAthenaGroup->serverName;
 					$link = $this->url('account', 'resetpw', array('_host' => true, 'code' => $code, 'account' => $row->account_id, 'login' => $name));
-					$mail = new Flux_Mailer();
+					$mail = new Athena_Mailer();
 					$sent = $mail->send($email, 'Reset Password', 'resetpass', array('AccountUsername' => $userid, 'ResetLink' => htmlspecialchars($link)));
 				}
 			}
@@ -58,10 +58,10 @@ if (count($_POST)) {
 
 		if (empty($errorMessage)) {
 			if (empty($sent)) {
-				$errorMessage = Flux::message('ResetPassFailed');
+				$errorMessage = Athena::message('ResetPassFailed');
 			}
 			else {
-				$session->setMessageData(Flux::message('ResetPassEmailSent'));
+				$session->setMessageData(Athena::message('ResetPassEmailSent'));
 				$this->redirect();
 			}
 		}

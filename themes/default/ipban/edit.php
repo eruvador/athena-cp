@@ -1,5 +1,5 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2><?php echo htmlspecialchars(Flux::message('IpbanEditHeading')) ?></h2>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
+<h2><?php echo htmlspecialchars(Athena::message('IpbanEditHeading')) ?></h2>
 <?php if ($ipban): ?>
 	<?php if (!empty($errorMessage)): ?>
 		<p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
@@ -8,13 +8,13 @@
 		<input type="hidden" name="modipban" value="1" />
 		<table class="generic-form-table">
 			<tr>
-				<th><label for="list"><?php echo htmlspecialchars(Flux::message('IpbanIpAddressLabel')) ?></label></th>
+				<th><label for="list"><?php echo htmlspecialchars(Athena::message('IpbanIpAddressLabel')) ?></label></th>
 				<td><input type="text" name="newlist" id="list"
 						value="<?php echo htmlspecialchars(($list=$params->get('newlist')) ? $list : $ipban->list) ?>" /></td>
-				<td><p><?php echo htmlspecialchars(Flux::message('IpbanIpAddressInfo')) ?></p></td>
+				<td><p><?php echo htmlspecialchars(Athena::message('IpbanIpAddressInfo')) ?></p></td>
 			</tr>
 			<tr>
-				<th><label for="reason"><?php echo htmlspecialchars(Flux::message('IpbanReasonLabel')) ?></label></th>
+				<th><label for="reason"><?php echo htmlspecialchars(Athena::message('IpbanReasonLabel')) ?></label></th>
 				<td>
 					<textarea name="reason" id="reason" class="reason"><?php
 						echo htmlspecialchars(($reason=$params->get('reason')) ? $reason : $ipban->reason)
@@ -23,12 +23,12 @@
 				<td></td>
 			</tr>
 			<tr>
-				<th><label><?php echo htmlspecialchars(Flux::message('IpbanUnbanDateLabel')) ?></label></th>
+				<th><label><?php echo htmlspecialchars(Athena::message('IpbanUnbanDateLabel')) ?></label></th>
 				<td><?php echo $this->dateTimeField('rtime', ($rtime=$params->get('rtime')) ? $rtime : $ipban->rtime) ?></td>
 				<td></td>
 			</tr>
 			<tr>
-				<th><label for="edit_reason"><?php echo htmlspecialchars(Flux::message('IpbanEditReasonLabel')) ?></label></th>
+				<th><label for="edit_reason"><?php echo htmlspecialchars(Athena::message('IpbanEditReasonLabel')) ?></label></th>
 				<td>
 					<textarea name="edit_reason" id="edit_reason" class="edit_reason"><?php
 						echo htmlspecialchars(($editReason=$params->get('edit_reason')) ? $editReason : '')
@@ -38,7 +38,7 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td colspan="2"><input type="submit" value="<?php echo htmlspecialchars(Flux::message('IpbanEditButton')) ?>" /></td>
+				<td colspan="2"><input type="submit" value="<?php echo htmlspecialchars(Athena::message('IpbanEditButton')) ?>" /></td>
 			</tr>
 		</table>
 	</form>

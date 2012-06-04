@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Items</h2>
 <p class="toggler"><a href="javascript:toggleSearchForm()">Search...</a></p>
 <form class="search-form" method="get">
@@ -15,11 +15,11 @@
 			<option value="-1"<?php if (($type=$params->get('type')) === '-1') echo ' selected="selected"' ?>>
 				Any
 			</option>
-			<?php foreach (Flux::config('ItemTypes')->toArray() as $typeId => $typeName): ?>
+			<?php foreach (Athena::config('ItemTypes')->toArray() as $typeId => $typeName): ?>
 				<option value="<?php echo $typeId ?>"<?php if (($type=$params->get('type')) === strval($typeId)) echo ' selected="selected"' ?>>
 					<?php echo htmlspecialchars($typeName) ?>
 				</option>
-				<?php $itemTypes2 = Flux::config('ItemTypes2')->toArray() ?>
+				<?php $itemTypes2 = Athena::config('ItemTypes2')->toArray() ?>
 				<?php if (array_key_exists($typeId, $itemTypes2)): ?>
 					<?php foreach ($itemTypes2[$typeId] as $typeId2 => $typeName2): ?>
 					<option value="<?php echo $typeId ?>-<?php echo $typeId2 ?>"<?php if (($type=$params->get('type')) === ($typeId . '-' . $typeId2)) echo ' selected="selected"' ?>>
@@ -35,7 +35,7 @@
 			<option value="-1"<?php if (($equip_loc=$params->get('equip_loc')) === '-1') echo ' selected="selected"' ?>>
 				Any
 			</option>
-			<?php foreach (Flux::config('EquipLocationCombinations')->toArray() as $locId => $locName): ?>
+			<?php foreach (Athena::config('EquipLocationCombinations')->toArray() as $locId => $locName): ?>
 				<option value="<?php echo $locId ?>"<?php if (($equip_loc=$params->get('equip_loc')) === strval($locId)) echo ' selected="selected"' ?>>
 					<?php echo htmlspecialchars($locName) ?>
 				</option>

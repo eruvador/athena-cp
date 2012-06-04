@@ -1,7 +1,7 @@
 <?php
-require_once 'Flux/Error.php';
+require_once 'Athena/Error.php';
 
-class Flux_Installer_SchemaPermissionError extends Flux_Error {
+class Athena_Installer_SchemaPermissionError extends Athena_Error {
 	public $schemaFile;
 	public $databaseName;
 	public $mainServerName;

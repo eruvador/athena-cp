@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Guilds</h2>
 <p class="toggler"><a href="javascript:toggleSearchForm()">Search...</a></p>
 <form action="<?php echo $this->url ?>" method="get" class="search-form">

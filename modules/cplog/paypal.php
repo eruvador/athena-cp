@@ -1,11 +1,11 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
 $title = 'List PayPal Transactions';
 
-$txnLogTable = Flux::config('FluxTables.TransactionTable');
+$txnLogTable = Athena::config('AthenaTables.TransactionTable');
 $sqlpartial  = "{$server->loginDatabase}.{$txnLogTable} AS p ";
 $sqlpartial .= "LEFT OUTER JOIN {$server->loginDatabase}.login AS l ON p.account_id = l.account_id ";
 $sqlpartial .= "LEFT OUTER JOIN {$server->loginDatabase}.$txnLogTable AS pp ON pp.txn_id = p.parent_txn_id ";

@@ -139,10 +139,10 @@ return array(
 	'UnexpectedLoginError'    => 'Unexpected error occurred, please try again or report to an admin.',
 	'CriticalLoginError'      => 'Something bad happened.  Report to an administrator ASAP.',
 	'UsernameAlreadyTaken'    => "The username you've chosen has already been taken by another user.",
-	'UsernameTooShort'        => sprintf('Your username should be around %d to %d characters long.', Flux::config('MinUsernameLength'), Flux::config('MaxUsernameLength')),
-	'UsernameTooLong'         => sprintf('Your username should be around %d to %d characters long.', Flux::config('MinUsernameLength'), Flux::config('MaxUsernameLength')),
-	'PasswordTooShort'        => sprintf('Your password should be around %d to %d characters long.', Flux::config('MinPasswordLength'), Flux::config('MaxPasswordLength')),
-	'PasswordTooLong'         => sprintf('Your password should be around %d to %d characters long.', Flux::config('MinPasswordLength'), Flux::config('MaxPasswordLength')),
+	'UsernameTooShort'        => sprintf('Your username should be around %d to %d characters long.', Athena::config('MinUsernameLength'), Athena::config('MaxUsernameLength')),
+	'UsernameTooLong'         => sprintf('Your username should be around %d to %d characters long.', Athena::config('MinUsernameLength'), Athena::config('MaxUsernameLength')),
+	'PasswordTooShort'        => sprintf('Your password should be around %d to %d characters long.', Athena::config('MinPasswordLength'), Athena::config('MaxPasswordLength')),
+	'PasswordTooLong'         => sprintf('Your password should be around %d to %d characters long.', Athena::config('MinPasswordLength'), Athena::config('MaxPasswordLength')),
 	'PasswordsDoNotMatch'     => "Your passwords do not match, please make sure that you'ved typed them both correctly.",
 	'EmailAddressInUse'       => "The e-mail address you've entered is already registered to another account.  Please use a different e-mail address.",
 	'InvalidEmailAddress'     => "The e-mail address you've entered is not in a valid e-mail address format.",
@@ -520,12 +520,12 @@ return array(
 	
 	// Module: main
 	// - main/index
-	'MainPageHeading'         => 'Flux Control Panel',
-	'MainPageInfo'            => "If you are seeing this page, it's likely that you've successfully installed Flux.",
+	'MainPageHeading'         => 'Athena Control Panel',
+	'MainPageInfo'            => "If you are seeing this page, it's likely that you've successfully installed Athena.",
 	'MainPageInfo2'           => "Would you like to change this page? Well, here's how you can:",
 	'MainPageStep1'           => 'Open "%s" in your text editor.',
 	'MainPageStep2'           => 'Edit the file from your editor and save your changes.',
-	'MainPageThanks'          => 'Thanks for using Flux!',
+	'MainPageThanks'          => 'Thanks for using Athena!',
 	// - main/pagenotfound
 	'PageNotFoundTitle'       => '404 Page Not Found',
 	'PageNotFoundHeading'     => 'Page Not Found',

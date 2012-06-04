@@ -2,7 +2,7 @@
 /**
  * Draws a CAPTCHA image for use in forms such as the registration form.
  */
-class Flux_Captcha {
+class Athena_Captcha {
 	/**
 	 * GD image resource.
 	 *
@@ -36,8 +36,8 @@ class Flux_Captcha {
 			array(
 				'chars'      => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWWXYZ0123456789',
 				'length'     => 5,
-				'background' => FLUX_DATA_DIR.'/captcha/background.png',
-				'fontPath'   => FLUX_DATA_DIR.'/captcha/fonts',
+				'background' => ATHENA_DATA_DIR.'/captcha/background.png',
+				'fontPath'   => ATHENA_DATA_DIR.'/captcha/fonts',
 				'fontName'   => 'default.ttf',
 				'fontSize'   => 28,
 				'yPosition'  => 40,

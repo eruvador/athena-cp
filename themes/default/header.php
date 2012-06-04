@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -7,22 +7,22 @@
 		<?php if (isset($metaRefresh)): ?>
 		<meta http-equiv="refresh" content="<?php echo $metaRefresh['seconds'] ?>; URL=<?php echo $metaRefresh['location'] ?>" />
 		<?php endif ?>
-		<title><?php echo Flux::config('SiteTitle'); if (isset($title)) echo ": $title" ?></title>
-		<link rel="stylesheet" href="<?php echo $this->themePath('css/flux.css') ?>" type="text/css" media="screen" title="" charset="utf-8" />
-		<link href="<?php echo $this->themePath('css/flux/unitip.css') ?>" rel="stylesheet" type="text/css" media="screen" title="" charset="utf-8" />
-		<?php if (Flux::config('EnableReCaptcha')): ?>
-		<link href="<?php echo $this->themePath('css/flux/recaptcha.css') ?>" rel="stylesheet" type="text/css" media="screen" title="" charset="utf-8" />
+		<title><?php echo Athena::config('SiteTitle'); if (isset($title)) echo ": $title" ?></title>
+		<link rel="stylesheet" href="<?php echo $this->themePath('css/athena.css') ?>" type="text/css" media="screen" title="" charset="utf-8" />
+		<link href="<?php echo $this->themePath('css/athena/unitip.css') ?>" rel="stylesheet" type="text/css" media="screen" title="" charset="utf-8" />
+		<?php if (Athena::config('EnableReCaptcha')): ?>
+		<link href="<?php echo $this->themePath('css/athena/recaptcha.css') ?>" rel="stylesheet" type="text/css" media="screen" title="" charset="utf-8" />
 		<?php endif ?>
 		<!--[if IE]>
-		<link rel="stylesheet" href="<?php echo $this->themePath('css/flux/ie.css') ?>" type="text/css" media="screen" title="" charset="utf-8" />
+		<link rel="stylesheet" href="<?php echo $this->themePath('css/athena/ie.css') ?>" type="text/css" media="screen" title="" charset="utf-8" />
 		<![endif]-->	
 		<!--[if lt IE 7]>
 		<script src="<?php echo $this->themePath('js/ie7.js') ?>" type="text/javascript"></script>
-		<script type="text/javascript" src="<?php echo $this->themePath('js/flux.unitpngfix.js') ?>"></script>
+		<script type="text/javascript" src="<?php echo $this->themePath('js/athena.unitpngfix.js') ?>"></script>
 		<![endif]-->
 		<script type="text/javascript" src="<?php echo $this->themePath('js/jquery-1.7.1.min.js') ?>"></script>
-		<script type="text/javascript" src="<?php echo $this->themePath('js/flux.datefields.js') ?>"></script>
-		<script type="text/javascript" src="<?php echo $this->themePath('js/flux.unitip.js') ?>"></script>
+		<script type="text/javascript" src="<?php echo $this->themePath('js/athena.datefields.js') ?>"></script>
+		<script type="text/javascript" src="<?php echo $this->themePath('js/athena.unitip.js') ?>"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				var inputs = 'input[type=text],input[type=password],input[type=file]';
@@ -51,21 +51,21 @@
 					}
 				);
 				$('.money-input').keyup(function() {
-					var creditValue = parseInt($(this).val() / <?php echo Flux::config('CreditExchangeRate') ?>, 10);
+					var creditValue = parseInt($(this).val() / <?php echo Athena::config('CreditExchangeRate') ?>, 10);
 					if (isNaN(creditValue))
 						$('.credit-input').val('?');
 					else
 						$('.credit-input').val(creditValue);
 				}).keyup();
 				$('.credit-input').keyup(function() {
-					var moneyValue = parseFloat($(this).val() * <?php echo Flux::config('CreditExchangeRate') ?>);
+					var moneyValue = parseFloat($(this).val() * <?php echo Athena::config('CreditExchangeRate') ?>);
 					if (isNaN(moneyValue))
 						$('.money-input').val('?');
 					else
 						$('.money-input').val(moneyValue.toFixed(2));
 				}).keyup();
 				
-				// In: js/flux.datefields.js
+				// In: js/athena.datefields.js
 				processDateFields();
 			});
 			
@@ -89,7 +89,7 @@
 				$(imgSelector).attr('src', spinner.src);
 				
 				// Load image, spinner will be active until loading is complete.
-				var clean = <?php echo Flux::config('UseCleanUrls') ? 'true' : 'false' ?>;
+				var clean = <?php echo Athena::config('UseCleanUrls') ? 'true' : 'false' ?>;
 				var image = new Image();
 				image.src = "<?php echo $this->url('captcha') ?>"+(clean ? '?nocache=' : '&nocache=')+Math.random();
 				
@@ -102,10 +102,10 @@
 			}
 		</script>
 		
-		<?php if (Flux::config('EnableReCaptcha') && Flux::config('ReCaptchaTheme')): ?>
+		<?php if (Athena::config('EnableReCaptcha') && Athena::config('ReCaptchaTheme')): ?>
 		<script type="text/javascript">
 			 var RecaptchaOptions = {
-			    theme : '<?php echo Flux::config('ReCaptchaTheme') ?>'
+			    theme : '<?php echo Athena::config('ReCaptchaTheme') ?>'
 			 };
 		</script>
 		<?php endif ?>
@@ -118,7 +118,7 @@
 				<td bgcolor="#8ebceb" width="20"></td>
 				<td bgcolor="#8ebceb" colspan="3">
 					<a href="<?php echo $this->basePath ?>">
-						<img src="<?php echo $this->themePath($session->account->group_id >= Flux::config('AdminMenuLevel') ? 'img/logo_admin.gif' : 'img/logo.gif') ?>" id="logo" />
+						<img src="<?php echo $this->themePath($session->account->group_id >= Athena::config('AdminMenuLevel') ? 'img/logo_admin.gif' : 'img/logo.gif') ?>" id="logo" />
 					</a>
 				</td>
 				<td bgcolor="#8ebceb" width="20"></td>
@@ -150,7 +150,7 @@
 						<tr>
 							<td bgcolor="#f5f5f5"></td>
 							<td bgcolor="#f5f5f5">
-								<?php if (Flux::config('DebugMode') && @gethostbyname(Flux::config('ServerAddress')) == '127.0.0.1'): ?>
+								<?php if (Athena::config('DebugMode') && @gethostbyname(Athena::config('ServerAddress')) == '127.0.0.1'): ?>
 									<p class="notice">Please change your <strong>ServerAddress</strong> directive in your application config to your server's real address (e.g., myserver.com).</p>
 								<?php endif ?>
 								

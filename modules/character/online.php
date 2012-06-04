@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title = "Who's Online";
 
-$charPrefsTable = Flux::config('FluxTables.CharacterPrefsTable');
+$charPrefsTable = Athena::config('AthenaTables.CharacterPrefsTable');
 
 
 $sqlpartial  = "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = ch.account_id ";
@@ -43,7 +43,7 @@ if ($auth->allowedToSearchWhosOnline) {
 
 	if ($charClass) {
 		$className = preg_quote($charClass, '/');
-		$classIDs  = preg_grep("/.*?$className.*?/i", Flux::config('JobClasses')->toArray());
+		$classIDs  = preg_grep("/.*?$className.*?/i", Athena::config('JobClasses')->toArray());
 
 		if (count($classIDs)) {
 			$classIDs    = array_keys($classIDs);
@@ -65,7 +65,7 @@ if ($auth->allowedToSearchWhosOnline) {
 }
 
 // Hide levels greater than or equal to.
-if (($hideLevel=Flux::config('HideFromWhosOnline')) && !$auth->allowedToIgnoreHiddenPref2) {
+if (($hideLevel=Athena::config('HideFromWhosOnline')) && !$auth->allowedToIgnoreHiddenPref2) {
 	$sqlpartial .= "AND login.group_id < ? ";
 	$bind[] = $hideLevel;
 }

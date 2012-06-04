@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Duplicate Item</h2>
 <?php if ($item): ?>
 <?php if (!empty($errorMessage)): ?>

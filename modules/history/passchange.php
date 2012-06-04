@@ -1,10 +1,10 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('HistoryPassChangeTitle');
-$passwordChangeTable = Flux::config('FluxTables.ChangePasswordTable');
+$title = Athena::message('HistoryPassChangeTitle');
+$passwordChangeTable = Athena::config('AthenaTables.ChangePasswordTable');
 
 $sql = "SELECT COUNT(id) AS total FROM {$server->loginDatabase}.$passwordChangeTable WHERE account_id = ?";
 $sth = $server->connection->getStatement($sql);

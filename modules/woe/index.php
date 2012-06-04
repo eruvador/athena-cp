@@ -1,7 +1,7 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-$title     = Flux::message('WoeTitle');
+$title     = Athena::message('WoeTitle');
 $sunday    = date('l', $sun=strtotime('Sunday'));
 $monday    = date('l', $mon=($sun+86400));
 $tuesday   = date('l', $tue=($mon+86400));

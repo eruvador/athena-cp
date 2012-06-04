@@ -1,17 +1,17 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-if (Flux::config('UseCaptcha') && Flux::config('EnableReCaptcha')) {
+if (Athena::config('UseCaptcha') && Athena::config('EnableReCaptcha')) {
 	require_once 'recaptcha/recaptchalib.php';
-	$recaptcha = recaptcha_get_html(Flux::config('ReCaptchaPublicKey'));
+	$recaptcha = recaptcha_get_html(Athena::config('ReCaptchaPublicKey'));
 }
 
-$title = Flux::message('AccountCreateTitle');
+$title = Athena::message('AccountCreateTitle');
 
 $serverNames = $this->getServerNames();
 
 if (count($_POST)) {
-	require_once 'Flux/RegisterError.php';
+	require_once 'Athena/RegisterError.php';
 	
 	try {
 		$server    = $params->get('server');
@@ -23,31 +23,31 @@ if (count($_POST)) {
 		$code      = $params->get('security_code');
 		$birthdate = $params->get('birth_date');
 		
-		if (!($server = Flux::getServerGroupByName($server))) {
-			throw new Flux_RegisterError('Invalid server', Flux_RegisterError::INVALID_SERVER);
+		if (!($server = Athena::getServerGroupByName($server))) {
+			throw new Athena_RegisterError('Invalid server', Athena_RegisterError::INVALID_SERVER);
 		}
 		
 		// Woohoo! Register ;)
 		$result = $server->loginServer->register($username, $password, $confirm, $email, $gender, $code, $birthdate);
 
 		if ($result) {
-			if (Flux::config('RequireEmailConfirm')) {
-				require_once 'Flux/Mailer.php';
+			if (Athena::config('RequireEmailConfirm')) {
+				require_once 'Athena/Mailer.php';
 				
 				$user = $username;
 				$code = md5(rand());
 				$name = $session->loginAthenaGroup->serverName;
 				$link = $this->url('account', 'confirm', array('_host' => true, 'code' => $code, 'user' => $username, 'login' => $name));
-				$mail = new Flux_Mailer();
+				$mail = new Athena_Mailer();
 				$sent = $mail->send($email, 'Account Confirmation', 'confirm', array('AccountUsername' => $username, 'ConfirmationLink' => htmlspecialchars($link)));
 				
-				$createTable = Flux::config('FluxTables.AccountCreateTable');
+				$createTable = Athena::config('AthenaTables.AccountCreateTable');
 				$bind = array($code);
 				
 				// Insert confirmation code.
 				$sql  = "UPDATE {$server->loginDatabase}.{$createTable} SET ";
 				$sql .= "confirm_code = ?, confirmed = 0 ";
-				if ($expire=Flux::config('EmailConfirmExpire')) {
+				if ($expire=Athena::config('EmailConfirmExpire')) {
 					$sql .= ", confirm_expire = ? ";
 					$bind[] = date('Y-m-d H:i:s', time() + (60 * 60 * $expire));
 				}
@@ -58,13 +58,13 @@ if (count($_POST)) {
 				$sth  = $server->connection->getStatement($sql);
 				$sth->execute($bind);
 				
-				$session->loginServer->permanentlyBan(null, sprintf(Flux::message('AccountConfirmBan'), $code), $result);
+				$session->loginServer->permanentlyBan(null, sprintf(Athena::message('AccountConfirmBan'), $code), $result);
 				
 				if ($sent) {
-					$message  = Flux::message('AccountCreateEmailSent');
+					$message  = Athena::message('AccountCreateEmailSent');
 				}
 				else {
-					$message  = Flux::message('AccountCreateFailed');
+					$message  = Athena::message('AccountCreateFailed');
 				}
 				
 				$session->setMessageData($message);
@@ -72,7 +72,7 @@ if (count($_POST)) {
 			}
 			else {
 				$session->login($server->serverName, $username, $password, false);
-				$session->setMessageData(Flux::message('AccountCreated'));
+				$session->setMessageData(Athena::message('AccountCreated'));
 				$this->redirect();
 			}
 		}
@@ -80,52 +80,52 @@ if (count($_POST)) {
 			exit('Uh oh, what happened?');
 		}
 	}
-	catch (Flux_RegisterError $e) {
+	catch (Athena_RegisterError $e) {
 		switch ($e->getCode()) {
-			case Flux_RegisterError::USERNAME_ALREADY_TAKEN:
-				$errorMessage = Flux::message('UsernameAlreadyTaken');
+			case Athena_RegisterError::USERNAME_ALREADY_TAKEN:
+				$errorMessage = Athena::message('UsernameAlreadyTaken');
 				break;
-			case Flux_RegisterError::USERNAME_TOO_SHORT:
-				$errorMessage = Flux::message('UsernameTooShort');
+			case Athena_RegisterError::USERNAME_TOO_SHORT:
+				$errorMessage = Athena::message('UsernameTooShort');
 				break;
-			case Flux_RegisterError::USERNAME_TOO_LONG:
-				$errorMessage = Flux::message('UsernameTooLong');
+			case Athena_RegisterError::USERNAME_TOO_LONG:
+				$errorMessage = Athena::message('UsernameTooLong');
 				break;
-			case Flux_RegisterError::PASSWORD_TOO_SHORT:
-				$errorMessage = Flux::message('PasswordTooShort');
+			case Athena_RegisterError::PASSWORD_TOO_SHORT:
+				$errorMessage = Athena::message('PasswordTooShort');
 				break;
-			case Flux_RegisterError::PASSWORD_TOO_LONG:
-				$errorMessage = Flux::message('PasswordTooLong');
+			case Athena_RegisterError::PASSWORD_TOO_LONG:
+				$errorMessage = Athena::message('PasswordTooLong');
 				break;
-			case Flux_RegisterError::PASSWORD_MISMATCH:
-				$errorMessage = Flux::message('PasswordsDoNotMatch');
+			case Athena_RegisterError::PASSWORD_MISMATCH:
+				$errorMessage = Athena::message('PasswordsDoNotMatch');
 				break;
-			case Flux_RegisterError::EMAIL_ADDRESS_IN_USE:
-				$errorMessage = Flux::message('EmailAddressInUse');
+			case Athena_RegisterError::EMAIL_ADDRESS_IN_USE:
+				$errorMessage = Athena::message('EmailAddressInUse');
 				break;
-			case Flux_RegisterError::INVALID_EMAIL_ADDRESS:
-				$errorMessage = Flux::message('InvalidEmailAddress');
+			case Athena_RegisterError::INVALID_EMAIL_ADDRESS:
+				$errorMessage = Athena::message('InvalidEmailAddress');
 				break;
-			case Flux_RegisterError::INVALID_GENDER:
-				$errorMessage = Flux::message('InvalidGender');
+			case Athena_RegisterError::INVALID_GENDER:
+				$errorMessage = Athena::message('InvalidGender');
 				break;
-			case Flux_RegisterError::INVALID_SERVER:
-				$errorMessage = Flux::message('InvalidServer');
+			case Athena_RegisterError::INVALID_SERVER:
+				$errorMessage = Athena::message('InvalidServer');
 				break;
-			case Flux_RegisterError::INVALID_SECURITY_CODE:
-				$errorMessage = Flux::message('InvalidSecurityCode');
+			case Athena_RegisterError::INVALID_SECURITY_CODE:
+				$errorMessage = Athena::message('InvalidSecurityCode');
 				break;
-			case Flux_RegisterError::INVALID_BIRTHDATE_FORMAT:
-				$errorMessage = Flux::message('BirthDateError');
+			case Athena_RegisterError::INVALID_BIRTHDATE_FORMAT:
+				$errorMessage = Athena::message('BirthDateError');
 				break;
-			case Flux_RegisterError::BIRTHDATE_MUSTNOTBE_EMPTY:
-				$errorMessage = Flux::message('BirthDateEmptyError');
+			case Athena_RegisterError::BIRTHDATE_MUSTNOTBE_EMPTY:
+				$errorMessage = Athena::message('BirthDateEmptyError');
 				break;
-			case Flux_RegisterError::INVALID_USERNAME:
-				$errorMessage = sprintf(Flux::message('AccountInvalidChars'), Flux::config('UsernameAllowedChars'));
+			case Athena_RegisterError::INVALID_USERNAME:
+				$errorMessage = sprintf(Athena::message('AccountInvalidChars'), Athena::config('UsernameAllowedChars'));
 				break;
 			default:
-				$errorMessage = Flux::message('CriticalRegisterError');
+				$errorMessage = Athena::message('CriticalRegisterError');
 				break;
 		}
 	}

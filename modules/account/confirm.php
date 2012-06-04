@@ -1,19 +1,19 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
-$title = Flux::message('AccountConfirmTitle');
+$title = Athena::message('AccountConfirmTitle');
 
 $user  = $params->get('user');
 $code  = $params->get('code');
 $login = $params->get('login');
 
-$createTable = Flux::config('FluxTables.AccountCreateTable');
+$createTable = Athena::config('AthenaTables.AccountCreateTable');
 
 if (!$login || !$user || !$code || strlen($code) !== 32) {
 	$this->deny();
 }
 
-$loginAthenaGroup = Flux::getServerGroupByName($login);
+$loginAthenaGroup = Athena::getServerGroupByName($login);
 if (!$loginAthenaGroup) {
 	$this->deny();
 }
@@ -32,8 +32,8 @@ $sth  = $loginAthenaGroup->connection->getStatement($sql);
 
 $sth->execute(array($account->account_id));
 
-$loginAthenaGroup->loginServer->unban(null, Flux::message('AccountConfirmUnban'), $account->account_id);
+$loginAthenaGroup->loginServer->unban(null, Athena::message('AccountConfirmUnban'), $account->account_id);
 
-$session->setMessageData(Flux::message('AccountConfirmMessage'));
+$session->setMessageData(Athena::message('AccountConfirmMessage'));
 $this->redirect();
 ?>

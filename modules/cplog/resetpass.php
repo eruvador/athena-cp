@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title = 'Password Resets';
 
-$resetTable  = Flux::config('FluxTables.ResetPasswordTable');
+$resetTable  = Athena::config('AthenaTables.ResetPasswordTable');
 $sqlpartial  = "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = log.account_id ";
 $sqlpartial .= 'WHERE 1=1 ';
 $bind        = array();

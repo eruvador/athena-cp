@@ -1,13 +1,13 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2><?php echo htmlspecialchars(Flux::message('HistoryGameLoginHeading')) ?></h2>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
+<h2><?php echo htmlspecialchars(Athena::message('HistoryGameLoginHeading')) ?></h2>
 <?php if ($logins): ?>
 <?php echo $paginator->infoText() ?>
 <table class="horizontal-table">
 	<tr>
-		<th><?php echo $paginator->sortableColumn('time', Flux::message('HistoryLoginDateLabel')) ?></th>
-		<th><?php echo $paginator->sortableColumn('ip', Flux::message('HistoryIpAddrLabel')) ?></th>
-		<th><?php echo $paginator->sortableColumn('rcode', Flux::message('HistoryRepsCodeLabel')) ?></th>
-		<th><?php echo $paginator->sortableColumn('log', Flux::message('HistoryLogMessageLabel')) ?></th>
+		<th><?php echo $paginator->sortableColumn('time', Athena::message('HistoryLoginDateLabel')) ?></th>
+		<th><?php echo $paginator->sortableColumn('ip', Athena::message('HistoryIpAddrLabel')) ?></th>
+		<th><?php echo $paginator->sortableColumn('rcode', Athena::message('HistoryRepsCodeLabel')) ?></th>
+		<th><?php echo $paginator->sortableColumn('log', Athena::message('HistoryLogMessageLabel')) ?></th>
 	</tr>
 	<?php foreach ($logins as $login): ?>
 	<tr>
@@ -27,7 +27,7 @@
 <?php echo $paginator->getHTML() ?>
 <?php else: ?>
 <p>
-	<?php echo htmlspecialchars(Flux::message('HistoryNoGameLogins')) ?>
-	<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Flux::message('GoBackLabel')) ?></a>
+	<?php echo htmlspecialchars(Athena::message('HistoryNoGameLogins')) ?>
+	<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Athena::message('GoBackLabel')) ?></a>
 </p>
 <?php endif ?>

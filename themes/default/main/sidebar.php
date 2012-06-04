@@ -1,10 +1,10 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 $adminMenuItems = $this->getAdminMenuItems();
 $menuItems = $this->getMenuItems();
 ?>
 
-<?php if (!empty($adminMenuItems) && !Flux::config('AdminMenuNewStyle')): ?>
+<?php if (!empty($adminMenuItems) && !Athena::config('AdminMenuNewStyle')): ?>
 <table id="admin_sidebar">
 	<tr>
 		<td><img src="<?php echo $this->themePath('img/sidebar_admin_complete_top.gif') ?>" /></td>

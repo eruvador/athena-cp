@@ -1,24 +1,24 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2><?php echo htmlspecialchars(Flux::message('AccountViewHeading')) ?></h2>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
+<h2><?php echo htmlspecialchars(Athena::message('AccountViewHeading')) ?></h2>
 <?php if (!empty($errorMessage)): ?>
 <p class="red"><?php echo htmlspecialchars($errorMessage) ?></p>
 <?php endif ?>
 <?php if ($account): ?>
 <table class="vertical-table">
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('UsernameLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('UsernameLabel')) ?></th>
 		<td><?php echo $account->userid ?></td>
-		<th><?php echo htmlspecialchars(Flux::message('AccountIdLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('AccountIdLabel')) ?></th>
 		<td>
 			<?php if ($auth->allowedToSeeAccountID): ?>
 				<?php echo $account->account_id ?>
 			<?php else: ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NotApplicableLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NotApplicableLabel')) ?></span>
 			<?php endif ?>
 		</td>
 	</tr>
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('EmailAddressLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('EmailAddressLabel')) ?></th>
 		<td>
 			<?php if ($account->email): ?>
 				<?php if ($auth->actionAllowed('account', 'index')): ?>
@@ -27,63 +27,63 @@
 					<?php echo htmlspecialchars($account->email) ?>
 				<?php endif ?>
 			<?php else: ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 			<?php endif ?>
 		</td>
-		<th><?php echo htmlspecialchars(Flux::message('AccountLevelLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('AccountLevelLabel')) ?></th>
 		<td><?php echo (int)$account->group_id ?></td>
 	</tr>
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('GenderLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('GenderLabel')) ?></th>
 		<td>
 			<?php if ($gender = $this->genderText($account->sex)): ?>
 				<?php echo $gender ?>
 			<?php else: ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('UnknownLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('UnknownLabel')) ?></span>
 			<?php endif ?>
 		</td>
-		<th><?php echo htmlspecialchars(Flux::message('AccountStateLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('AccountStateLabel')) ?></th>
 		<td>
 			<?php if (!$account->confirmed && $account->confirm_code): ?>
 				<span class="account-state state-pending">
-					<?php echo htmlspecialchars(Flux::message('AccountStatePending')) ?>
+					<?php echo htmlspecialchars(Athena::message('AccountStatePending')) ?>
 				</span>
 			<?php elseif (($state = $this->accountStateText($account->state)) && !$account->unban_time): ?>
 				<?php echo $state ?>
 			<?php elseif ($account->unban_time): ?>
 				<span class="account-state state-banned">
-					<?php printf(htmlspecialchars(Flux::message('AccountStateTempBanned')), date(Flux::config('DateTimeFormat'), $account->unban_time)) ?>
+					<?php printf(htmlspecialchars(Athena::message('AccountStateTempBanned')), date(Athena::config('DateTimeFormat'), $account->unban_time)) ?>
 				</span>
 			<?php else: ?>
-				<span class="account-state state-unknown"><?php echo htmlspecialchars(Flux::message('UnknownLabel')) ?></span>
+				<span class="account-state state-unknown"><?php echo htmlspecialchars(Athena::message('UnknownLabel')) ?></span>
 			<?php endif ?>
 		</td>
 	</tr>
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('LoginCountLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('LoginCountLabel')) ?></th>
 		<td><?php echo number_format((int)$account->logincount) ?></td>
-		<th><?php echo htmlspecialchars(Flux::message('CreditBalanceLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('CreditBalanceLabel')) ?></th>
 		<td>
 			<?php echo number_format((int)$account->balance) ?>
 			<?php if ($auth->allowedToDonate && $isMine): ?>
-				<a href="<?php echo $this->url('donate') ?>"><?php echo htmlspecialchars(Flux::message('AccountViewDonateLink')) ?></a>
+				<a href="<?php echo $this->url('donate') ?>"><?php echo htmlspecialchars(Athena::message('AccountViewDonateLink')) ?></a>
 			<?php endif ?>
 		</td>
 	</tr>
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('LastLoginDateLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('LastLoginDateLabel')) ?></th>
 		<td>
 			<?php if (!$account->lastlogin || $account->lastlogin == '0000-00-00 00:00:00'): ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NeverLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NeverLabel')) ?></span>
 			<?php else: ?>
 				<?php echo $this->formatDateTime($account->lastlogin) ?>
 			<?php endif ?>
 		</td>
-		<th><?php echo htmlspecialchars(Flux::message('AccountBirthdateLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('AccountBirthdateLabel')) ?></th>
 		<td><?php echo htmlspecialchars($account->birthdate) ?></td>
 	</tr>
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('LastUsedIpLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('LastUsedIpLabel')) ?></th>
 		<td colspan="3">
 			<?php if ($account->last_ip): ?>
 				<?php if ($auth->actionAllowed('account', 'index')): ?>
@@ -92,21 +92,21 @@
 					<?php echo htmlspecialchars($account->last_ip) ?>
 				<?php endif ?>
 			<?php else: ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 			<?php endif ?>
 		</td>
 	</tr>
-	<?php $banconfirm=htmlspecialchars(str_replace("'", "\\'", Flux::message('AccountBanConfirm'))) ?>
+	<?php $banconfirm=htmlspecialchars(str_replace("'", "\\'", Athena::message('AccountBanConfirm'))) ?>
 	<?php if ($showTempBan): ?>
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('AccountViewTempBanLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('AccountViewTempBanLabel')) ?></th>
 		<td colspan="3">
 			<form action="<?php echo $this->urlWithQs ?>" method="post">
 				<input type="hidden" name="tempban" value="1" />
-				<label><?php echo htmlspecialchars(Flux::message('AccountBanReasonLabel')) ?><br /><textarea name="reason" class="block reason"></textarea></label>
-				<label><?php echo htmlspecialchars(Flux::message('AccountBanUntilLabel')) ?></label>
+				<label><?php echo htmlspecialchars(Athena::message('AccountBanReasonLabel')) ?><br /><textarea name="reason" class="block reason"></textarea></label>
+				<label><?php echo htmlspecialchars(Athena::message('AccountBanUntilLabel')) ?></label>
 				<?php echo $this->dateTimeField('tempban', date('H:i:s')); ?>
-				<input type="submit" value="<?php echo htmlspecialchars(Flux::message('AccountTempBanButton')) ?>"
+				<input type="submit" value="<?php echo htmlspecialchars(Athena::message('AccountTempBanButton')) ?>"
 					onclick="return confirm('<?php echo $banconfirm ?>')" />
 			</form>
 		</td>
@@ -114,12 +114,12 @@
 	<?php endif ?>
 	<?php if ($showPermBan): ?>
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('AccountViewPermBanLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('AccountViewPermBanLabel')) ?></th>
 		<td colspan="3">
 			<form action="<?php echo $this->urlWithQs ?>" method="post">
 				<input type="hidden" name="permban" value="1" />
-				<label><?php echo htmlspecialchars(Flux::message('AccountBanReasonLabel')) ?><br /><textarea name="reason" class="block reason"></textarea></label>
-				<input type="submit" value="<?php echo htmlspecialchars(Flux::message('AccountPermBanButton')) ?>"
+				<label><?php echo htmlspecialchars(Athena::message('AccountBanReasonLabel')) ?><br /><textarea name="reason" class="block reason"></textarea></label>
+				<input type="submit" value="<?php echo htmlspecialchars(Athena::message('AccountPermBanButton')) ?>"
 					onclick="return confirm('<?php echo $banconfirm ?>')" />
 			</form>
 		</td>
@@ -127,16 +127,16 @@
 	<?php endif ?>
 	<?php if ($showUnban): ?>
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('AccountViewUnbanLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('AccountViewUnbanLabel')) ?></th>
 		<td colspan="3">
 			<form action="<?php echo $this->urlWithQs ?>" method="post">
 				<input type="hidden" name="unban" value="1" />
 			<?php if ($tempBanned && $auth->allowedToTempUnbanAccount): ?>
-				<label><?php echo htmlspecialchars(Flux::message('AccountBanReasonLabel')) ?><br /><textarea name="reason" class="block reason"></textarea></label>
-				<input type="submit" value="<?php echo htmlspecialchars(Flux::message('AccountTempUnbanButton')) ?>" />
+				<label><?php echo htmlspecialchars(Athena::message('AccountBanReasonLabel')) ?><br /><textarea name="reason" class="block reason"></textarea></label>
+				<input type="submit" value="<?php echo htmlspecialchars(Athena::message('AccountTempUnbanButton')) ?>" />
 			<?php elseif ($permBanned && $auth->allowedToPermUnbanAccount): ?>
-				<label><?php echo htmlspecialchars(Flux::message('AccountBanReasonLabel')) ?><br /><textarea name="reason" class="block reason"></textarea></label>
-				<input type="submit" value="<?php echo htmlspecialchars(Flux::message('AccountPermUnbanButton')) ?>" />
+				<label><?php echo htmlspecialchars(Athena::message('AccountBanReasonLabel')) ?><br /><textarea name="reason" class="block reason"></textarea></label>
+				<input type="submit" value="<?php echo htmlspecialchars(Athena::message('AccountPermUnbanButton')) ?>" />
 			<?php endif ?>
 			</form>
 		</td>
@@ -145,13 +145,13 @@
 </table>
 
 <?php if ($auth->allowedToViewAccountBanLog && $banInfo): ?>
-<h3><?php echo htmlspecialchars(sprintf(Flux::message('AccountBanLogSubHeading'), $account->userid)) ?></h3>
+<h3><?php echo htmlspecialchars(sprintf(Athena::message('AccountBanLogSubHeading'), $account->userid)) ?></h3>
 <table class="vertical-table">
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('BanLogBanTypeLabel')) ?></th>
-		<th><?php echo htmlspecialchars(Flux::message('BanLogBanDateLabel')) ?></th>
-		<th><?php echo htmlspecialchars(Flux::message('BanLogBanReasonLabel')) ?></th>
-		<th><?php echo htmlspecialchars(Flux::message('BanLogBannedByLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('BanLogBanTypeLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('BanLogBanDateLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('BanLogBanReasonLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('BanLogBannedByLabel')) ?></th>
 	</tr>
 	<?php foreach ($banInfo as $ban): ?>
 	<tr>
@@ -166,7 +166,7 @@
 					<?php echo htmlspecialchars($ban->userid) ?>
 				<?php endif ?>
 			<?php else: ?>
-				<strong><?php echo htmlspecialchars(Flux::message('BanLogBannedByCP')) ?></strong>
+				<strong><?php echo htmlspecialchars(Athena::message('BanLogBannedByCP')) ?></strong>
 			<?php endif ?>
 		</td>
 	</tr>
@@ -175,20 +175,20 @@
 <?php endif ?>
 
 <?php foreach ($characters as $serverName => $chars): $zeny = 0; ?>
-	<h3><?php echo htmlspecialchars(sprintf(Flux::message('AccountViewCharSubHead'), $serverName)) ?></h3>
+	<h3><?php echo htmlspecialchars(sprintf(Athena::message('AccountViewCharSubHead'), $serverName)) ?></h3>
 	<?php if ($chars): ?>
 	<table class="vertical-table">
 		<tr>
-			<th><?php echo htmlspecialchars(Flux::message('AccountViewSlotLabel')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('AccountViewCharLabel')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('AccountViewClassLabel')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('AccountViewLvlLabel')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('AccountViewJlvlLabel')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('AccountViewZenyLabel')) ?></th>
-			<th colspan="2"><?php echo htmlspecialchars(Flux::message('AccountViewGuildLabel')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('AccountViewStatusLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('AccountViewSlotLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('AccountViewCharLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('AccountViewClassLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('AccountViewLvlLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('AccountViewJlvlLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('AccountViewZenyLabel')) ?></th>
+			<th colspan="2"><?php echo htmlspecialchars(Athena::message('AccountViewGuildLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('AccountViewStatusLabel')) ?></th>
 			<?php if (($isMine || $auth->allowedToModifyCharPrefs) && $auth->actionAllowed('character', 'prefs')): ?>
-			<th><?php echo htmlspecialchars(Flux::message('AccountViewPrefsLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('AccountViewPrefsLabel')) ?></th>
 			<?php endif ?>
 		</tr>
 		<?php foreach ($chars as $char): $zeny += $char->zeny; ?>
@@ -217,20 +217,20 @@
 					<?php endif ?>
 				</td>
 			<?php else: ?>	
-				<td colspan="2" align="center"><span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span></td>
+				<td colspan="2" align="center"><span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span></td>
 			<?php endif ?>
 			<td>
 				<?php if ($char->online): ?>
-					<span class="online"><?php echo htmlspecialchars(Flux::message('OnlineLabel')) ?></span>
+					<span class="online"><?php echo htmlspecialchars(Athena::message('OnlineLabel')) ?></span>
 				<?php else: ?>
-					<span class="offline"><?php echo htmlspecialchars(Flux::message('OfflineLabel')) ?></span>
+					<span class="offline"><?php echo htmlspecialchars(Athena::message('OfflineLabel')) ?></span>
 				<?php endif ?>
 			</td>
 			<?php if (($isMine || $auth->allowedToModifyCharPrefs) && $auth->actionAllowed('character', 'prefs')): ?>
 			<td>
 				<a href="<?php echo $this->url('character', 'prefs', array('id' => $char->char_id)) ?>"
 					class="block-link">
-					<?php echo htmlspecialchars(Flux::message('CharModifyPrefsLink')) ?>
+					<?php echo htmlspecialchars(Athena::message('CharModifyPrefsLink')) ?>
 				</a>
 			</td>
 			<?php endif ?>
@@ -239,24 +239,24 @@
 		</table>
 		<p>Total Zeny: <strong><?php echo number_format($zeny) ?></strong></p>
 	<?php else: ?>
-	<p><?php echo htmlspecialchars(sprintf(Flux::message('AccountViewNoChars'), $serverName)) ?></p>
+	<p><?php echo htmlspecialchars(sprintf(Athena::message('AccountViewNoChars'), $serverName)) ?></p>
 	<?php endif ?>
 <?php endforeach ?>
 
-<h3><?php echo htmlspecialchars(sprintf(Flux::message('AccountViewStorage'), $account->userid)) ?></h3>
+<h3><?php echo htmlspecialchars(sprintf(Athena::message('AccountViewStorage'), $account->userid)) ?></h3>
 <?php if ($items): ?>
-	<p><?php echo htmlspecialchars(sprintf(Flux::message('AccountViewStorageCount'), $account->userid, count($items))) ?></p>
+	<p><?php echo htmlspecialchars(sprintf(Athena::message('AccountViewStorageCount'), $account->userid, count($items))) ?></p>
 	<table class="vertical-table">
 		<tr>
-			<th><?php echo htmlspecialchars(Flux::message('ItemIdLabel')) ?></th>
-			<th colspan="2"><?php echo htmlspecialchars(Flux::message('ItemNameLabel')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('ItemAmountLabel')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('ItemIdentifyLabel')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('ItemBrokenLabel')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('ItemCard0Label')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('ItemCard1Label')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('ItemCard2Label')) ?></th>
-			<th><?php echo htmlspecialchars(Flux::message('ItemCard3Label')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('ItemIdLabel')) ?></th>
+			<th colspan="2"><?php echo htmlspecialchars(Athena::message('ItemNameLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('ItemAmountLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('ItemIdentifyLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('ItemBrokenLabel')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('ItemCard0Label')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('ItemCard1Label')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('ItemCard2Label')) ?></th>
+			<th><?php echo htmlspecialchars(Athena::message('ItemCard3Label')) ?></th>
 			</th>
 		</tr>
 		<?php foreach ($items AS $item): ?>
@@ -290,7 +290,7 @@
 							<?php echo htmlspecialchars($item->char_name . "'s") ?>
 						<?php endif ?>
 					<?php else: ?>
-						<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('UnknownLabel')) ?></span>'s
+						<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('UnknownLabel')) ?></span>'s
 					<?php endif ?>
 				<?php endif ?>
 				<?php if ($item->card0 == 255 && array_key_exists($item->card1%1280, $itemAttributes)): ?>
@@ -299,7 +299,7 @@
 				<?php if ($item->name_japanese): ?>
 					<span class="item_name"><?php echo htmlspecialchars($item->name_japanese) ?></span>
 				<?php else: ?>
-					<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('UnknownLabel')) ?></span>
+					<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('UnknownLabel')) ?></span>
 				<?php endif ?>
 				<?php if ($item->slots): ?>
 					<?php echo htmlspecialchars(' [' . $item->slots . ']') ?>
@@ -308,16 +308,16 @@
 			<td><?php echo number_format($item->amount) ?></td>
 			<td>
 				<?php if ($item->identify): ?>
-					<span class="identified yes"><?php echo htmlspecialchars(Flux::message('YesLabel')) ?></span>
+					<span class="identified yes"><?php echo htmlspecialchars(Athena::message('YesLabel')) ?></span>
 				<?php else: ?>
-					<span class="identified no"><?php echo htmlspecialchars(Flux::message('NoLabel')) ?></span>
+					<span class="identified no"><?php echo htmlspecialchars(Athena::message('NoLabel')) ?></span>
 				<?php endif ?>
 			</td>
 			<td>
 				<?php if ($item->attribute): ?>
-					<span class="broken yes"><?php echo htmlspecialchars(Flux::message('YesLabel')) ?></span>
+					<span class="broken yes"><?php echo htmlspecialchars(Athena::message('YesLabel')) ?></span>
 				<?php else: ?>
-					<span class="broken no"><?php echo htmlspecialchars(Flux::message('NoLabel')) ?></span>
+					<span class="broken no"><?php echo htmlspecialchars(Athena::message('NoLabel')) ?></span>
 				<?php endif ?>
 			</td>
 			<td>
@@ -336,7 +336,7 @@
 						<?php endif ?>
 					<?php endif ?>
 				<?php else: ?>
-					<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+					<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 				<?php endif ?>
 			</td>
 			<td>
@@ -355,7 +355,7 @@
 						<?php endif ?>
 					<?php endif ?>
 				<?php else: ?>
-					<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+					<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 				<?php endif ?>
 			</td>
 			<td>
@@ -374,7 +374,7 @@
 						<?php endif ?>
 					<?php endif ?>
 				<?php else: ?>
-					<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+					<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 				<?php endif ?>
 			</td>
 			<td>
@@ -393,19 +393,19 @@
 						<?php endif ?>
 					<?php endif ?>
 				<?php else: ?>
-					<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+					<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 				<?php endif ?>
 			</td>
 		</tr>
 		<?php endforeach ?>
 	</table>
 <?php else: ?>
-	<p><?php echo htmlspecialchars(Flux::message('AccountViewNoStorage')) ?></p>
+	<p><?php echo htmlspecialchars(Athena::message('AccountViewNoStorage')) ?></p>
 <?php endif ?>
 
 <?php else: ?>
 <p>
-	<?php echo htmlspecialchars(Flux::message('AccountViewNotFound')) ?>
-	<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Flux::message('GoBackLabel')) ?></a>
+	<?php echo htmlspecialchars(Athena::message('AccountViewNotFound')) ?>
+	<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Athena::message('GoBackLabel')) ?></a>
 </p>
 <?php endif ?>

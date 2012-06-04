@@ -1,8 +1,8 @@
 <?php
-require_once 'Flux/LogFile.php';
-require_once 'Flux/Error.php';
+require_once 'Athena/LogFile.php';
+require_once 'Athena/Error.php';
 
-class Flux_Connection_Statement {
+class Athena_Connection_Statement {
 	public $stmt;
 	private static $errorLog;
 	
@@ -11,20 +11,20 @@ class Flux_Connection_Statement {
 		$this->stmt = $stmt;
 		
 		if (!self::$errorLog) {
-			self::$errorLog = new Flux_LogFile(FLUX_DATA_DIR.'/logs/mysql/errors/'.date('Ymd').'.log', 'a');
+			self::$errorLog = new Athena_LogFile(ATHENA_DATA_DIR.'/logs/mysql/errors/'.date('Ymd').'.log', 'a');
 		}
 	}
 	
 	public function execute(array $inputParameters = array())
 	{
 		$res = $this->stmt->execute($inputParameters);
-		Flux::$numberOfQueries++;
+		Athena::$numberOfQueries++;
 		if ((int)$this->stmt->errorCode()) {
 			$info = $this->stmt->errorInfo();
 			self::$errorLog->puts('[SQLSTATE=%s] Err %s: %s', $info[0], $info[1], $info[2]);
-			if (Flux::config('DebugMode')) {
+			if (Athena::config('DebugMode')) {
 				$message = sprintf('MySQL error (SQLSTATE: %s, ERROR: %s): %s', $info[0], $info[1], $info[2]);
-				throw new Flux_Error($message);
+				throw new Athena_Error($message);
 			}
 		}
 		return $res;

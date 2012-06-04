@@ -1,17 +1,17 @@
 <?php
-require_once 'Flux/LogFile.php';
-require_once 'Flux/Config.php';
-require_once 'Flux/Error.php';
+require_once 'Athena/LogFile.php';
+require_once 'Athena/Config.php';
+require_once 'Athena/Error.php';
 
 /**
  * Handles PayPal instant payment notifications.
  */
-class Flux_PaymentNotifyRequest {
+class Athena_PaymentNotifyRequest {
 	/**
 	 * Logger class for logging to the PayPal log stored on disk.
 	 *
 	 * @access private
-	 * @var Flux_LogFile
+	 * @var Athena_LogFile
 	 */
 	private $ppLogFile;
 
@@ -48,10 +48,10 @@ class Flux_PaymentNotifyRequest {
 	public $myCurrencyCode;
 
 	/**
-	 * PayPal's IPN variables organized into a Flux_Config instance.
+	 * PayPal's IPN variables organized into a Athena_Config instance.
 	 *
 	 * @access public
-	 * @var Flux_Config
+	 * @var Athena_Config
 	 */
 	public $ipnVariables;
 
@@ -79,13 +79,13 @@ class Flux_PaymentNotifyRequest {
 	 */
 	public function __construct(array $ipnPostVars)
 	{
-		$this->ppLogFile       = new Flux_LogFile(FLUX_DATA_DIR.'/logs/paypal.log');
-		$this->ppServer        = Flux::config('PayPalIpnUrl');
-		$this->myBusinessEmail = Flux::config('PayPalBusinessEmail');
-		$this->myCurrencyCode  = strtoupper(Flux::config('DonationCurrency'));
-		$this->ipnVariables    = new Flux_Config($ipnPostVars);
-		$this->txnLogTable     = Flux::config('FluxTables.TransactionTable');
-		$this->creditsTable    = Flux::config('FluxTables.CreditsTable');
+		$this->ppLogFile       = new Athena_LogFile(ATHENA_DATA_DIR.'/logs/paypal.log');
+		$this->ppServer        = Athena::config('PayPalIpnUrl');
+		$this->myBusinessEmail = Athena::config('PayPalBusinessEmail');
+		$this->myCurrencyCode  = strtoupper(Athena::config('DonationCurrency'));
+		$this->ipnVariables    = new Athena_Config($ipnPostVars);
+		$this->txnLogTable     = Athena::config('AthenaTables.TransactionTable');
+		$this->creditsTable    = Athena::config('AthenaTables.CreditsTable');
 	}
 
 	/**
@@ -115,7 +115,7 @@ class Flux_PaymentNotifyRequest {
 		if ($this->verify()) {
 			$this->logPayPal('Proceeding to validate the authenticity of the transaction...');
 
-			$accountEmails = Flux::config('PayPalReceiverEmails');
+			$accountEmails = Athena::config('PayPalReceiverEmails');
 			$accountEmails = array_merge(array($this->myBusinessEmail), $accountEmails->toArray());
 			$receiverEmail = $this->ipnVariables->get('receiver_email');
 			$transactionID = $this->ipnVariables->get('txn_id');
@@ -133,7 +133,7 @@ class Flux_PaymentNotifyRequest {
 			else {
 				$customArray  = @unserialize(base64_decode((string)$this->ipnVariables->get('custom')));
 				$customArray  = $customArray && is_array($customArray) ? $customArray : array();
-				$customData   = new Flux_Config($customArray);
+				$customData   = new Athena_Config($customArray);
 				$accountID    = $customData->get('account_id');
 				$serverName   = $customData->get('server_name');
 
@@ -168,7 +168,7 @@ class Flux_PaymentNotifyRequest {
 				elseif ($this->ipnVariables->get('txn_type') != 'web_accept') {
 					$this->logPayPal('Transaction type is not web_accept, amount will not be exchanged for credits.');
 				}
-				elseif (!($servGroup = Flux::getServerGroupByName($serverName))) {
+				elseif (!($servGroup = Athena::getServerGroupByName($serverName))) {
 					$this->logPayPal('Unknown game server "%s", cannot process donation for credits.', $serverName);
 				}
 
@@ -190,11 +190,11 @@ class Flux_PaymentNotifyRequest {
 							}
 
 							$amount  = (float)$this->ipnVariables->get('mc_gross');
-							$minimum = (float)Flux::config('MinDonationAmount');
+							$minimum = (float)Athena::config('MinDonationAmount');
 
 							if ($amount >= $minimum) {
-								$trustTable = Flux::config('FluxTables.DonationTrustTable');
-								$holdHours  = +(int)Flux::config('HoldUntrustedAccount');
+								$trustTable = Athena::config('AthenaTables.DonationTrustTable');
+								$holdHours  = +(int)Athena::config('HoldUntrustedAccount');
 
 								if ($holdHours) {
 									$sql = "SELECT account_id, email FROM {$servGroup->loginDatabase}.$trustTable WHERE account_id = ? AND email = ? LIMIT 1";
@@ -211,7 +211,7 @@ class Flux_PaymentNotifyRequest {
 									}
 								}
 
-								$rate    = Flux::config('CreditExchangeRate');
+								$rate    = Athena::config('CreditExchangeRate');
 								$credits = floor($amount / $rate);
 
 								if ($trusted) {
@@ -243,9 +243,9 @@ class Flux_PaymentNotifyRequest {
 				else {
 					$this->logPayPal('Incomplete payment status: %s (exchanging for credits will not take place)', $paymentStatus);
 
-					$banStatuses = Flux::config('BanPaymentStatuses');
+					$banStatuses = Athena::config('BanPaymentStatuses');
 
-					if ($banStatuses instanceOf Flux_Config) {
+					if ($banStatuses instanceOf Athena_Config) {
 						$banStatuses = $banStatuses->toArray();
 					}
 					else {
@@ -272,7 +272,7 @@ class Flux_PaymentNotifyRequest {
 				}
 
 				if (!$servGroup) {
-					foreach (Flux::$loginAthenaGroupRegistry as $servGroup) {
+					foreach (Athena::$loginAthenaGroupRegistry as $servGroup) {
 						$this->logToPayPalTable($servGroup, $accountID, $serverName, $trusted);
 					}
 				}
@@ -381,7 +381,7 @@ class Flux_PaymentNotifyRequest {
 	private function saveDetailsToFile()
 	{
 		if ($this->txnIsValid) {
-			$logDir1 = realpath(FLUX_DATA_DIR.'/logs/transactions');
+			$logDir1 = realpath(ATHENA_DATA_DIR.'/logs/transactions');
 			$logDir2 = $logDir1.'/'.$this->ipnVariables->get('txn_type');
 			$logDir3 = $logDir2.'/'.$this->ipnVariables->get('payment_status');
 			$logFile = $logDir3.'/'.$this->ipnVariables->get('txn_id').'.log.php';
@@ -406,14 +406,14 @@ class Flux_PaymentNotifyRequest {
 	}
 
 	/**
-	 * Log the transaction details into the flux_paypal_transactions table.
+	 * Log the transaction details into the athena_paypal_transactions table.
 	 *
-	 * @param Flux_LoginAthenaGroup $servGroup
+	 * @param Athena_LoginAthenaGroup $servGroup
 	 * @param string $accountID
 	 * @param string $serverName
 	 * @access private
 	 */
-	private function logToPayPalTable(Flux_LoginAthenaGroup $servGroup, $accountID, $serverName, $trusted, $credits = 0)
+	private function logToPayPalTable(Athena_LoginAthenaGroup $servGroup, $accountID, $serverName, $trusted, $credits = 0)
 	{
 		if ($this->txnIsValid) {
 			$holdUntil = null;
@@ -430,7 +430,7 @@ class Flux_PaymentNotifyRequest {
 					$holdUntil = $row->hold_until;
 				}
 				else {
-					$hours     = +(int)Flux::config('HoldUntrustedAccount');
+					$hours     = +(int)Athena::config('HoldUntrustedAccount');
 					$holdUntil = date('Y-m-d H:i:s', time()+($hours*60*60));
 				}
 			}

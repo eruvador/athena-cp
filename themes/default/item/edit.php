@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Modify Item</h2>
 <?php if ($item): ?>
 <p>The only required fields are the <em>Item ID</em>, <em>Identifier</em>, <em>Name</em> and <em>Type</em> fields.</p>
@@ -21,8 +21,8 @@
 			<th><label for="type">Type</label></th>
 			<td>
 				<select name="type" id="type" onchange="if (this.options[this.selectedIndex].value.indexOf('-') != -1) document.edit_item_form.view.value=this.options[this.selectedIndex].value.substring(this.options[this.selectedIndex].value.indexOf('-')+1)">
-				<?php foreach (Flux::config('ItemTypes')->toArray() as $nameid => $typeName): ?>
-					<?php $itemTypes2 = Flux::config('ItemTypes2')->toArray() ?>
+				<?php foreach (Athena::config('ItemTypes')->toArray() as $nameid => $typeName): ?>
+					<?php $itemTypes2 = Athena::config('ItemTypes2')->toArray() ?>
 					<?php if (!array_key_exists($nameid, $itemTypes2)): ?>
 						<option value="<?php echo htmlspecialchars($nameid) ?>"<?php if ($nameid == $type) echo ' selected="selected"' ?>>
 							<?php echo htmlspecialchars($typeName) ?>
@@ -82,7 +82,7 @@
 			<th><label for="equip_locations">Equip Locations</label></th>
 			<td colspan="3">
 				<select name="equip_locations" id="equip_locations">
-				<?php foreach (Flux::config('EquipLocationCombinations')->toArray() as $locId => $locName): ?>
+				<?php foreach (Athena::config('EquipLocationCombinations')->toArray() as $locId => $locName): ?>
 					<option value="<?php echo htmlspecialchars($locId) ?>"<?php if ($locId == $equipLoc) echo ' selected="selected"' ?>>
 						<?php echo htmlspecialchars($locName) ?>
 					</option>
@@ -94,7 +94,7 @@
 			<th><label for="equip_upper">Equip Upper</label></th>
 			<td colspan="3">
 				<select class="multi-select" name="equip_upper[]" id="equip_upper" size="5" multiple="multiple">
-				<?php foreach (Flux::getEquipUpperList() as $bit => $upper): ?>
+				<?php foreach (Athena::getEquipUpperList() as $bit => $upper): ?>
 					<option value="<?php echo htmlspecialchars($bit) ?>"<?php if ($equipUpper && in_array($bit, $equipUpper)) echo ' selected="selected"' ?>>
 						<?php echo htmlspecialchars($upper) ?>
 					</option>
@@ -110,7 +110,7 @@
 			<th><label for="equip_jobs">Equippable Jobs</label></th>
 			<td colspan="3">
 				<select class="multi-select" name="equip_jobs[]" id="equip_jobs" size="10" multiple="multiple">
-				<?php foreach (Flux::getEquipJobsList() as $bit => $className): ?>
+				<?php foreach (Athena::getEquipJobsList() as $bit => $className): ?>
 					<option value="<?php echo htmlspecialchars($bit) ?>"<?php if ($equipJobs && in_array($bit, $equipJobs)) echo ' selected="selected"' ?>>
 						<?php echo htmlspecialchars($className) ?>
 					</option>

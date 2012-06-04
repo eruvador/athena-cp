@@ -1,7 +1,7 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Donation Complete</h2>
 <p class="important">Your transaction has been processed and you should receive credits in a short amount of time.</p>
-<?php $hoursHeld = +(int)Flux::config('HoldUntrustedAccount'); ?>
+<?php $hoursHeld = +(int)Athena::config('HoldUntrustedAccount'); ?>
 <?php if ($hoursHeld): ?>
 	<p>
 		Note: There is currently an account holding system in effect. If this is your first time donating with the selected account

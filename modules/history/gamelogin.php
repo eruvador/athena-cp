@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('HistoryGameLoginTitle');
+$title = Athena::message('HistoryGameLoginTitle');
 
 if ($server->loginServer->config->getNoCase() && $server->connection->isCaseSensitive($server->logsDatabase, 'loginlog', 'user', true)) {
 	$user = 'LOWER(user)';

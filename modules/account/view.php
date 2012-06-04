@@ -1,19 +1,19 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('AccountViewTitle');
+$title = Athena::message('AccountViewTitle');
 
-require_once 'Flux/TemporaryTable.php';
+require_once 'Athena/TemporaryTable.php';
 
 $tableName  = "{$server->charMapDatabase}.items";
 $fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+$tempTable  = new Athena_TemporaryTable($server->connection, $tableName, $fromTables);
 
-$creditsTable  = Flux::config('FluxTables.CreditsTable');
+$creditsTable  = Athena::config('AthenaTables.CreditsTable');
 $creditColumns = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
-$createTable   = Flux::config('FluxTables.AccountCreateTable');
+$createTable   = Athena::config('AthenaTables.AccountCreateTable');
 $createColumns = 'created.confirmed, created.confirm_code, created.reg_date';
 $isMine        = false;
 $accountID     = $params->get('id');
@@ -42,11 +42,11 @@ if (!$isMine) {
 	$account = $sth->fetch();
 	
 	if ($account) {
-		$title = sprintf(Flux::message('AccountViewTitle2'), $account->userid);
+		$title = sprintf(Athena::message('AccountViewTitle2'), $account->userid);
 	}
 }
 else {
-	$title = Flux::message('AccountViewTitle3');
+	$title = Athena::message('AccountViewTitle3');
 }
 
 $banSuperior = $account && (($account->group_id > $session->account->group_id && $auth->allowedToBanHigherPower) || $account->group_id <= $session->account->group_id);
@@ -69,11 +69,11 @@ if (count($_POST) && $account) {
 				$this->redirect($this->url('account', 'view', array('id' => $account->account_id)));
 			}
 			else {
-				$errorMessage = Flux::message('AccountTempBanFailed');
+				$errorMessage = Athena::message('AccountTempBanFailed');
 			}
 		}
 		else {
-			$errorMessage = Flux::message('AccountTempBanUnauth');
+			$errorMessage = Athena::message('AccountTempBanUnauth');
 		}
 	}
 	elseif ($params->get('permban')) {
@@ -83,15 +83,15 @@ if (count($_POST) && $account) {
 				$this->redirect($this->url('account', 'view', array('id' => $account->account_id)));
 			}
 			else {
-				$errorMessage = Flux::message('AccountPermBanFailed');
+				$errorMessage = Athena::message('AccountPermBanFailed');
 			}
 		}
 		else {
-			$errorMessage = Flux::message('AccountPermBanUnauth');
+			$errorMessage = Athena::message('AccountPermBanUnauth');
 		}
 	}
 	elseif ($params->get('unban')) {
-		$tbl = Flux::config('FluxTables.AccountCreateTable');
+		$tbl = Athena::config('AthenaTables.AccountCreateTable');
 		$sql = "SELECT account_id FROM {$server->loginDatabase}.$tbl WHERE confirmed = 0 AND account_id = ?";
 		$sth = $server->connection->getStatement($sql);
 		
@@ -108,7 +108,7 @@ if (count($_POST) && $account) {
 				$sth->execute(array($account->account_id));
 			}
 					
-			$session->setMessageData(Flux::message('AccountLiftTempBan'));
+			$session->setMessageData(Athena::message('AccountLiftTempBan'));
 			$this->redirect($this->url('account', 'view', array('id' => $account->account_id)));
 		}
 		elseif ($permBanned && $auth->allowedToPermUnbanAccount &&
@@ -118,11 +118,11 @@ if (count($_POST) && $account) {
 				$sth->execute(array($account->account_id));
 			}
 					
-			$session->setMessageData(Flux::message('AccountLiftPermBan'));
+			$session->setMessageData(Athena::message('AccountLiftPermBan'));
 			$this->redirect($this->url('account', 'view', array('id' => $account->account_id)));
 		}
 		else {
-			$errorMessage = Flux::message('AccountLiftBanUnauth');
+			$errorMessage = Athena::message('AccountLiftBanUnauth');
 		}
 	}
 }
@@ -214,6 +214,6 @@ if ($account) {
 		}
 	}
 	
-	$itemAttributes = Flux::config('Attributes')->toArray();
+	$itemAttributes = Athena::config('Attributes')->toArray();
 }
 ?>

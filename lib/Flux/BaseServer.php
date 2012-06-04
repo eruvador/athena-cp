@@ -3,14 +3,14 @@
  * The BaseServer implementation is used for containing methods and properties
  * directly related to the server itself, such as checking its upstatus.
  */
-class Flux_BaseServer {
+class Athena_BaseServer {
 	/**
 	 * The configuration object for this server. For a login server this would
-	 * be the Flux_Config instance of the LoginServer section, for a character
+	 * be the Athena_Config instance of the LoginServer section, for a character
 	 * server it would be CharServer and so on.
 	 *
 	 * @access public
-	 * @var Flux_Config
+	 * @var Athena_Config
 	 */
 	public $config;
 	
@@ -19,7 +19,7 @@ class Flux_BaseServer {
 	 *
 	 * @access public
 	 */
-	public function __construct(Flux_Config $config)
+	public function __construct(Athena_Config $config)
 	{
 		$this->config = $config;
 	}
@@ -35,7 +35,7 @@ class Flux_BaseServer {
 	{
 		$addr = $this->config->getAddress();
 		$port = $this->config->getPort();
-		$sock = @fsockopen($addr, $port, $errno, $errstr, (int)Flux::config('ServerStatusTimeout'));
+		$sock = @fsockopen($addr, $port, $errno, $errstr, (int)Athena::config('ServerStatusTimeout'));
 		
 		if (is_resource($sock)) {
 			fclose($sock);

@@ -1,11 +1,11 @@
 <?php
-require_once 'Flux/Config.php';
-require_once 'Flux/Error.php';
+require_once 'Athena/Config.php';
+require_once 'Athena/Error.php';
 
 /**
  * Objectifies a given object.
  */
-class Flux_DataObject {
+class Athena_DataObject {
 	/**
 	 * Storage object.
 	 *
@@ -38,13 +38,13 @@ class Flux_DataObject {
 	 */ 
 	public function __construct(array $data = null, $defaults = array())
 	{
-		if (array_key_exists('dbconfig', $defaults) && $defaults['dbconfig'] instanceOf Flux_Config) {
+		if (array_key_exists('dbconfig', $defaults) && $defaults['dbconfig'] instanceOf Athena_Config) {
 			$this->_dbConfig = $defaults['dbconfig'];
 			unset($defaults['dbconfig']);
 		}
 		else {
 			$tmpArr = array();
-			$this->_dbConfig = new Flux_Config($tmpArr);
+			$this->_dbConfig = new Athena_Config($tmpArr);
 		}
 		
 		$this->_encFrom = $this->_dbConfig->getEncoding();

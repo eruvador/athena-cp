@@ -1,26 +1,26 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
 $title = 'List Accounts';
 
-if (Flux::config('AutoRemoveTempBans')) {
+if (Athena::config('AutoRemoveTempBans')) {
 	$sql = "UPDATE {$server->loginDatabase}.login SET unban_time = 0 WHERE unban_time <= UNIX_TIMESTAMP()";
 	$sth = $server->connection->getStatement($sql);
 	$sth->execute();
 }
 
 $useMD5         = $server->loginServer->config->get('UseMD5');
-$searchMD5      = Flux::config('AllowMD5PasswordSearch') && Flux::config('ReallyAllowMD5PasswordSearch') && $auth->allowedToSearchMD5Passwords;
+$searchMD5      = Athena::config('AllowMD5PasswordSearch') && Athena::config('ReallyAllowMD5PasswordSearch') && $auth->allowedToSearchMD5Passwords;
 $searchPassword = (($useMD5 && $searchMD5) || !$useMD5) && $auth->allowedToSeeAccountPassword;
 $showPassword   = !$useMD5 && $auth->allowedToSeeAccountPassword;
 $bind           = array();
-$creditsTable   = Flux::config('FluxTables.CreditsTable');
+$creditsTable   = Athena::config('AthenaTables.CreditsTable');
 $creditColumns  = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
-$accountTable   = Flux::config('FluxTables.AccountCreateTable');
+$accountTable   = Athena::config('AthenaTables.AccountCreateTable');
 $accountColumns = 'createlog.reg_date';
-$createTable    = Flux::config('FluxTables.AccountCreateTable');
+$createTable    = Athena::config('AthenaTables.AccountCreateTable');
 $createColumns  = 'created.confirmed, created.confirm_code, created.reg_date';
 $sqlpartial     = "LEFT OUTER JOIN {$server->loginDatabase}.{$creditsTable} AS credits ON login.account_id = credits.account_id ";
 $sqlpartial    .= "LEFT OUTER JOIN {$server->loginDatabase}.{$accountTable} AS createlog ON login.account_id = createlog.account_id ";
@@ -154,7 +154,7 @@ $accounts   = $sth->fetchAll();
 
 $authorized = $auth->actionAllowed('account', 'view') && $auth->allowedToViewAccount;
 
-if ($accounts && count($accounts) === 1 && $authorized && Flux::config('SingleMatchRedirect')) {
+if ($accounts && count($accounts) === 1 && $authorized && Athena::config('SingleMatchRedirect')) {
 	$this->redirect($this->url('account', 'view', array('id' => $accounts[0]->account_id)));
 }
 ?>

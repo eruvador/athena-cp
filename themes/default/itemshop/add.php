@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 $markdownURL = 'http://daringfireball.net/projects/markdown/syntax';
 ?>
 <h2>Item Shop</h2>
@@ -25,7 +25,7 @@ $markdownURL = 'http://daringfireball.net/projects/markdown/syntax';
 		<th><label for="category">Category</label></th>
 		<td>
 			<select name="category" id="category">
-				<option value="none"<?php if (is_null($category) || strtolower($category) == 'none') echo ' selected="selected"' ?>><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></option>
+				<option value="none"<?php if (is_null($category) || strtolower($category) == 'none') echo ' selected="selected"' ?>><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></option>
 				<?php foreach ($categories as $categoryID => $cat): ?>
 					<option value="<?php echo (int)$categoryID ?>"<?php if ($category === (string)$categoryID) echo ' selected="selected"' ?>><?php echo htmlspecialchars($cat) ?></option>
 				<?php endforeach ?>

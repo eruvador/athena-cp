@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('IpbanRemoveTitle');
+$title = Athena::message('IpbanRemoveTitle');
 
 $list = $params->get('list');
 
@@ -26,23 +26,23 @@ if (count($_POST)) {
 	$reason = trim($params->get('reason'));
 	
 	if (!$list) {
-		$errorMessage = Flux::message('IpbanEnterIpPattern');
+		$errorMessage = Athena::message('IpbanEnterIpPattern');
 	}
 	elseif (!preg_match('/^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]|\*)\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]|\*)\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]|\*)$/', $list, $m)) {
-		$errorMessage = Flux::message('IpbanInvalidPattern');
+		$errorMessage = Athena::message('IpbanInvalidPattern');
 	}
 	elseif (!$reason) {
-		$errorMessage = Flux::message('IpbanEnterRemoveReason');
+		$errorMessage = Athena::message('IpbanEnterRemoveReason');
 	}
 	elseif (!$ipban || !$ipban->list) {
-		$errorMessage = sprintf(Flux::message('IpbanNotBanned'), $list);
+		$errorMessage = sprintf(Athena::message('IpbanNotBanned'), $list);
 	}
 	elseif ($server->loginServer->removeIpBan($session->account->account_id, $reason, $list)) {
-		$session->setMessageData(sprintf(Flux::message('IpbanPatternUnbanned'), $list));
+		$session->setMessageData(sprintf(Athena::message('IpbanPatternUnbanned'), $list));
 		$this->redirect($this->url('ipban'));
 	}
 	else {
-		$errorMessage = Flux::message('IpbanRemoveFailed');
+		$errorMessage = Athena::message('IpbanRemoveFailed');
 	}
 }
 ?>

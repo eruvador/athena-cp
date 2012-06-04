@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Who's Online?</h2>
 <h3>Showing players on-line <?php echo htmlspecialchars($server->serverName) ?>.</h3>
 <?php if ($auth->allowedToSearchWhosOnline): ?>

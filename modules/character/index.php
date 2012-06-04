@@ -1,5 +1,5 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
@@ -63,7 +63,7 @@ else {
 	
 	if ($charClass) {
 		$className = preg_quote($charClass, '/');
-		$classIDs  = preg_grep("/.*?$className.*?/i", Flux::config('JobClasses')->toArray());
+		$classIDs  = preg_grep("/.*?$className.*?/i", Athena::config('JobClasses')->toArray());
 		
 		if (count($classIDs)) {
 			$classIDs    = array_keys($classIDs);
@@ -181,7 +181,7 @@ $sth->execute($bind);
 $characters = $sth->fetchAll();
 $authorized = $auth->actionAllowed('character', 'view') && $auth->allowedToViewCharacter;
 
-if ($characters && count($characters) === 1 && $authorized && Flux::config('SingleMatchRedirect')) {
+if ($characters && count($characters) === 1 && $authorized && Athena::config('SingleMatchRedirect')) {
 	$this->redirect($this->url('character', 'view', array('id' => $characters[0]->char_id)));
 }
 ?>

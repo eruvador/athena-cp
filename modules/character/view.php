@@ -1,15 +1,15 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
 $title = 'Viewing Character';
 
-require_once 'Flux/TemporaryTable.php';
+require_once 'Athena/TemporaryTable.php';
 
 $tableName  = "{$server->charMapDatabase}.items";
 $fromTables = array("{$server->charMapDatabase}.item_db", "{$server->charMapDatabase}.item_db2");
-$tempTable  = new Flux_TemporaryTable($server->connection, $tableName, $fromTables);
+$tempTable  = new Athena_TemporaryTable($server->connection, $tableName, $fromTables);
 
 
 $charID = $params->get('id');
@@ -241,6 +241,6 @@ if ($char) {
 		}
 	}
 	
-	$itemAttributes = Flux::config('Attributes')->toArray();
+	$itemAttributes = Athena::config('Attributes')->toArray();
 }
 ?>

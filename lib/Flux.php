@@ -1,24 +1,24 @@
 <?php
-require_once 'Flux/Config.php';
-require_once 'Flux/Error.php';
-require_once 'Flux/Connection.php';
-require_once 'Flux/LoginServer.php';
-require_once 'Flux/CharServer.php';
-require_once 'Flux/MapServer.php';
-require_once 'Flux/Athena.php';
-require_once 'Flux/LoginAthenaGroup.php';
-require_once 'Flux/Addon.php';
+require_once 'Athena/Config.php';
+require_once 'Athena/Error.php';
+require_once 'Athena/Connection.php';
+require_once 'Athena/LoginServer.php';
+require_once 'Athena/CharServer.php';
+require_once 'Athena/MapServer.php';
+require_once 'Athena/Athena.php';
+require_once 'Athena/LoginAthenaGroup.php';
+require_once 'Athena/Addon.php';
 require_once 'functions/svn_version.php';
 
-// Get the SVN revision of the top-level directory (FLUX_ROOT).
+// Get the SVN revision of the top-level directory (ATHENA_ROOT).
 define('FLUX_SVNVERSION', svn_version());
 
 /**
- * The Flux class contains methods related to the application on the larger
+ * The Athena class contains methods related to the application on the larger
  * scale. For the most part, it handles application initialization such as
  * parsing the configuration files and whatnot.
  */
-class Flux {
+class Athena {
 	/**
 	 * Current version.
 	 */
@@ -33,7 +33,7 @@ class Flux {
 	 * Application-specific configuration object.
 	 *
 	 * @access public
-	 * @var Flux_Config
+	 * @var Athena_Config
 	 */
 	public static $appConfig;
 	
@@ -41,7 +41,7 @@ class Flux {
 	 * Servers configuration object.
 	 *
 	 * @access public
-	 * @var Flux_Config
+	 * @var Athena_Config
 	 */
 	public static $serversConfig;
 	
@@ -49,12 +49,12 @@ class Flux {
 	 * Messages configuration object.
 	 *
 	 * @access public
-	 * @var Flux_Config
+	 * @var Athena_Config
 	 */
 	public static $messagesConfig;
 	
 	/**
-	 * Collection of Flux_Athena objects.
+	 * Collection of Athena_Athena objects.
 	 *
 	 * @access public
 	 * @var array
@@ -62,7 +62,7 @@ class Flux {
 	public static $servers = array();
 	
 	/**
-	 * Registry where Flux_LoginAthenaGroup instances are kept for easy
+	 * Registry where Athena_LoginAthenaGroup instances are kept for easy
 	 * searching.
 	 *
 	 * @access public
@@ -71,7 +71,7 @@ class Flux {
 	public static $loginAthenaGroupRegistry = array();
 	
 	/**
-	 * Registry where Flux_Athena instances are kept for easy searching.
+	 * Registry where Athena_Athena instances are kept for easy searching.
 	 *
 	 * @access public
 	 * @var array
@@ -79,10 +79,10 @@ class Flux {
 	public static $athenaServerRegistry = array();
 	
 	/**
-	 * Object containing all of Flux's session data.
+	 * Object containing all of Athena's session data.
 	 *
 	 * @access public
-	 * @var Flux_SessionData
+	 * @var Athena_SessionData
 	 */
 	public static $sessionData;
 	
@@ -97,11 +97,11 @@ class Flux {
 	public static $addons = array();
 	
 	/**
-	 * Initialize Flux application. This will handle configuration parsing and
+	 * Initialize Athena application. This will handle configuration parsing and
 	 * instanciating of objects crucial to the control panel.
 	 *
 	 * @param array $options Options to pass to initializer.
-	 * @throws Flux_Error Raised when missing required options.
+	 * @throws Athena_Error Raised when missing required options.
 	 * @access public
 	 */
 	public static function initialize($options = array())
@@ -110,7 +110,7 @@ class Flux {
 		$required = array('appConfigFile', 'serversConfigFile');
 		foreach ($required as $option) {
 			if (!array_key_exists($option, $options)) {
-				self::raise("Missing required option `$option' in Flux::initialize()");
+				self::raise("Missing required option `$option' in Athena::initialize()");
 			}
 		}
 		
@@ -135,29 +135,29 @@ class Flux {
 	 * Initialize each Login/Char/Map server object and contain them in their
 	 * own collective Athena object.
 	 *
-	 * This is also part of the Flux initialization phase.
+	 * This is also part of the Athena initialization phase.
 	 *
 	 * @access public
 	 */
 	public static function initializeServerObjects()
 	{
 		foreach (self::$serversConfig->getChildrenConfigs() as $key => $config) {
-			$connection  = new Flux_Connection($config->getDbConfig(), $config->getLogsDbConfig());
-			$loginServer = new Flux_LoginServer($config->getLoginServer());
+			$connection  = new Athena_Connection($config->getDbConfig(), $config->getLogsDbConfig());
+			$loginServer = new Athena_LoginServer($config->getLoginServer());
 			
 			// LoginAthenaGroup maintains the grouping of a central login
 			// server and its underlying Athena objects.
-			self::$servers[$key] = new Flux_LoginAthenaGroup($config->getServerName(), $connection, $loginServer);
+			self::$servers[$key] = new Athena_LoginAthenaGroup($config->getServerName(), $connection, $loginServer);
 			
 			// Add into registry.
 			self::registerServerGroup($config->getServerName(), self::$servers[$key]);
 			
 			foreach ($config->getCharMapServers()->getChildrenConfigs() as $charMapServer) {
-				$charServer = new Flux_CharServer($charMapServer->getCharServer());
-				$mapServer  = new Flux_MapServer($charMapServer->getMapServer());
+				$charServer = new Athena_CharServer($charMapServer->getCharServer());
+				$mapServer  = new Athena_MapServer($charMapServer->getMapServer());
 				
-				// Create the collective server object, Flux_Athena.
-				$athena = new Flux_Athena($charMapServer, $loginServer, $charServer, $mapServer);
+				// Create the collective server object, Athena_Athena.
+				$athena = new Athena_Athena($charMapServer, $loginServer, $charServer, $mapServer);
 				self::$servers[$key]->addAthenaServer($athena);
 				
 				// Add into registry.
@@ -171,14 +171,14 @@ class Flux {
 	 */
 	public static function initializeAddons()
 	{
-		if (!is_dir(FLUX_ADDON_DIR)) {
+		if (!is_dir(ATHENA_ADDON_DIR)) {
 			return false;
 		}
 			
-		foreach (glob(FLUX_ADDON_DIR.'/*') as $addonDir) {
+		foreach (glob(ATHENA_ADDON_DIR.'/*') as $addonDir) {
 			if (is_dir($addonDir)) {
 				$addonName   = basename($addonDir);
-				$addonObject = new Flux_Addon($addonName, $addonDir);
+				$addonObject = new Athena_Addon($addonName, $addonDir);
 				self::$addons[$addonName] = $addonObject;
 				
 				// Merge configurations.
@@ -225,31 +225,31 @@ class Flux {
 	}
 	
 	/**
-	 * Convenience method for raising Flux_Error exceptions.
+	 * Convenience method for raising Athena_Error exceptions.
 	 *
 	 * @param string $message Message to pass to constructor.
-	 * @throws Flux_Error
+	 * @throws Athena_Error
 	 * @access public
 	 */
 	public static function raise($message)
 	{
-		throw new Flux_Error($message);
+		throw new Athena_Error($message);
 	}
 
 	/**
-	 * Parse PHP array into Flux_Config instance.
+	 * Parse PHP array into Athena_Config instance.
 	 *
 	 * @param array $configArr
 	 * @access public
 	 */
 	public static function parseConfig(array $configArr)
 	{
-		return new Flux_Config($configArr);
+		return new Athena_Config($configArr);
 	}
 	
 	/**
 	 * Parse a PHP array returned as the result of an included file into a
-	 * Flux_Config configuration object.
+	 * Athena_Config configuration object.
 	 *
 	 * @param string $filename
 	 * @access public
@@ -257,7 +257,7 @@ class Flux {
 	public static function parseConfigFile($filename, $cache=true)
 	{
 		$basename  = basename(str_replace(' ', '', ucwords(str_replace(array('/', '\\', '_'), ' ', $filename))), '.php').'.cache.php';
-		$cachefile = FLUX_DATA_DIR."/tmp/$basename";
+		$cachefile = ATHENA_DATA_DIR."/tmp/$basename";
 		
 		if ($cache && file_exists($cachefile) && filemtime($cachefile) > filemtime($filename)) {
 			return unserialize(file_get_contents($cachefile, null, null, 28));
@@ -301,7 +301,7 @@ class Flux {
 		elseif (!self::themeExists($themeName=$config->getThemeName())) {
 			self::raise("The selected theme '$themeName' does not exist.");
 		}
-		elseif (!($config->getPayPalReceiverEmails() instanceOf Flux_Config)) {
+		elseif (!($config->getPayPalReceiverEmails() instanceOf Athena_Config)) {
 			self::raise("PayPalReceiverEmails must be an array.");
 		}
 		
@@ -449,11 +449,11 @@ class Flux {
 	 */
 	public static function parseLanguageConfigFile($addonName=null)
 	{
-		$default = $addonName ? FLUX_ADDON_DIR."/$addonName/lang/en_us.php" : FLUX_LANG_DIR.'/en_us.php';
+		$default = $addonName ? ATHENA_ADDON_DIR."/$addonName/lang/en_us.php" : ATHENA_LANG_DIR.'/en_us.php';
 		$current = $default;
 		
 		if ($lang=self::config('DefaultLanguage')) {
-			$current = $addonName ? FLUX_ADDON_DIR."/$addonName/lang/$lang.php" : FLUX_LANG_DIR."/$lang.php";
+			$current = $addonName ? ATHENA_ADDON_DIR."/$addonName/lang/$lang.php" : ATHENA_LANG_DIR."/$lang.php";
 		}
 		
 		if (file_exists($default)) {
@@ -461,7 +461,7 @@ class Flux {
 		}
 		else {
 			$tmp = array();
-			$def = new Flux_Config($tmp);
+			$def = new Athena_Config($tmp);
 		}
 		
 		if ($current != $default && file_exists($current)) {
@@ -480,18 +480,18 @@ class Flux {
 	 */
 	public static function themeExists($themeName)
 	{
-		return is_dir(FLUX_THEME_DIR."/$themeName");
+		return is_dir(ATHENA_THEME_DIR."/$themeName");
 	}
 	
 	/**
 	 * Register the server group into the registry.
 	 *
 	 * @param string $serverName Server group's name.
-	 * @param Flux_LoginAthenaGroup Server group object.
-	 * @return Flux_LoginAthenaGroup
+	 * @param Athena_LoginAthenaGroup Server group object.
+	 * @return Athena_LoginAthenaGroup
 	 * @access private
 	 */
-	private static function registerServerGroup($serverName, Flux_LoginAthenaGroup $serverGroup)
+	private static function registerServerGroup($serverName, Athena_LoginAthenaGroup $serverGroup)
 	{
 		self::$loginAthenaGroupRegistry[$serverName] = $serverGroup;
 		return $serverGroup;
@@ -502,11 +502,11 @@ class Flux {
 	 *
 	 * @param string $serverName Server group's name.
 	 * @param string $athenaServerName Athena server's name.
-	 * @param Flux_Athena $athenaServer Athena server object.
-	 * @return Flux_Athena
+	 * @param Athena_Athena $athenaServer Athena server object.
+	 * @return Athena_Athena
 	 * @access private
 	 */
-	private static function registerAthenaServer($serverName, $athenaServerName, Flux_Athena $athenaServer)
+	private static function registerAthenaServer($serverName, $athenaServerName, Athena_Athena $athenaServer)
 	{
 		if (!array_key_exists($serverName, self::$athenaServerRegistry) || !is_array(self::$athenaServerRegistry[$serverName])) {
 			self::$athenaServerRegistry[$serverName] = array();
@@ -517,17 +517,17 @@ class Flux {
 	}
 	
 	/**
-	 * Get Flux_LoginAthenaGroup server object by its ServerName.
+	 * Get Athena_LoginAthenaGroup server object by its ServerName.
 	 *
 	 * @param string
-	 * @return mixed Returns Flux_LoginAthenaGroup instance or false on failure.
+	 * @return mixed Returns Athena_LoginAthenaGroup instance or false on failure.
 	 * @access public
 	 */
 	public static function getServerGroupByName($serverName)
 	{
 		$registry = &self::$loginAthenaGroupRegistry;
 		
-		if (array_key_exists($serverName, $registry) && $registry[$serverName] instanceOf Flux_LoginAthenaGroup) {
+		if (array_key_exists($serverName, $registry) && $registry[$serverName] instanceOf Athena_LoginAthenaGroup) {
 			return $registry[$serverName];
 		}
 		else {
@@ -536,18 +536,18 @@ class Flux {
 	}
 	
 	/**
-	 * Get Flux_Athena instance by its group/server names.
+	 * Get Athena_Athena instance by its group/server names.
 	 *
 	 * @param string $serverName Server group name.
 	 * @param string $athenaServerName Athena server name.
-	 * @return mixed Returns Flux_Athena instance or false on failure.
+	 * @return mixed Returns Athena_Athena instance or false on failure.
 	 * @access public
 	 */
 	public static function getAthenaServerByName($serverName, $athenaServerName)
 	{
 		$registry = &self::$athenaServerRegistry;
 		if (array_key_exists($serverName, $registry) && array_key_exists($athenaServerName, $registry[$serverName]) &&
-			$registry[$serverName][$athenaServerName] instanceOf Flux_Athena) {
+			$registry[$serverName][$athenaServerName] instanceOf Athena_Athena) {
 		
 			return $registry[$serverName][$athenaServerName];
 		}
@@ -685,9 +685,9 @@ class Flux {
 	 */
 	public static function processHeldCredits()
 	{
-		$txnLogTable            = self::config('FluxTables.TransactionTable');
-		$creditsTable           = self::config('FluxTables.CreditsTable');
-		$trustTable             = self::config('FluxTables.DonationTrustTable');
+		$txnLogTable            = self::config('AthenaTables.TransactionTable');
+		$creditsTable           = self::config('AthenaTables.CreditsTable');
+		$trustTable             = self::config('AthenaTables.DonationTrustTable');
 		$loginAthenaGroups      = self::$loginAthenaGroupRegistry;
 		list ($cancel, $accept) = array(array(), array());
 		
@@ -758,8 +758,8 @@ class Flux {
 	 */
 	public static function pruneUnconfirmedAccounts()
 	{
-		$tbl    = Flux::config('FluxTables.AccountCreateTable');
-		$expire = (int)Flux::config('EmailConfirmExpire');
+		$tbl    = Athena::config('AthenaTables.AccountCreateTable');
+		$expire = (int)Athena::config('EmailConfirmExpire');
 		
 		foreach (self::$loginAthenaGroupRegistry as $loginAthenaGroup) {
 			$db   = $loginAthenaGroup->loginDatabase;
@@ -778,7 +778,7 @@ class Flux {
 	 */
 	public static function getEquipLocationList()
 	{
-		$equiplocations = Flux::config('EquipLocations')->toArray();
+		$equiplocations = Athena::config('EquipLocations')->toArray();
 		return $equiplocations;
 	}
 	
@@ -788,7 +788,7 @@ class Flux {
 	 */
 	public static function getEquipUpperList()
 	{
-		$equipupper = Flux::config('EquipUpper')->toArray();
+		$equipupper = Athena::config('EquipUpper')->toArray();
 		return $equipupper;
 	}
 	
@@ -797,7 +797,7 @@ class Flux {
 	 */
 	public static function getEquipJobsList()
 	{
-		$equipjobs = Flux::config('EquipJobs')->toArray();
+		$equipjobs = Athena::config('EquipJobs')->toArray();
 		return $equipjobs;
 	}
 	
@@ -894,8 +894,8 @@ class Flux {
 	 */
 	public static function elementName($ele)
 	{
-		$neutral = Flux::config('Elements.0');
-		$element = Flux::config("Elements.$ele");
+		$neutral = Athena::config('Elements.0');
+		$element = Athena::config("Elements.$ele");
 		
 		return is_null($element) ? $neutral : $element;
 	}
@@ -905,7 +905,7 @@ class Flux {
 	 */
 	public static function monsterRaceName($race)
 	{
-		$race = Flux::config("MonsterRaces.$race");
+		$race = Athena::config("MonsterRaces.$race");
 		return $race;
 	}
 }

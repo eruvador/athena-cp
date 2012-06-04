@@ -1,12 +1,12 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
-<h2><?php echo htmlspecialchars(Flux::message('XferLogHeading')) ?></h2>
-<h3><?php echo htmlspecialchars(Flux::message('XferLogReceivedSubHead')) ?></h3>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
+<h2><?php echo htmlspecialchars(Athena::message('XferLogHeading')) ?></h2>
+<h3><?php echo htmlspecialchars(Athena::message('XferLogReceivedSubHead')) ?></h3>
 <?php if ($incomingXfers): ?>
 <table class="vertical-table">
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('XferLogCreditsLabel')) ?></th>
-		<th><?php echo htmlspecialchars(Flux::message('XferLogFromLabel')) ?></th>
-		<th><?php echo htmlspecialchars(Flux::message('XferLogDateLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('XferLogCreditsLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('XferLogFromLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('XferLogDateLabel')) ?></th>
 	</tr>
 	<?php foreach ($incomingXfers as $xfer): ?>
 	<tr>
@@ -17,16 +17,16 @@
 	<?php endforeach ?>
 </table>
 <?php else: ?>
-<p><?php echo htmlspecialchars(Flux::message('XferLogNotReceived')) ?></p>
+<p><?php echo htmlspecialchars(Athena::message('XferLogNotReceived')) ?></p>
 <?php endif ?>
 
-<h3><?php echo htmlspecialchars(Flux::message('XferLogSentSubHead')) ?></h3>
+<h3><?php echo htmlspecialchars(Athena::message('XferLogSentSubHead')) ?></h3>
 <?php if ($outgoingXfers): ?>
 <table class="vertical-table">
 	<tr>
-		<th><?php echo htmlspecialchars(Flux::message('XferLogCreditsLabel')) ?></th>
-		<th><?php echo htmlspecialchars(Flux::message('XferLogCharNameLabel')) ?></th>
-		<th><?php echo htmlspecialchars(Flux::message('XferLogDateLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('XferLogCreditsLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('XferLogCharNameLabel')) ?></th>
+		<th><?php echo htmlspecialchars(Athena::message('XferLogDateLabel')) ?></th>
 	</tr>
 	<?php foreach ($outgoingXfers as $xfer): ?>
 	<tr>
@@ -47,5 +47,5 @@
 	<?php endforeach ?>
 </table>
 <?php else: ?>
-<p><?php echo htmlspecialchars(Flux::message('XferLogNotSent')) ?></p>
+<p><?php echo htmlspecialchars(Athena::message('XferLogNotSent')) ?></p>
 <?php endif ?>

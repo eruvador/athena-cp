@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Viewing Character</h2>
 <?php if ($char): ?>
 <h3>Character Information for <?php echo htmlspecialchars($char->char_name) ?></h3>
@@ -375,7 +375,7 @@
 							<?php echo htmlspecialchars($item->char_name . "'s") ?>
 						<?php endif ?>
 					<?php else: ?>
-						<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('UnknownLabel')) ?></span>'s
+						<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('UnknownLabel')) ?></span>'s
 					<?php endif ?>
 				<?php endif ?>
 				<?php if ($item->card0 == 255 && array_key_exists($item->card1%1280, $itemAttributes)): ?>
@@ -497,7 +497,7 @@
 							<?php echo htmlspecialchars($cart_item->char_name . "'s") ?>
 						<?php endif ?>
 					<?php else: ?>
-						<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('UnknownLabel')) ?></span>'s
+						<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('UnknownLabel')) ?></span>'s
 					<?php endif ?>
 				<?php endif ?>
 				<?php if ($item->card0 == 255 && array_key_exists($item->card1%1280, $itemAttributes)): ?>

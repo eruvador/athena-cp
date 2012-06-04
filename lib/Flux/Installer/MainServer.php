@@ -1,11 +1,11 @@
 <?php
-require_once 'Flux/Installer/Schema.php';
-require_once 'Flux/Installer/CharMapServer.php';
+require_once 'Athena/Installer/Schema.php';
+require_once 'Athena/Installer/CharMapServer.php';
 
 /**
  *
  */
-class Flux_Installer_MainServer {
+class Athena_Installer_MainServer {
 	/**
 	 *
 	 */
@@ -24,14 +24,14 @@ class Flux_Installer_MainServer {
 	/**
 	 *
 	 */
-	public function __construct(Flux_LoginAthenaGroup $loginAthenaGroup)
+	public function __construct(Athena_LoginAthenaGroup $loginAthenaGroup)
 	{
 		$this->loginAthenaGroup  = $loginAthenaGroup;
-		$this->schemas           = Flux_Installer_Schema::getSchemas($this);
+		$this->schemas           = Athena_Installer_Schema::getSchemas($this);
 		
-		if (array_key_exists($loginAthenaGroup->serverName, Flux::$athenaServerRegistry)) {
-			foreach (Flux::$athenaServerRegistry[$loginAthenaGroup->serverName] as $athena) {
-				$this->charMapServers[$athena->serverName] = new Flux_Installer_CharMapServer($this, $athena);
+		if (array_key_exists($loginAthenaGroup->serverName, Athena::$athenaServerRegistry)) {
+			foreach (Athena::$athenaServerRegistry[$loginAthenaGroup->serverName] as $athena) {
+				$this->charMapServers[$athena->serverName] = new Athena_Installer_CharMapServer($this, $athena);
 			}
 		}
 	}

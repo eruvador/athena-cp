@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title = 'Email Changes';
 
-$changeTable = Flux::config('FluxTables.ChangeEmailTable');
+$changeTable = Athena::config('AthenaTables.ChangeEmailTable');
 $sqlpartial  = "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = log.account_id ";
 $sqlpartial .= 'WHERE 1=1 ';
 $bind        = array();

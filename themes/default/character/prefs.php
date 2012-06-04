@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Preferences</h2>
 <?php if ($char): ?>
 <?php if (!empty($errorMessage)): ?>

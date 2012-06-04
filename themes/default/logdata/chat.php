@@ -1,4 +1,4 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Chat Messages</h2>
 <?php if ($messages): ?>
 <?php echo $paginator->infoText() ?>
@@ -27,7 +27,7 @@
 					<?php echo $message->type_id ?>
 				<?php endif ?>
 			<?php else: ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 			<?php endif ?>
 		</td>
 		<td>
@@ -38,7 +38,7 @@
 					<?php echo $message->src_charid ?>
 				<?php endif ?>
 			<?php else: ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 			<?php endif ?>
 		</td>
 		<td>
@@ -49,35 +49,35 @@
 					<?php echo $message->src_accountid ?>
 				<?php endif ?>
 			<?php else: ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 			<?php endif ?>
 		</td>
 		<td>
 			<?php if (strlen(basename($message->src_map, '.gat')) > 0): ?>
 				<?php echo htmlspecialchars(basename($message->src_map, '.gat')) ?>
 			<?php else: ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 			<?php endif ?>
 		</td>
 		<td>
 			<?php if ($message->src_map_x): ?>
 				<?php echo $message->src_map_x ?>
 			<?php else: ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 			<?php endif ?>
 		</td>
 		<td>
 			<?php if ($message->src_map_y): ?>
 				<?php echo $message->src_map_y ?>
 			<?php else: ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 			<?php endif ?>
 		</td>
 		<td>
 			<?php if ($message->dst_charname): ?>
 				<?php echo $message->dst_charname ?>
 			<?php else: ?>
-				<span class="not-applicable"><?php echo htmlspecialchars(Flux::message('NoneLabel')) ?></span>
+				<span class="not-applicable"><?php echo htmlspecialchars(Athena::message('NoneLabel')) ?></span>
 			<?php endif ?>
 		</td>
 		<td><?php echo htmlspecialchars($message->message) ?></td>
@@ -88,6 +88,6 @@
 <?php else: ?>
 <p>
 	No chat messages found.
-	<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Flux::message('GoBackLabel')) ?></a>
+	<a href="javascript:history.go(-1)"><?php echo htmlspecialchars(Athena::message('GoBackLabel')) ?></a>
 </p>
 <?php endif ?>

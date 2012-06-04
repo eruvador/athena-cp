@@ -1,10 +1,10 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title    = 'Character Ranking';
-$classes  = Flux::config('JobClasses')->toArray();
+$classes  = Athena::config('JobClasses')->toArray();
 $jobClass = $params->get('jobclass');
-$bind     = array((int)Flux::config('RankingHideLevel'));
+$bind     = array((int)Athena::config('RankingHideLevel'));
 
 if (trim($jobClass) === '') {
 	$jobClass = null;
@@ -22,16 +22,16 @@ $sql .= "LEFT JOIN {$server->charMapDatabase}.guild ON guild.guild_id = ch.guild
 $sql .= "LEFT JOIN {$server->loginDatabase}.login ON login.account_id = ch.account_id ";
 $sql .= "WHERE 1=1 ";
 
-if (Flux::config('HidePermBannedCharRank')) {
+if (Athena::config('HidePermBannedCharRank')) {
 	$sql .= "AND login.state != 5 ";
 }
-if (Flux::config('HideTempBannedCharRank')) {
+if (Athena::config('HideTempBannedCharRank')) {
 	$sql .= "AND (login.unban_time IS NULL OR login.unban_time = 0) ";
 }
 
 $sql .= "AND login.group_id < ? ";
 
-if ($days=Flux::config('CharRankingThreshold')) {
+if ($days=Athena::config('CharRankingThreshold')) {
 	$sql    .= 'AND TIMESTAMPDIFF(DAY, login.lastlogin, NOW()) <= ? ';
 	$bind[]  = $days * 24 * 60 * 60;
 }
@@ -42,7 +42,7 @@ if (!is_null($jobClass)) {
 }
 
 $sql .= "ORDER BY ch.base_level DESC, ch.base_exp DESC, ch.job_level DESC, ch.job_exp DESC, ch.char_id ASC ";
-$sql .= "LIMIT ".(int)Flux::config('CharRankingLimit');
+$sql .= "LIMIT ".(int)Athena::config('CharRankingLimit');
 $sth  = $server->connection->getStatement($sql);
 
 $sth->execute($bind);

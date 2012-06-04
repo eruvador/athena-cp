@@ -1,9 +1,9 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $this->loginRequired();
 
-$title = Flux::message('MailerTitle');
+$title = Athena::message('MailerTitle');
 $preview = '';
 
 if (count($_POST)) {
@@ -13,13 +13,13 @@ if (count($_POST)) {
 	$body    = trim($params->get('body'));
 	
 	if (!$to) {
-		$errorMessage = Flux::message('MailerEnterToAddress');
+		$errorMessage = Athena::message('MailerEnterToAddress');
 	}
 	elseif (!$subject) {
-		$errorMessage = Flux::message('MailerEnterSubject');
+		$errorMessage = Athena::message('MailerEnterSubject');
 	}
 	elseif (!$body) {
-		$errorMessage = Flux::message('MailerEnterBodyText');
+		$errorMessage = Athena::message('MailerEnterBodyText');
 	}
 	
 	if (empty($errorMessage)) {
@@ -28,17 +28,17 @@ if (count($_POST)) {
 			$preview = Markdown($body);
 		}
 		else {
-			require_once 'Flux/Mailer.php';
+			require_once 'Athena/Mailer.php';
 			
-			$mail = new Flux_Mailer();
+			$mail = new Athena_Mailer();
 			$opts = array('_ignoreTemplate' => true, '_useMarkdown' => true);
 			
 			if ($mail->send($to, $subject, $body, $opts)) {
-				$session->setMessageData(sprintf(Flux::message('MailerEmailHasBeenSent'), $to));
+				$session->setMessageData(sprintf(Athena::message('MailerEmailHasBeenSent'), $to));
 				$this->redirect();
 			}
 			else {
-				$errorMessage = Flux::message('MailerFailedToSend');
+				$errorMessage = Athena::message('MailerFailedToSend');
 			}
 		}
 	}

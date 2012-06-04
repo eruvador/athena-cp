@@ -1,18 +1,18 @@
 <?php
-if (!defined('FLUX_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $title = 'Item Shop';
 
-require_once 'Flux/ItemShop.php';
+require_once 'Athena/ItemShop.php';
 
 $category      = $params->get('category');
-$categories    = Flux::config("ShopCategories")->toArray();
-$categoryName  = Flux::config("ShopCategories.$category");
+$categories    = Athena::config("ShopCategories")->toArray();
+$categoryName  = Athena::config("ShopCategories.$category");
 $categoryCount = array();
-$shop          = new Flux_ItemShop($server);
+$shop          = new Athena_ItemShop($server);
 $items         = $shop->getItems($category);
-$sql           = sprintf("SELECT COUNT(id) AS total FROM %s.%s WHERE category = ?", $server->charMapDatabase, Flux::config('FluxTables.ItemShopTable'));
-$sql2          = sprintf("SELECT COUNT(id) AS total FROM %s.%s", $server->charMapDatabase, Flux::config('FluxTables.ItemShopTable'));
+$sql           = sprintf("SELECT COUNT(id) AS total FROM %s.%s WHERE category = ?", $server->charMapDatabase, Athena::config('AthenaTables.ItemShopTable'));
+$sql2          = sprintf("SELECT COUNT(id) AS total FROM %s.%s", $server->charMapDatabase, Athena::config('AthenaTables.ItemShopTable'));
 $sth           = $server->connection->getStatement($sql);
 $sth2          = $server->connection->getStatement($sql2);
 $sth2->execute();

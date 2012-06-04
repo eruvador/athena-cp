@@ -1,7 +1,7 @@
-<?php if (!defined('FLUX_ROOT')) exit; ?>
+<?php if (!defined('ATHENA_ROOT')) exit; ?>
 <h2>Character Ranking</h2>
 <h3>
-	Top <?php echo number_format($limit=(int)Flux::config('CharRankingLimit')) ?> Characters
+	Top <?php echo number_format($limit=(int)Athena::config('CharRankingLimit')) ?> Characters
 	<?php if (!is_null($jobClass)): ?>
 	(<?php echo htmlspecialchars($className=$this->jobClassText($jobClass)) ?>)
 	<?php endif ?>
