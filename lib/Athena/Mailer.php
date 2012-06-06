@@ -11,10 +11,10 @@ class Athena_Mailer {
 	public function __construct()
 	{
 		if (!self::$errLog) {
-			self::$errLog = new Athena_LogFile(ATHENA_DATA_DIR.'/logs/errors/mail/'.date('Ymd').'.log');
+			self::$errLog = new Athena_LogFile(Athena_DATA_DIR.'/logs/errors/mail/'.date('Ymd').'.log');
 		}
 		if (!self::$log) {
-			self::$log = new Athena_LogFile(ATHENA_DATA_DIR.'/logs/mail/'.date('Ymd').'.log');
+			self::$log = new Athena_LogFile(Athena_DATA_DIR.'/logs/mail/'.date('Ymd').'.log');
 		}
 		
 		$this->pm     = $pm = new PHPMailer();
@@ -68,7 +68,7 @@ class Athena_Mailer {
 			}
 		}
 		else {
-			$templatePath = ATHENA_DATA_DIR."/templates/$template.php";
+			$templatePath = Athena_DATA_DIR."/templates/$template.php";
 			if (!file_exists($templatePath)) {
 				return false;
 			}

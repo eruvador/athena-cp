@@ -11,7 +11,7 @@ require_once 'Athena/Addon.php';
 require_once 'functions/svn_version.php';
 
 // Get the SVN revision of the top-level directory (ATHENA_ROOT).
-define('FLUX_SVNVERSION', svn_version());
+define('ATHENA_SVNVERSION', svn_version());
 
 /**
  * The Athena class contains methods related to the application on the larger
@@ -27,7 +27,7 @@ class Athena {
 	/**
 	 * Top-level revision.
 	 */
-	const SVNVERSION = FLUX_SVNVERSION;
+	const SVNVERSION = ATHENA_SVNVERSION;
 	
 	/**
 	 * Application-specific configuration object.

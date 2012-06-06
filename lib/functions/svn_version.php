@@ -8,7 +8,7 @@
 function svn_version($entriesFile = null)
 {
 	if (!$entriesFile) {
-		$entriesFile = FLUX_ROOT.'/.svn/entries';
+		$entriesFile = ATHENA_ROOT.'/.svn/entries';
 	}
 	
 	if (file_exists($entriesFile) && is_readable($entriesFile)) {

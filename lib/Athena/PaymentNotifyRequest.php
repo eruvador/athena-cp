@@ -79,7 +79,7 @@ class Athena_PaymentNotifyRequest {
 	 */
 	public function __construct(array $ipnPostVars)
 	{
-		$this->ppLogFile       = new Athena_LogFile(ATHENA_DATA_DIR.'/logs/paypal.log');
+		$this->ppLogFile       = new Athena_LogFile(Athena_DATA_DIR.'/logs/paypal.log');
 		$this->ppServer        = Athena::config('PayPalIpnUrl');
 		$this->myBusinessEmail = Athena::config('PayPalBusinessEmail');
 		$this->myCurrencyCode  = strtoupper(Athena::config('DonationCurrency'));
@@ -381,7 +381,7 @@ class Athena_PaymentNotifyRequest {
 	private function saveDetailsToFile()
 	{
 		if ($this->txnIsValid) {
-			$logDir1 = realpath(ATHENA_DATA_DIR.'/logs/transactions');
+			$logDir1 = realpath(Athena_DATA_DIR.'/logs/transactions');
 			$logDir2 = $logDir1.'/'.$this->ipnVariables->get('txn_type');
 			$logDir3 = $logDir2.'/'.$this->ipnVariables->get('payment_status');
 			$logFile = $logDir3.'/'.$this->ipnVariables->get('txn_id').'.log.php';

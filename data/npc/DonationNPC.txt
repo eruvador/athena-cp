@@ -13,7 +13,7 @@ map,x,y,d	script	Donor Rewards Redeemer	987,{
 	// Default: "cp_redeemlog"
 	set .redeemTable$,"cp_redeemlog";
 	
-	// Display Credits to AthenaRO Creators?
+	// Display Credits to AthenaCP Creators?
 	// Help promote our product if its useful.
 	// 0 = Disable. 1 = Enable.
 	// Default: 1
@@ -82,7 +82,7 @@ map,x,y,d	script	Donor Rewards Redeemer	987,{
 function	script	F_AthenaCredits	{
 	mes "-----------------------------------";
 	mes "Powered by Athena Control Panel.";
-	mes "Copyright © 2012 Xantara.";
-	mes "https://github.com/missxantara/athena-cp";
+	mes "Copyright © 2008-2012 Matthew Harris and Nikunj Mehta.";
+	mes "http://athenacp.googlecode.com/";
 	return;
 }

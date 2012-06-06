@@ -54,7 +54,7 @@ return array(
 	'MailerSMTPPassword'   => null,                     // When MailerUseSMTP is true: Authorized password for SMTP server (for above user).
 	'ServerStatusCache'    => 2,                        // Store a cached server status and refresh every X minutes.  Default: 2 minutes (value is measured in minutes).
 	'ServerStatusTimeout'  => 2,                        // For each server, spend X amount of seconds to determine whether it's up or not.
-	'SessionKey'           => 'athenaSessionData',      // Shouldn't be changed, just specifies the session key to be used for session data.
+	'SessionKey'           => 'athenaSessionData',        // Shouldn't be changed, just specifies the session key to be used for session data.
 	'DefaultModule'        => 'main',                   // This is the module to execute when none has been specified.
 	'DefaultAction'        => 'index',                  // This is the default action for any module, probably should leave this alone. (Deprecated)
 	'GzipCompressOutput'   => false,                    // Whether or not to compress output using zlib.
@@ -170,7 +170,7 @@ return array(
 	'MenuItems' => array(
 		'Main Menu'   => array(
 			'Home'          => array('module' => 'main'),
-			//'Forums'        => array('exturl' => 'http://missxantara.github.com/athena-cp'),
+			//'Forums'        => array('exturl' => 'http://www.athenaro.com/community'),
 		),
 		'Account'     => array(
 			'Register'      => array('module' => 'account', 'action' => 'create'),

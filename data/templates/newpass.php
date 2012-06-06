@@ -1,5 +1,5 @@
 <?php
-if (!defined('ATHENA_ROOT')) exit;
+if (!defined('Athena_ROOT')) exit;
 $siteTitle  = Athena::config('SiteTitle');
 $emailTitle = sprintf('%s: Password Has Been Reset', $siteTitle);
 ?>

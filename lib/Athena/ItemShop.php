@@ -184,7 +184,7 @@ class Athena_ItemShop {
 	{
 		$serverName       = $this->server->loginAthenaGroup->serverName;
 		$athenaServerName = $this->server->serverName;
-		$dir              = ATHENA_DATA_DIR."/itemshop/$serverName/$athenaServerName";
+		$dir              = Athena_DATA_DIR."/itemshop/$serverName/$athenaServerName";
 		$files            = glob("$dir/$shopItemID.*");
 		
 		foreach ($files as $file) {
@@ -212,10 +212,10 @@ class Athena_ItemShop {
 		
 		$serverName       = $this->server->loginAthenaGroup->serverName;
 		$athenaServerName = $this->server->serverName;
-		$dir              = ATHENA_DATA_DIR."/itemshop/$serverName/$athenaServerName";
+		$dir              = Athena_DATA_DIR."/itemshop/$serverName/$athenaServerName";
 		
-		if (!is_dir(ATHENA_DATA_DIR."/itemshop/$serverName")) {
-			mkdir(ATHENA_DATA_DIR."/itemshop/$serverName");
+		if (!is_dir(Athena_DATA_DIR."/itemshop/$serverName")) {
+			mkdir(Athena_DATA_DIR."/itemshop/$serverName");
 		}
 		
 		if (!is_dir($dir)) {

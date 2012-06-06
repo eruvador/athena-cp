@@ -19,7 +19,7 @@
 				<td id="copyright">
 					<p>
 						<strong>Powered by Athena Control Panel (<?php echo htmlspecialchars(Athena::VERSION) ?><?php echo Athena::SVNVERSION ? '.'.Athena::SVNVERSION : '' ?>)</strong>
-						&mdash; Copyright &copy; 2012 Xantara.
+						&mdash; Copyright &copy; 2008-2012 Matthew Harris and Nikunj Mehta.
 					</p>
 				</td>
 				<td></td>
