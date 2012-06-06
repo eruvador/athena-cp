@@ -1,6 +1,6 @@
 <?php
-if (!defined('Athena_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 
 $athenaVersion  = Athena::VERSION;
-$athenaVersion .= Athena::SVNVERSION ? '.'.Athena::SVNVERSION : '';
+$athenaVersion .= Athena::GITHASH ? '.'.Athena::GITHASH : '';
 ?>

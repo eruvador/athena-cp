@@ -336,7 +336,7 @@ class Athena_Template {
 		
 		include $this->actionPath;
 		
-		$pageMenuFile   = Athena_ROOT."/modules/{$this->moduleName}/pagemenu/{$this->actionName}.php";
+		$pageMenuFile   = ATHENA_ROOT."/modules/{$this->moduleName}/pagemenu/{$this->actionName}.php";
 		$pageMenuItems  = array();
 		
 		// Get the main menu file first (located in the actual module).

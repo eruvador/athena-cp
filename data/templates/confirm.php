@@ -1,5 +1,5 @@
 <?php
-if (!defined('Athena_ROOT')) exit;
+if (!defined('ATHENA_ROOT')) exit;
 $siteTitle  = Athena::config('SiteTitle');
 $emailTitle = sprintf('%s Account Confirmation', $siteTitle);
 ?>

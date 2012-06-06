@@ -18,7 +18,7 @@
 				<td colspan="3"></td>
 				<td id="copyright">
 					<p>
-						<strong>Powered by Athena Control Panel (<?php echo htmlspecialchars(Athena::VERSION) ?><?php echo Athena::SVNVERSION ? '.'.Athena::SVNVERSION : '' ?>)</strong>
+						<strong>Powered by Athena Control Panel (<?php echo htmlspecialchars(Athena::VERSION) ?><?php echo Athena::GITHASH ? '.'.Athena::GITHASH : '' ?>)</strong>
 						&mdash; Copyright &copy; 2008-2012 Matthew Harris and Nikunj Mehta.
 					</p>
 				</td>

@@ -8,10 +8,10 @@ require_once 'Athena/MapServer.php';
 require_once 'Athena/Athena.php';
 require_once 'Athena/LoginAthenaGroup.php';
 require_once 'Athena/Addon.php';
-require_once 'functions/svn_version.php';
+require_once 'functions/git_hash.php';
 
 // Get the SVN revision of the top-level directory (ATHENA_ROOT).
-define('ATHENA_SVNVERSION', svn_version());
+define('ATHENA_GITHASH', git_hash());
 
 /**
  * The Athena class contains methods related to the application on the larger
@@ -27,7 +27,7 @@ class Athena {
 	/**
 	 * Top-level revision.
 	 */
-	const SVNVERSION = ATHENA_SVNVERSION;
+	const GITHASH = ATHENA_GITHASH;
 	
 	/**
 	 * Application-specific configuration object.
