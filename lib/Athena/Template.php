@@ -346,7 +346,7 @@ class Athena_Template {
 			ob_end_clean();
 		}
 		
-		$addonPageMenuFiles = glob(Athena_ADDON_DIR."/*/modules/{$this->moduleName}/pagemenu/{$this->actionName}.php");
+		$addonPageMenuFiles = glob(ATHENA_ADDON_DIR."/*/modules/{$this->moduleName}/pagemenu/{$this->actionName}.php");
 		if ($addonPageMenuFiles) {
 			foreach ($addonPageMenuFiles as $addonPageMenuFile) {
 				ob_start();
