@@ -1222,7 +1222,7 @@ class Athena_Template {
 	public function donateButton($amount)
 	{
 		ob_start();
-		include Athena_DATA_DIR.'/paypal/button.php';
+		include ATHENA_DATA_DIR.'/paypal/button.php';
 		$button = ob_get_clean();
 		return $button;
 	}
@@ -1244,7 +1244,7 @@ class Athena_Template {
 			return false;
 		}
 		
-		$dir   = Athena_DATA_DIR."/itemshop/$serverName/$athenaServerName";
+		$dir   = ATHENA_DATA_DIR."/itemshop/$serverName/$athenaServerName";
 		$exts  = implode('|', array_map('preg_quote', Athena::config('ShopImageExtensions')->toArray()));
 		$imgs  = glob("$dir/$shopItemID.*");
 		
@@ -1270,7 +1270,7 @@ class Athena_Template {
 	 */
 	public function iconImage($itemID)
 	{
-		$path = sprintf(Athena_DATA_DIR."/items/icons/".Athena::config('ItemIconNameFormat'), $itemID);
+		$path = sprintf(ATHENA_DATA_DIR."/items/icons/".Athena::config('ItemIconNameFormat'), $itemID);
 		$link = preg_replace('&/{2,}&', '/', "{$this->basePath}/$path");
 		return file_exists($path) ? $link : false;
 	}
@@ -1280,7 +1280,7 @@ class Athena_Template {
 	 */
 	public function itemImage($itemID)
 	{
-		$path = sprintf(Athena_DATA_DIR."/items/images/".Athena::config('ItemImageNameFormat'), $itemID);
+		$path = sprintf(ATHENA_DATA_DIR."/items/images/".Athena::config('ItemImageNameFormat'), $itemID);
 		$link = preg_replace('&/{2,}&', '/', "{$this->basePath}/$path");
 		return file_exists($path) ? $link : false;
 	}
