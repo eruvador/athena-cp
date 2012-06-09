@@ -3,7 +3,7 @@ require_once 'Athena/BaseServer.php';
 require_once 'Athena/RegisterError.php';
 
 /**
- * Represents an eAthena Login Server.
+ * Represents an rAthena Login Server.
  */
 class Athena_LoginServer extends Athena_BaseServer {
 	/**

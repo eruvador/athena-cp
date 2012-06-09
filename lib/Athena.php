@@ -143,7 +143,7 @@ class Athena {
 	{
 		foreach (self::$serversConfig->getChildrenConfigs() as $key => $config) {
 			$connection  = new Athena_Connection($config->getDbConfig(), $config->getLogsDbConfig());
-			$loginServer = new Athena_LoginServer($config->getLoginServer());
+			$loginServer = new Athena_AccountCluster($config->getLoginServer());
 			
 			// LoginAthenaGroup maintains the grouping of a central login
 			// server and its underlying Athena objects.
@@ -554,6 +554,19 @@ class Athena {
 		else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Hashes a password for use in comparison with the cp_connect.username column.
+	 *
+	 * @param string $password Plain text password.
+	 * @return string Returns hashed password.
+	 * @access public
+	 */
+	public static function shaPassword($password)
+	{
+		// Default hashing schema is SHA1.
+		return sha1($password);
 	}
 	
 	/**

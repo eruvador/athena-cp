@@ -1,5 +1,6 @@
 <?php
 require_once 'Athena/DataObject.php';
+require_once 'Athena/AccountCluster.php';
 require_once 'Athena/ItemShop/Cart.php';
 require_once 'Athena/LoginError.php';
 
@@ -74,7 +75,7 @@ class Athena_SessionData {
 	 */
 	private function initialize($force = false)
 	{	
-		$keysToInit = array('username', 'serverName', 'athenaServerName', 'securityCode');
+		$keysToInit = array('username', 'clusterID', 'serverName', 'athenaServerName', 'securityCode');
 		foreach ($keysToInit as $key) {
 			if ($force || !$this->{$key}) {
 				$method = ucfirst($key);
@@ -112,16 +113,8 @@ class Athena_SessionData {
 		}
 		
 		// Get new account data every request.
-		if ($this->loginAthenaGroup && $this->username && ($account = $this->getAccount($this->loginAthenaGroup, $this->username))) {
+		if ($this->loginAthenaGroup && $this->username && ($account = $this->getCluster($this->loginAthenaGroup, $this->clusterID))) {
 			$this->account = $account;
-			
-			// Automatically log out of account when detected as banned.
-			$permBan = ($account->state == 5 && !Athena::config('AllowPermBanLogin'));
-			$tempBan = (($account->unban_time > 0 && $account->unban_time < time()) && !Athena::config('AllowTempBanLogin'));
-			
-			if ($permBan || $tempBan) {
-				$this->logout();
-			}
 		}
 		else {
 			$this->account = new Athena_DataObject(null, array('group_id' => AccountLevel::UNAUTH));
@@ -255,6 +248,7 @@ class Athena_SessionData {
 	public function login($server, $username, $password, $securityCode = null)
 	{
 		$loginAthenaGroup = Athena::getServerGroupByName($server);
+		
 		if (!$loginAthenaGroup) {
 			throw new Athena_LoginError('Invalid server.', Athena_LoginError::INVALID_SERVER);
 		}
@@ -281,50 +275,26 @@ class Athena_SessionData {
 				}
 			}
 		}
+
+		$clusterTable = Athena::config('AthenaTables.ClusterTable');
 		
-		if (!$loginAthenaGroup->isAuth($username, $password)) {
+		if (!$loginAthenaGroup->isClusterAuth($username, $password)) {
 			throw new Athena_LoginError('Invalid login', Athena_LoginError::INVALID_LOGIN);
 		}
 		
-		$creditsTable  = Athena::config('AthenaTables.CreditsTable');
-		$creditColumns = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
-		
-		$sql  = "SELECT login.*, {$creditColumns} FROM {$loginAthenaGroup->loginDatabase}.login ";
-		$sql .= "LEFT OUTER JOIN {$loginAthenaGroup->loginDatabase}.{$creditsTable} AS credits ON login.account_id = credits.account_id ";
-		$sql .= "WHERE login.sex != 'S' AND login.group_id >= 0 AND login.userid = ? LIMIT 1";
+		$sql  = "SELECT cluster_id AS clusterID, state FROM {$loginAthenaGroup->loginDatabase}.{$clusterTable} ";
+		$sql .= "WHERE username = ? LIMIT 1";
 		$smt  = $loginAthenaGroup->connection->getStatement($sql);
 		$res  = $smt->execute(array($username));
 		
 		if ($res && ($row = $smt->fetch())) {
-			if ($row->unban_time > 0) {
-				if (time() >= $row->unban_time) {
-					$row->unban_time = 0;
-					$sql = "UPDATE {$loginAthenaGroup->loginDatabase}.login SET unban_time = 0 WHERE account_id = ?";
-					$sth = $loginAthenaGroup->connection->getStatement($sql);
-					$sth->execute(array($row->account_id));
-				}
-				elseif (!Athena::config('AllowTempBanLogin')) {
-					throw new Athena_LoginError('Temporarily banned', Athena_LoginError::BANNED);
-				}
+			if ($row->state == 1) {
+				throw new Athena_LoginError('Pending confirmation', Athena_LoginError::PENDING_CONFIRMATION);
 			}
-			if ($row->state == 5) {
-				$createTable = Athena::config('AthenaTables.AccountCreateTable');
-				$sql  = "SELECT id FROM {$loginAthenaGroup->loginDatabase}.$createTable ";
-				$sql .= "WHERE account_id = ? AND confirmed = 0";
-				$sth  = $loginAthenaGroup->connection->getStatement($sql);
-				$sth->execute(array($row->account_id));
-				$row2 = $sth->fetch();
-				
-				if ($row2 && $row2->id) {
-					throw new Athena_LoginError('Pending confirmation', Athena_LoginError::PENDING_CONFIRMATION);
-				}
-			}
-			if (!Athena::config('AllowPermBanLogin') && $row->state == 5) {
-				throw new Athena_LoginError('Permanently banned', Athena_LoginError::PERMABANNED);
-			}
-			
+
 			$this->setServerNameData($server);
 			$this->setUsernameData($username);
+			$this->setClusterIDData($row->clusterID);
 			$this->initialize(false);
 		}
 		else {
@@ -344,16 +314,24 @@ class Athena_SessionData {
 	 * @return mixed
 	 * @access private
 	 */
-	private function getAccount(Athena_LoginAthenaGroup $loginAthenaGroup, $username)
+	private function getCluster(Athena_LoginAthenaGroup $loginAthenaGroup, $cluster_id)
 	{
-		$creditsTable  = Athena::config('AthenaTables.CreditsTable');
-		$creditColumns = 'credits.balance, credits.last_donation_date, credits.last_donation_amount';
+		$clusterTable  = Athena::config('AthenaTables.ClusterTable');
+		$accLinksTable = Athena::config('AthenaTables.ClusterLinksTable');
 		
-		$sql  = "SELECT login.*, {$creditColumns} FROM {$loginAthenaGroup->loginDatabase}.login ";
-		$sql .= "LEFT OUTER JOIN {$loginAthenaGroup->loginDatabase}.{$creditsTable} AS credits ON login.account_id = credits.account_id ";
-		$sql .= "WHERE login.sex != 'S' AND login.group_id >= 0 AND login.userid = ? LIMIT 1";
-		$smt  = $loginAthenaGroup->connection->getStatement($sql);
-		$res  = $smt->execute(array($username));
+		$sql   = "SELECT
+					cluster.*, MAX(login.group_id) AS group_id
+				FROM
+					{$loginAthenaGroup->loginDatabase}.{$clusterTable} AS cluster 
+				LEFT OUTER JOIN 
+					{$loginAthenaGroup->loginDatabase}.{$accLinksTable} AS links ON cluster.cluster_id = links.cluster_id
+				LEFT OUTER JOIN 
+					{$loginAthenaGroup->loginDatabase}.login ON links.account_id = login.account_id
+				WHERE
+					cluster.cluster_id = ?
+				LIMIT 1";
+		$smt   = $loginAthenaGroup->connection->getStatement($sql);
+		$res   = $smt->execute(array($cluster_id));
 		
 		if ($res && ($row = $smt->fetch())) {
 			return $row;

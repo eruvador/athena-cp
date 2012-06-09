@@ -32,12 +32,25 @@ return array(
 			'delete'   => AccountLevel::ADMIN,
 			'imagedel' => AccountLevel::ADMIN
 		),
+		'cluster'   => array(
+			'index'        => AccountLevel::HIGHGM,
+			'view'         => AccountLevel::NORMAL,
+			'create'       => AccountLevel::UNAUTH,
+			'login'        => AccountLevel::UNAUTH,
+			'logout'       => AccountLevel::NORMAL,
+			'changepass'   => AccountLevel::NORMAL,
+			'edit'         => AccountLevel::ADMIN,
+			'changesex'    => AccountLevel::NORMAL,
+			'confirm'      => AccountLevel::UNAUTH,
+			'resend'       => AccountLevel::UNAUTH,
+			'resetpass'    => AccountLevel::UNAUTH,
+			'resetpw'      => AccountLevel::UNAUTH,
+			'changemail'   => AccountLevel::NORMAL,
+			'confirmemail' => AccountLevel::NORMAL
+		),
 		'account'   => array(
 			'index'    => AccountLevel::LOWGM,
 			'view'     => AccountLevel::NORMAL,
-			'create'   => AccountLevel::UNAUTH,
-			'login'    => AccountLevel::UNAUTH,
-			'logout'   => AccountLevel::NORMAL,
 			'transfer' => AccountLevel::NORMAL,
 			'xferlog'  => AccountLevel::NORMAL,
 			'cart'     => AccountLevel::NORMAL,

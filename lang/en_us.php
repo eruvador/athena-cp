@@ -168,20 +168,6 @@ return array(
 	'AccountIndexHeading'     => 'Accounts',
 	'LoginBetweenLabel'       => 'Login Between',
 	'AccountIndexNotFound'    => 'No such account.',
-	// - account/login
-	'LoginTitle'              => 'Log In',
-	'LoginHeading'            => 'Log In',
-	'LoginButton'             => 'Log In',
-	'LoginPageMakeAccount'    => 'Don\'t have an account? <a href="%s">Create one!</a>',
-	'TemporarilyBanned'       => 'Your account is temporarily banned.',
-	'PermanentlyBanned'       => 'Your account is permanently banned.',
-	'IpBanned'                => 'The IP address you are behind is banned.',
-	'PendingConfirmation'     => 'Your account is pending e-mail confirmation.',
-	// - account/logout
-	'LogoutTitle'             => 'Logout',
-	'LogoutHeading'           => 'Logout',
-	'LogoutInfo'              => 'You are now logged out.',
-	'LogoutInfo2'             => 'Please wait a moment while you are <a href="%s">redirected</a>…',
 	// - account/resend
 	'ResendTitle'             => 'Resend Confirmation E-mail',
 	'ResendEnterUsername'     => 'Please enter your account username.',
@@ -329,6 +315,48 @@ return array(
 	'DivorceText3'            => 'Wedding rings will also be deleted.',
 	'DivorceButton'           => 'Yes, do it please.',
 	'DivorceSuccessful'       => '%s has been divorced!',
+	
+	// Module: connect
+	// - connect/index.php
+	// - connect/create.php
+	'ClusterCreateTitle'      => 'Create an Account',
+	'ClusterConfirmBan'       => 'Awaiting account activation: %s',
+	'ClusterCreateEmailSent'  => 'An e-mail has been sent containing account activation details, please check your e-mail and activate your account to log-in.',
+	'ClusterCreateFailed'     => 'Your account has been created, but unfortunately we failed to send an e-mail due to technical difficulties. Please contact a staff member and request for assistance.',
+	'ClusterCreated'          => 'Congratulations, you have been registered successfully and automatically logged in.',
+	'ClusterCreateHeading'    => 'Register',
+	'ClusterCreateTerms'      => 'Terms of Service',
+	'ClusterCreateInfo'       => 'Please read our registration agreement before registering for an account, to ensure that you understand the rules of holding an account with our private Ragnarok Online game server.',
+	'ClusterCreateInfo2'      => 'By clicking "Create My Account", you agree to be bound by our %s.',
+	'ClusterUsernameLabel'    => 'Your Username',
+	'ClusterPasswordLabel'    => 'Your Password',
+	'ClusterPassConfirmLabel' => 'Confirm Password',
+	'ClusterEmailLabel'       => 'E-mail Address',
+	'ClusterSecurityLabel'    => 'Security Code',
+	'ClusterCreateButton'     => 'Create My Account',
+	'ClusterInvalidChars'     => "A username can only contain these characters: '%s'",
+	
+	// - connect/login.php
+	'LoginTitle'              => 'Log In',
+	'LoginHeading'            => 'Log In',
+	'LoginButton'             => 'Log In',
+	'LoginPageMakeAccount'    => 'Don\'t have an account? <a href="%s">Create one!</a>',
+	'TemporarilyBanned'       => 'Your account is temporarily banned.',
+	'PermanentlyBanned'       => 'Your account is permanently banned.',
+	'IpBanned'                => 'The IP address you are behind is banned.',
+	'PendingConfirmation'     => 'Your account is pending e-mail confirmation.',
+
+	// - connect/logout.php
+	'LogoutTitle'             => 'Logout',
+	'LogoutHeading'           => 'Logout',
+	'LogoutInfo'              => 'You are now logged out.',
+	'LogoutInfo2'             => 'Please wait a moment while you are <a href="%s">redirected</a>…',
+	
+	// - connect/tos.php
+	'TermsTitle'              => 'Terms of Service',
+	'TermsHeading'            => 'Terms of Service',
+	'TermsInfo'               => 'Please read before creating an account!',
+	'TermsInfo2'              => "FOR CONTROL PANEL ADMINISTRATOR:  You may add your server's ToS in this view file directly.  The location of the view file is: %s",
 	
 	// Module: cplog
 	// - cplog/index.php
@@ -572,13 +600,6 @@ return array(
 	'ServerStatusCharLabel'   => 'Character Server',
 	'ServerStatusMapLabel'    => 'Map Server',
 	'ServerStatusOnlineLabel' => 'Players Online',
-	
-	// Module: service
-	// - service/tos
-	'TermsTitle'              => 'Terms of Service',
-	'TermsHeading'            => 'Terms of Service',
-	'TermsInfo'               => 'Please read before creating an account!',
-	'TermsInfo2'              => "FOR CONTROL PANEL ADMINISTRATOR:  You may add your server's ToS in this view file directly.  The location of the view file is: %s",
 	
 	// Module: unauthorized
 	// - unauthorized/index

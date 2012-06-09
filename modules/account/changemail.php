@@ -19,17 +19,15 @@ if (count($_POST)) {
 	elseif (!preg_match('/(.+?)@(.+?)/', $email)) {
 		$errorMessage = Athena::message('EmailCannotBeSame');
 	}
-	elseif (!Athena::config('AllowDuplicateEmails')) {
-		$sql = "SELECT email FROM {$server->loginDatabase}.login WHERE email = ? LIMIT 1";
-		$sth = $server->connection->getStatement($sql);
-		$sth->execute(array($email));
-		
-		$row = $sth->fetch();
-		if ($row && $row->email) {
-			$errorMessage = Athena::message('EmailAlreadyRegistered');
-		}
+
+	$sql = "SELECT email FROM {$server->loginDatabase}.login WHERE email = ? LIMIT 1";
+	$sth = $server->connection->getStatement($sql);
+	$sth->execute(array($email));
+	$row = $sth->fetch();
+	if ($row && $row->email) {
+		$errorMessage = Athena::message('EmailAlreadyRegistered');
 	}
-	
+
 	if (empty($errorMessage)) {
 		$code = md5(rand() + $session->account->account_id);
 		$ip   = $_SERVER['REMOTE_ADDR'];

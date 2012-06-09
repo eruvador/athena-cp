@@ -105,5 +105,19 @@ class Athena_LoginAthenaGroup {
 	{
 		return $this->loginServer->isAuth($username, $password);
 	}
+		
+	/**
+	 * See Athena_LoginServer->isAuth().
+	 *
+	 * @param string $username
+	 * @param string $password
+	 * @return bool
+	 * @access public
+	 */
+	public function isClusterAuth($username, $password)
+	{
+		return $this->loginServer->isClusterAuth($username, $password);
+	}
+
 }
 ?>
