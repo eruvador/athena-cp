@@ -3,6 +3,7 @@ CREATE TABLE `cp_account` (
   `username` varchar(23) NOT NULL DEFAULT '',
   `password` varchar(40) NOT NULL DEFAULT '',
   `email` varchar(39) NOT NULL DEFAULT '',
+  `birthdate` date NOT NULL DEFAULT '0000-00-00',
   `state` int(11) NOT NULL DEFAULT '0',
   `confirm_code` varchar(32) NOT NULL DEFAULT '',
   `confirm_expire` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',

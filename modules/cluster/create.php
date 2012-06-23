@@ -8,18 +8,27 @@ if (Athena::config('UseCaptcha') && Athena::config('EnableReCaptcha')) {
 	$recaptcha = recaptcha_get_html(Athena::config('ReCaptchaPublicKey'));
 }
 
+$months  = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+$year    = Athena::config('BirthdateStartYear');
+$endYear = $server->getServerTime('Y') - Athena::config('BirthdateAgeRestrict');
+
 if (count($_POST)) {
 	require_once 'Athena/AccountCluster.php';
 	require_once 'Athena/ClusterError.php';
 	
 	try {		
-		$username  = $params->get('username');
-		$password  = $params->get('password');
-		$confirm   = $params->get('confirm_password');
-		$email     = $params->get('email_address');
-		$code      = $params->get('security_code');
+		$username   = $params->get('username');
+		$password   = $params->get('password');
+		$confirm    = $params->get('confirm_password');
+		$email      = $params->get('email_address');
+		$date_day   = $params->get('date_day');
+		$date_month = $params->get('date_month');
+		$date_year  = $params->get('date_year');
+		$code       = $params->get('security_code');
 		
-		$result    = $server->loginServer->create($username, $password, $confirm, $email, $code);
+		$birthdate  = $date_year ."-". $date_month ."-". $date_day;
+		
+		$result     = $server->loginServer->create($username, $password, $confirm, $email, $birthdate, $code);
 
 		if ($result) {
 			if (!Athena::config('RequireEmailConfirm')) {

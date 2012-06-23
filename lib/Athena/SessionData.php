@@ -319,17 +319,11 @@ class Athena_SessionData {
 		$clusterTable  = Athena::config('AthenaTables.ClusterTable');
 		$accLinksTable = Athena::config('AthenaTables.ClusterLinksTable');
 		
-		$sql   = "SELECT
-					cluster.*, MAX(login.group_id) AS group_id
-				FROM
-					{$loginAthenaGroup->loginDatabase}.{$clusterTable} AS cluster 
-				LEFT OUTER JOIN 
-					{$loginAthenaGroup->loginDatabase}.{$accLinksTable} AS links ON cluster.cluster_id = links.cluster_id
-				LEFT OUTER JOIN 
-					{$loginAthenaGroup->loginDatabase}.login ON links.account_id = login.account_id
-				WHERE
-					cluster.cluster_id = ?
-				LIMIT 1";
+		$sql   = "SELECT cluster.*, MAX(login.group_id) AS group_id ";
+		$sql  .= "FROM {$loginAthenaGroup->loginDatabase}.{$clusterTable} AS cluster ";
+		$sql  .= "LEFT OUTER JOIN {$loginAthenaGroup->loginDatabase}.{$accLinksTable} AS links ON cluster.cluster_id = links.cluster_id ";
+		$sql  .= "LEFT OUTER JOIN {$loginAthenaGroup->loginDatabase}.login ON links.account_id = login.account_id ";
+		$sql  .= "WHERE cluster.cluster_id = ? LIMIT 1";
 		$smt   = $loginAthenaGroup->connection->getStatement($sql);
 		$res   = $smt->execute(array($cluster_id));
 		

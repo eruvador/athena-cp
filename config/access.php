@@ -38,10 +38,9 @@ return array(
 			'create'       => AccountLevel::UNAUTH,
 			'login'        => AccountLevel::UNAUTH,
 			'logout'       => AccountLevel::NORMAL,
-			'changepass'   => AccountLevel::NORMAL,
-			'edit'         => AccountLevel::ADMIN,
-			'changesex'    => AccountLevel::NORMAL,
+			'links'        => AccountLevel::NORMAL,
 			'confirm'      => AccountLevel::UNAUTH,
+			'changepass'   => AccountLevel::NORMAL,
 			'resend'       => AccountLevel::UNAUTH,
 			'resetpass'    => AccountLevel::UNAUTH,
 			'resetpw'      => AccountLevel::UNAUTH,
@@ -174,6 +173,7 @@ return array(
 	),
 	// General feature permissions, handled by the modules themselves.
 	'features' => array(
+		'ViewCluster'        => AccountLevel::HIGHGM, // View another person's account details.
 		'ViewAccount'        => AccountLevel::HIGHGM, // View another person's account details.
 		'ViewAccountBanLog'  => AccountLevel::HIGHGM, // View another person's account ban log.
 		'DeleteAccount'      => AccountLevel::ADMIN,  // (not yet implemented)
@@ -215,6 +215,7 @@ return array(
 		'SearchCpResetPass'  => AccountLevel::NOONE,  // Level required to search passwords in CP log's "password resets" page.
 		'SeeCpChangePass'    => AccountLevel::NOONE,  // Level required to see passwords in CP log's "password changes" page.
 		'SearchCpChangePass' => AccountLevel::NOONE,  // Level required to search passwords in CP log's "password changes" page.
+		'SeeClusterID'       => AccountLevel::LOWGM,  // Level required to see Account ID on account view and character view pages.
 		'SeeAccountID'       => AccountLevel::LOWGM,  // Level required to see Account ID on account view and character view pages.
 		'SeeUnknownItems'    => AccountLevel::LOWGM,  // Level required to see unidentified items as identified.
 		'AvoidSexChangeCost' => AccountLevel::LOWGM,  // Avoid paying cost (if any) for sex changes.

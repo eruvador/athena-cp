@@ -32,6 +32,27 @@
 			<td><input type="text" name="email_address" id="register_email_address" value="<?php echo htmlspecialchars($params->get('email_address')) ?>" /></td>
 		</tr>
 		
+		<tr>
+			<th><label for="register_birth_date"><?php echo htmlspecialchars(Athena::message('BirthDateLabel')) ?></label></th>
+			<td>
+				<select name="date_day">
+					<?php for ($day = 1; $day <= 31; $day++): ?>
+						<option value="<?php echo $day ?>"><?php echo $day ?></option>
+					<?php endfor ?>
+				</select>
+				<select name="date_month">
+					<?php foreach ($months as $m => $month): ?>
+						<option value="<?php echo $m ?>"><?php echo $month ?></option>
+					<?php endforeach ?>
+				</select>
+				<select name="date_year">
+					<?php for ($year; $year < $endYear; $year++): ?>
+						<option value="<?php echo $year ?>"><?php echo $year ?></option>
+					<?php endfor ?>
+				</select>
+			</td>
+		</tr>
+
 		<?php if (Athena::config('UseCaptcha')): ?>
 		<tr>
 			<?php if (Athena::config('EnableReCaptcha')): ?>

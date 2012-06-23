@@ -316,9 +316,23 @@ return array(
 	'DivorceButton'           => 'Yes, do it please.',
 	'DivorceSuccessful'       => '%s has been divorced!',
 	
-	// Module: connect
-	// - connect/index.php
-	// - connect/create.php
+	// Module: cluster
+	// - cluster/index.php
+	// - cluster/view.php
+	'ModifyAccountLink'       => 'Modify Clusters',
+	'ClusterViewTitle'        => 'View Clusters',
+	'ClusterViewHeading'      => 'Viewing Clusters',
+	'ClusterViewAccount'      => 'Viewing Clusters Account',
+	'ClusterIdLabel'          => 'Cluster ID',
+	'ClusterStateLabel'       => 'State',
+	'ClusterBirthdateLabel'   => 'Birthdate',
+	'ClusterLinkedAcc'        => 'Linked In-Game Accounts',
+	'ClusterStateNormal'      => 'Normal',
+	'ClusterStatePending'     => 'Pending',
+	'ClusterLinkNone'         => 'There are no accounts currently links to this cluster.',
+	'ClusterViewNotFound'     => 'Records indicate that the cluster account you are trying to view does not exist.',
+
+	// - cluster/create.php
 	'ClusterCreateTitle'      => 'Create an Account',
 	'ClusterConfirmBan'       => 'Awaiting account activation: %s',
 	'ClusterCreateEmailSent'  => 'An e-mail has been sent containing account activation details, please check your e-mail and activate your account to log-in.',
@@ -336,7 +350,7 @@ return array(
 	'ClusterCreateButton'     => 'Create My Account',
 	'ClusterInvalidChars'     => "A username can only contain these characters: '%s'",
 	
-	// - connect/login.php
+	// - cluster/login.php
 	'LoginTitle'              => 'Log In',
 	'LoginHeading'            => 'Log In',
 	'LoginButton'             => 'Log In',
@@ -346,13 +360,13 @@ return array(
 	'IpBanned'                => 'The IP address you are behind is banned.',
 	'PendingConfirmation'     => 'Your account is pending e-mail confirmation.',
 
-	// - connect/logout.php
+	// - cluster/logout.php
 	'LogoutTitle'             => 'Logout',
 	'LogoutHeading'           => 'Logout',
 	'LogoutInfo'              => 'You are now logged out.',
 	'LogoutInfo2'             => 'Please wait a moment while you are <a href="%s">redirected</a>…',
 	
-	// - connect/tos.php
+	// - cluster/tos.php
 	'TermsTitle'              => 'Terms of Service',
 	'TermsHeading'            => 'Terms of Service',
 	'TermsInfo'               => 'Please read before creating an account!',

@@ -52,7 +52,7 @@ class Athena_AccountCluster extends Athena_LoginServer {
 	/**
 	 *
 	 */
-	public function create($username, $password, $confirmPassword, $email, $securityCode)
+	public function create($username, $password, $confirmPassword, $email, $birthdate, $securityCode)
 	{
 		if (preg_match('/[^' . Athena::config('UsernameAllowedChars') . ']/', $username)) {
 			throw new Athena_ClusterError('Invalid character(s) used in username', Athena_ClusterError::INVALID_USERNAME);
@@ -116,8 +116,8 @@ class Athena_AccountCluster extends Athena_LoginServer {
 			$password = Athena::hashPassword($password);
 		}
 		
-		$col = "username, password, email, reg_date, reg_ip";
-		$val = array($username, $password, $email, 'NOW()', $_SERVER['REMOTE_ADDR']);
+		$col = "username, password, email, birthdate, reg_date, reg_ip";
+		$val = array($username, $password, $email, $birthdate, 'NOW()', $_SERVER['REMOTE_ADDR']);
 		if (Athena::config('RequireEmailConfirm')) {
 			$col .= ", state, confirm_code";
 			array_push($val, "1", $code = md5(rand()));
