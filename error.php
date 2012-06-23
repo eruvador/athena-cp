@@ -6,41 +6,20 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Athena Control Panel: Critical Error</title>
 		<style type="text/css" media="screen">
-			body {
-				margin: 10px;
-				padding: 0;
-				font-family: "Lucida Grande", "Lucida Sans", sans-serif;
-			}
-			
-			p {
-				font-size: 85%;
-			}
-			
-			pre {
-				font-family: Monaco, "Lucida Console", monospace;
-			}
+			body { margin: 10px; padding: 0; font-family: "Lucida Grande", "Lucida Sans", sans-serif; }
+			p { font-size: 85%; }
+			pre { font-family: Monaco, "Lucida Console", monospace; }
 			
 			.heading {
 				font-family: "Gill Sans", "Gill Sans MT", "Lucida Grande", "Lucida Sans", sans-serif;
-				font-weight: normal;
-				border-bottom: 1px solid #ddd;
+				font-weight: normal; border-bottom: 1px solid #ddd;
 			}
 			
 			.backtrace {
-				font-size: 85%;
-				border-spacing: 0;
-				border-collapse: collapse;
-				background-color: #fefefe;
+				font-size: 85%; border-spacing: 0; border-collapse: collapse; background-color: #fefefe;
 			}
-			
-			.backtrace th, .backtrace td {
-				padding: 5px;
-				border: 1px solid #ccc;
-			}
-			
-			.backtrace th {
-				background-color: #eee;
-			}
+			.backtrace th, .backtrace td { padding: 5px; border: 1px solid #ccc; }
+			.backtrace th { background-color: #eee; }
 		</style>
 	</head>
 	
