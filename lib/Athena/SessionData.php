@@ -47,7 +47,6 @@ class Athena_SessionData {
 	 * @var Athena_DataObject
 	 */
 	public $account;
-
 	
 	/**
 	 * Create new SessionData instance.

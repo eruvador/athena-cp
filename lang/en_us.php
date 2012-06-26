@@ -350,6 +350,15 @@ return array(
 	'ClusterCreateButton'     => 'Create My Account',
 	'ClusterInvalidChars'     => "A username can only contain these characters: '%s'",
 	
+	// - cluster/link.php
+	'ClusterLinkTitle'        => 'Link In-Game Account',
+	'ClusterLinkHeading'      => 'Link an In-Game Account',
+	'ClusterLinkButton'       => 'Link this Account',
+	'ClusterLinkEmailSent'    => 'An e-mail has been sent containing the confirming details to link the account.',
+	'ClusterLinkCreated'      => 'Congratulations, the in-game account has now been linked to your cluster account!',
+	'ClusterLinkFailed'       => 'Unfortunately we failed to send an e-mail due to technical difficulties. Please contact a staff member and request for assistance.',
+	'InvalidLinkCredentials'  => 'Invalid account credentials, please verify that you typed the correct info and try again.',
+
 	// - cluster/login.php
 	'LoginTitle'              => 'Log In',
 	'LoginHeading'            => 'Log In',

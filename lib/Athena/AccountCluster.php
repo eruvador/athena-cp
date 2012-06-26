@@ -10,13 +10,16 @@ class Athena_AccountCluster extends Athena_LoginServer {
 	 */
 	public $loginDatabase;
 	
-	public $connectTable;
+	public $clusterTable;
+	
+	public $linkTable;
 
 	public function __construct(Athena_Config $config)
 	{
 		parent::__construct($config);
 		$this->loginDatabase = $config->getDatabase();
-		$this->connectTable = Athena::config('AthenaTables.ClusterTable');
+		$this->clusterTable = Athena::config('AthenaTables.ClusterTable');
+		$this->linkTable = Athena::config('AthenaTables.ClusterLinksTable');
 	}
 	
 	/**
@@ -40,7 +43,7 @@ class Athena_AccountCluster extends Athena_LoginServer {
 			return false;
 		}
 		
-		$sql  = "SELECT username FROM {$this->loginDatabase}.{$this->connectTable} ";
+		$sql  = "SELECT username FROM {$this->loginDatabase}.{$this->clusterTable} ";
 		$sql .= "WHERE LOWER(username) = LOWER(?) AND password = ? LIMIT 1";
 		$sth  = $this->connection->getStatement($sql);
 		$sth->execute(array($username, $password));
@@ -93,7 +96,7 @@ class Athena_AccountCluster extends Athena_LoginServer {
 			}
 		}
 		
-		$sql  = "SELECT username FROM {$this->loginDatabase}.{$this->connectTable} WHERE LOWER(username) = LOWER(?) LIMIT 1";
+		$sql  = "SELECT username FROM {$this->loginDatabase}.{$this->clusterTable} WHERE LOWER(username) = LOWER(?) LIMIT 1";
 		$sth  = $this->connection->getStatement($sql);
 		$sth->execute(array($username));
 		$res = $sth->fetch();
@@ -101,7 +104,7 @@ class Athena_AccountCluster extends Athena_LoginServer {
 			throw new Athena_ClusterError('Username is already taken', Athena_ClusterError::USERNAME_ALREADY_TAKEN);
 		}
 		
-		$sql = "SELECT email FROM {$this->loginDatabase}.{$this->connectTable} WHERE email = ? LIMIT 1";
+		$sql = "SELECT email FROM {$this->loginDatabase}.{$this->clusterTable} WHERE email = ? LIMIT 1";
 		$sth = $this->connection->getStatement($sql);
 		$sth->execute(array($email));
 		$res = $sth->fetch();
@@ -129,7 +132,7 @@ class Athena_AccountCluster extends Athena_LoginServer {
 		}
 		$ins = preg_replace('((?:[a-z][a-z0-9_]*))', '?', $col);
 		
-		$sql = "INSERT INTO {$this->loginDatabase}.{$this->connectTable} ($col) VALUES ($ins)";
+		$sql = "INSERT INTO {$this->loginDatabase}.{$this->clusterTable} ($col) VALUES ($ins)";
 		$sth = $this->connection->getStatement($sql);
 		$res = $sth->execute($val);
 		
@@ -139,9 +142,9 @@ class Athena_AccountCluster extends Athena_LoginServer {
 				
 				$user = $username;
 				$name = $session->loginAthenaGroup->serverName;
-				$link = $this->url('connect', 'confirm', array('_host' => true, 'code' => $code, 'user' => $username, 'login' => $name));
+				$link = $this->url('cluster', 'confirm', array('_host' => true, 'code' => $code, 'user' => $username, 'login' => $name));
 				$mail = new Athena_Mailer();
-				$sent = $mail->send($email, 'Account Confirmation', 'confirm', array('AccountUsername' => $username, 'ConfirmationLink' => htmlspecialchars($link)));
+				$sent = $mail->send($email, 'Account Creation Confirmation', 'confirm', array('AccountUsername' => $username, 'ConfirmationLink' => htmlspecialchars($link)));
 								
 				if ($sent) {
 					$message  = Athena::message('ClusterCreateEmailSent');
@@ -160,5 +163,63 @@ class Athena_AccountCluster extends Athena_LoginServer {
 		}
 	}
 	
+	public function link($cluster_id, $username, $password, $confirmPassword, $securityCode)
+	{
+		if ($password !== $confirmPassword) {
+			throw new Athena_ClusterError('Passwords do not match', Athena_ClusterError::PASSWORD_MISMATCH);
+		}
+		elseif (Athena::config('UseCaptcha')) {
+			if (Athena::config('EnableReCaptcha')) {
+				require_once 'recaptcha/recaptchalib.php';
+				$resp = recaptcha_check_answer(
+					Athena::config('ReCaptchaPrivateKey'),
+					$_SERVER['REMOTE_ADDR'],
+					$_POST['recaptcha_challenge_field'],
+					$_POST['recaptcha_response_field']);
+				
+				if (!$resp->is_valid) {
+					throw new Athena_ClusterError('Invalid security code', Athena_ClusterError::INVALID_SECURITY_CODE);
+				}
+			}
+			elseif (strtolower($securityCode) !== strtolower(Athena::$sessionData->securityCode)) {
+				throw new Athena_ClusterError('Invalid security code', Athena_ClusterError::INVALID_SECURITY_CODE);
+			}
+		}
+
+		if (Athena::config('PasswordEncodingMD5')) {
+			$password = Athena::hashPassword($password);
+		}
+
+		$sql  = "SELECT account_id FROM {$this->loginDatabase}.login WHERE LOWER(userid) = LOWER(?) AND user_pass = ? LIMIT 1";
+		$sth  = $this->connection->getStatement($sql);
+		$sth->execute(array($username, $password));
+		$res = $sth->fetch();
+		
+		if (!$res) {
+			throw new Athena_ClusterError('Wrong account credentials.', Athena_ClusterError::INVALID_LINK);
+		}
+		
+		$col = "cluster_id, account_id, confirmed";
+		$val = array($cluster_id, $res->account_id);
+		if (Athena::config('RequireEmailConfirm')) {
+			$col .= ", confirm_code";
+			array_push($val, 0, $code = md5(rand()));
+			
+			if ($expire = Athena::config('EmailConfirmExpire')) {
+				$col .= ", confirm_expire";
+				array_push($val, date('Y-m-d H:i:s', time() + (60 * 60 * $expire)));
+			}
+		}
+		else {
+			array_push($val, 1);
+		}
+		$ins = preg_replace('((?:[a-z][a-z0-9_]*))', '?', $col);
+
+		$sql = "INSERT INTO {$this->loginDatabase}.{$this->linkTable} ($col) VALUES ($ins)";
+		$sth = $this->connection->getStatement($sql);
+		$res = $sth->execute($val);
+		
+		return ($res) ? true : false;
+	}
 }
 ?>

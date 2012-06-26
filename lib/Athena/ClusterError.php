@@ -12,5 +12,8 @@ class Athena_ClusterError extends Athena_Error {
 	const INVALID_EMAIL_ADDRESS  = 7;
 	const INVALID_SECURITY_CODE  = 8;
 	const INVALID_USERNAME       = 9;
+	
+	const UNEXPECTED             = 10;
+	const INVALID_LINK           = 11;
 }
 ?>
